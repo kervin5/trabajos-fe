@@ -40,8 +40,8 @@ export type Job = {
   id: Scalars['String'];
   images: Array<Image>;
   location?: Maybe<Location>;
-  published: Scalars['Boolean'];
   source: JobSource;
+  status: JobStatus;
   title: Scalars['String'];
   updatedAt: Scalars['DateTime'];
   views: Scalars['Int'];
@@ -96,6 +96,14 @@ export enum JobSource {
   Internal = 'INTERNAL'
 }
 
+export enum JobStatus {
+  Closed = 'CLOSED',
+  Deleted = 'DELETED',
+  Draft = 'DRAFT',
+  Expired = 'EXPIRED',
+  Published = 'PUBLISHED'
+}
+
 export type Location = {
   __typename?: 'Location';
   id: Scalars['String'];
@@ -139,6 +147,7 @@ export type MutationLoginArgs = {
 export type MutationRegisterArgs = {
   email: Scalars['String'];
   firstName?: InputMaybe<Scalars['String']>;
+  isEmployer?: InputMaybe<Scalars['Boolean']>;
   lastName?: InputMaybe<Scalars['String']>;
   password: Scalars['String'];
 };
@@ -210,6 +219,12 @@ export enum SortOrder {
   Desc = 'desc'
 }
 
+export enum SystemRole {
+  Admin = 'ADMIN',
+  Candidate = 'CANDIDATE',
+  Employer = 'EMPLOYER'
+}
+
 export type User = {
   __typename?: 'User';
   displayName?: Maybe<Scalars['String']>;
@@ -225,6 +240,12 @@ export type UserCreateInput = {
   jobs?: InputMaybe<Array<JobCreateInput>>;
   name: Scalars['String'];
 };
+
+export enum UserRoleInCompany {
+  Admin = 'ADMIN',
+  Owner = 'OWNER',
+  Recruiter = 'RECRUITER'
+}
 
 export type UserUniqueInput = {
   email?: InputMaybe<Scalars['String']>;

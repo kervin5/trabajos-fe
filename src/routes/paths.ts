@@ -89,6 +89,14 @@ export const PATH_DASHBOARD = {
     view: (title: string) => path(ROOTS_DASHBOARD, `/blog/post/${title}`),
     demoView: path(ROOTS_DASHBOARD, '/blog/post/apply-these-7-secret-techniques-to-improve-event'),
   },
+  jobs: {
+    root: path(ROOTS_DASHBOARD, '/jobs'),
+    jobs: path(ROOTS_DASHBOARD, '/jobs/posts'),
+    list: path(ROOTS_DASHBOARD, '/jobs/list'),
+    new: path(ROOTS_DASHBOARD, '/jobs/new'),
+    view: (title: string) => path(ROOTS_DASHBOARD, `/jobs/post/${title}`),
+    demoView: path(ROOTS_DASHBOARD, '/blog/post/apply-these-7-secret-techniques-to-improve-event'),
+  },
 };
 
 export const PATH_DOCS = 'https://docs-minimals.vercel.app/introduction';

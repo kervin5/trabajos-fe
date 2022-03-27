@@ -3,6 +3,7 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 // components
 import Label from '../../../components/Label';
 import SvgIconStyle from '../../../components/SvgIconStyle';
+import WorkTwoToneIcon from '@mui/icons-material/WorkTwoTone';
 
 // ----------------------------------------------------------------------
 
@@ -24,6 +25,7 @@ const ICONS = {
   ecommerce: getIcon('ic_ecommerce'),
   analytics: getIcon('ic_analytics'),
   dashboard: getIcon('ic_dashboard'),
+  jobs: <WorkTwoToneIcon />,
 };
 
 const navConfig = [
@@ -97,6 +99,19 @@ const navConfig = [
           { title: 'posts', path: PATH_DASHBOARD.blog.posts },
           { title: 'post', path: PATH_DASHBOARD.blog.demoView },
           { title: 'create', path: PATH_DASHBOARD.blog.new },
+        ],
+      },
+
+      // JOBS
+      {
+        title: 'Ofertas',
+        path: PATH_DASHBOARD.jobs.root,
+        icon: ICONS.jobs,
+        children: [
+          { title: 'posts', path: PATH_DASHBOARD.jobs.jobs },
+          { title: 'post', path: PATH_DASHBOARD.jobs.demoView },
+          { title: 'nuevo', path: PATH_DASHBOARD.jobs.new },
+          { title: 'lista', path: PATH_DASHBOARD.jobs.list },
         ],
       },
     ],

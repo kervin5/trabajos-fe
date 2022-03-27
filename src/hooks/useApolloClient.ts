@@ -10,7 +10,6 @@ const uri = process.env.NEXT_PUBLIC_GRAPHQL_URL as string;
 let apolloClient: ApolloClient<any> | undefined;
 
 function createApolloClient(token: string | undefined | unknown) {
-  console.log(token);
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
     uri, // Server URL (must be absolute)

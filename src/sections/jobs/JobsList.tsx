@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import gql from 'graphql-tag';
-import { useJobsQuery } from 'src/generated/graphql';
+import { SortOrder, useJobsQuery } from 'src/generated/graphql';
 import usePrevious from 'src/hooks/usePrevious';
 
 gql`
@@ -57,6 +57,7 @@ const JobsList = ({
         searchString: searchQuery,
       },
       first: 10,
+      orderBy: { createdAt: SortOrder.Desc },
     },
   });
 
