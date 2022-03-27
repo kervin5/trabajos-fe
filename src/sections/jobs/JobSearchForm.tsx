@@ -1,7 +1,7 @@
 import React, { SyntheticEvent, useEffect } from 'react';
 import { Button, InputAdornment, Paper, Stack, TextField } from '@mui/material';
 import Search from '@mui/icons-material/Search';
-import LocationAutocomplete from '../input/LocationAutocomplete';
+import LocationAutocomplete from '../../components/input/LocationAutocomplete';
 
 interface Props {
   onSubmit: ({ location, query }: { location: string; query: string }) => void;

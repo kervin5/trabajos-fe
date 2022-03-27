@@ -8,7 +8,7 @@ import { Box, Container, Typography, Stack, StackProps } from '@mui/material';
 import { MotionContainer, varFade } from '../../components/animate';
 import dynamic from 'next/dynamic';
 
-const JobSearchForm = dynamic(() => import('src/components/jobs/JobSearchForm'), {
+const JobSearchForm = dynamic(() => import('src/sections/jobs/JobSearchForm'), {
   ssr: false,
 });
 

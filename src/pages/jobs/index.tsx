@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import JobSearchForm from 'src/components/jobs/JobSearchForm';
-import JobsList from 'src/components/jobs/JobsList';
+import JobSearchForm from 'src/sections/jobs/JobSearchForm';
+import JobsList from 'src/sections/jobs/JobsList';
 
 const JobsPage = () => {
   const router = useRouter();
