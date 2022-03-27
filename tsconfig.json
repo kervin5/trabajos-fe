@@ -1,10 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "es6",
-      "dom"
-    ],
+    "lib": ["es6", "dom"],
     "baseUrl": ".",
     "strict": true,
     "noEmit": true,
@@ -12,7 +9,7 @@
     "jsx": "preserve",
     "module": "esnext",
     "incremental": true,
-    "skipLibCheck": true,
+    "skipLibCheck": false,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "esModuleInterop": true,
@@ -23,14 +20,8 @@
     "noFallthroughCasesInSwitch": true,
     "useUnknownInCatchVariables": false,
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+  "exclude": ["node_modules"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

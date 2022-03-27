@@ -1,15 +1,16 @@
 import { m } from 'framer-motion';
-import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+
 // @mui
 import { styled } from '@mui/material/styles';
-import { Button, Box, Link, Container, Typography, Stack, StackProps } from '@mui/material';
+import { Box, Container, Typography, Stack, StackProps } from '@mui/material';
 // routes
-import { PATH_DASHBOARD } from '../../routes/paths';
-// components
-import Image from '../../components/Image';
-import Iconify from '../../components/Iconify';
-import TextIconLabel from '../../components/TextIconLabel';
 import { MotionContainer, varFade } from '../../components/animate';
+import dynamic from 'next/dynamic';
+
+const JobSearchForm = dynamic(() => import('src/components/jobs/JobSearchForm'), {
+  ssr: false,
+});
 
 // ----------------------------------------------------------------------
 
@@ -69,6 +70,12 @@ const HeroImgStyle = styled(m.img)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function HomeHero() {
+  const router = useRouter();
+
+  const handleFormSubmit = ({ query, location }: { query: string; location: string }) => {
+    router.push(`/jobs?query=${query}&location=${location}`);
+  };
+
   return (
     <MotionContainer>
       <RootStyle>
@@ -102,8 +109,8 @@ export default function HomeHero() {
                 build apps faster and better.
               </Typography>
             </m.div>
-
-            <Stack spacing={2.5} alignItems="center" direction={{ xs: 'column', md: 'row' }}>
+            <JobSearchForm onSubmit={handleFormSubmit} />
+            {/* <Stack spacing={2.5} alignItems="center" direction={{ xs: 'column', md: 'row' }}>
               <m.div variants={varFade().inRight}>
                 <TextIconLabel
                   icon={
@@ -183,7 +190,7 @@ export default function HomeHero() {
                   />
                 ))}
               </Stack>
-            </Stack>
+            </Stack> */}
           </ContentStyle>
         </Container>
       </RootStyle>

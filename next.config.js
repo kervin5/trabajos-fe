@@ -11,9 +11,9 @@ const withTM = require('next-transpile-modules')([
 
 module.exports = withTM({
   swcMinify: false,
-  trailingSlash: true,
+  trailingSlash: false,
   env: {
-    HOST_API_KEY: 'https://minimal-assets-api.vercel.app',
+    HOST_API_KEY: `${process.env.NEXT_PUBLIC_APP_URL}/api`,
     // FIREBASE AUTH
     FIREBASE_API_KEY: '',
     FIREBASE_AUTH_DOMAIN: '',
@@ -31,4 +31,22 @@ module.exports = withTM({
     //
     MAPBOX: '',
   },
+  async rewrites() {
+    return [
+      { source: '/sitemap.xml', destination: '/api/sitemap' },
+      {
+        source: '/api/graphql',
+        destination: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+      },
+    ];
+  },
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: '/api/graphql',
+  //       destination: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+  //       permanent: true,
+  //     },
+  //   ];
+  // },
 });

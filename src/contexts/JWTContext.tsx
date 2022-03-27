@@ -84,12 +84,29 @@ function AuthProvider({ children }: AuthProviderProps) {
     const initialize = async () => {
       try {
         const accessToken = window.localStorage.getItem('accessToken');
-
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
+          const response = await axios.post(
+            '/graphql' as string,
+            {
+              query: `query {
+              me {
+                id
+                firstName
+                lastName
+                displayName
+                email
+              }
+            }`,
+            },
+            {
+              headers: {
+                ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+              },
+            }
+          );
 
-          const response = await axios.get('/api/account/my-account');
-          const { user } = response.data;
+          const user = response.data.data?.me;
 
           dispatch({
             type: Types.Initial,
@@ -123,43 +140,69 @@ function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const response = await axios.post('/api/account/login', {
-      email,
-      password,
+    const response = await axios.post('/graphql' as string, {
+      query: `mutation {
+              login(email: "${email}", password: "${password}") {
+                token
+                user {
+                  id
+                  firstName
+                  lastName
+                  displayName
+                  email
+                }
+              }
+            }`,
     });
-    const { accessToken, user } = response.data;
 
-    setSession(accessToken);
-    dispatch({
-      type: Types.Login,
-      payload: {
-        user,
-      },
-    });
+    if (response.data.data?.login) {
+      setSession(response.data.data.login.token);
+      dispatch({
+        type: Types.Login,
+        payload: {
+          user: response.data.data.login.user,
+        },
+      });
+    }
   };
 
   const register = async (email: string, password: string, firstName: string, lastName: string) => {
-    const response = await axios.post('/api/account/register', {
-      email,
-      password,
-      firstName,
-      lastName,
+    const response = await axios.post('/graphql' as string, {
+      query: `
+      mutation {
+        register(email: "${email}", password: "${password}", firstName: "${firstName}", lastName: "${lastName}") {
+          token
+          user {
+            id
+            email
+            firstName
+            lastName
+            displayName
+          }
+        }
+      }`,
     });
-    const { accessToken, user } = response.data;
 
-    window.localStorage.setItem('accessToken', accessToken);
-    dispatch({
-      type: Types.Register,
-      payload: {
-        user,
-      },
-    });
+    if (response.data.data?.register) {
+      const { token, user } = response.data.data.register;
+
+      window.localStorage.setItem('accessToken', token);
+      dispatch({
+        type: Types.Register,
+        payload: {
+          user,
+        },
+      });
+    }
   };
 
   const logout = async () => {
     setSession(null);
     dispatch({ type: Types.Logout });
   };
+
+  const accessToken =
+    typeof window !== 'undefined' ? window.localStorage.getItem('accessToken') : null;
 
   return (
     <AuthContext.Provider
@@ -169,6 +212,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         login,
         logout,
         register,
+        accessToken,
       }}
     >
       {children}
