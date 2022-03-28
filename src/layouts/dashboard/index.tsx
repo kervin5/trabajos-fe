@@ -25,6 +25,7 @@ const MainStyle = styled('main', {
   flexGrow: 1,
   paddingTop: HEADER.MOBILE_HEIGHT + 24,
   paddingBottom: HEADER.MOBILE_HEIGHT + 24,
+  ...(theme.palette.mode === 'light' ? { backgroundColor: theme.palette.grey[50] } : {}),
   [theme.breakpoints.up('lg')]: {
     paddingLeft: 16,
     paddingRight: 16,

@@ -74,5 +74,5 @@ export const defaultSettings: SettingsValueProps = {
   themeDirection: 'ltr',
   themeColorPresets: 'default',
   themeLayout: 'horizontal',
-  themeStretch: false,
+  themeStretch: true,
 };

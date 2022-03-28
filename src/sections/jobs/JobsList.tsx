@@ -33,7 +33,7 @@ gql`
           longitude
         }
       }
-
+      totalCount
       pageInfo {
         endCursor
         startCursor
@@ -75,7 +75,6 @@ const JobsList = ({
     }
   }, [paramsChanged, refetch]);
 
-  console.log({ data, loading, searchQuery, searchLocation });
   return (
     <p>
       {searchQuery}

@@ -37,7 +37,7 @@ import { Invoice } from '../../../@types/invoice';
 import Layout from '../../../layouts';
 // components
 import Page from '../../../components/Page';
-import Label from '../../../components/Label';
+// import Label from '../../../components/Label';
 import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
@@ -49,7 +49,8 @@ import {
 } from '../../../components/table';
 // sections
 import InvoiceAnalytic from '../../../sections/@dashboard/invoice/InvoiceAnalytic';
-import { InvoiceTableRow, InvoiceTableToolbar } from '../../../sections/@dashboard/invoice/list';
+import { JobTableRow, JobTableToolbar } from '../../../sections/@dashboard/jobs/list';
+import { Job, useJobsQuery } from 'src/generated/graphql';
 
 // ----------------------------------------------------------------------
 
@@ -63,12 +64,15 @@ const SERVICE_OPTIONS = [
 ];
 
 const TABLE_HEAD = [
-  { id: 'invoiceNumber', label: 'Client', align: 'left' },
-  { id: 'createDate', label: 'Create', align: 'left' },
-  { id: 'dueDate', label: 'Due', align: 'left' },
-  { id: 'price', label: 'Amount', align: 'center', width: 140 },
-  { id: 'sent', label: 'Sent', align: 'center', width: 140 },
-  { id: 'status', label: 'Status', align: 'left' },
+  { id: 'id', label: 'ID', align: 'left' },
+  { id: 'title', label: 'Título', align: 'left' },
+  { id: 'location', label: 'Ubicación', align: 'left' },
+  { id: 'createDate', label: 'Fecha de publicación', align: 'left' },
+
+  // { id: 'dueDate', label: 'Due', align: 'left' },
+  // { id: 'price', label: 'Amount', align: 'center', width: 140 },
+  // { id: 'sent', label: 'Sent', align: 'center', width: 140 },
+  // { id: 'status', label: 'Status', align: 'left' },
   { id: '' },
 ];
 
@@ -178,28 +182,30 @@ export default function InvoiceList() {
   const getPercentByStatus = (status: string) =>
     (getLengthByStatus(status) / tableData.length) * 100;
 
-  const TABS = [
-    { value: 'all', label: 'All', color: 'info', count: tableData.length },
-    { value: 'paid', label: 'Paid', color: 'success', count: getLengthByStatus('paid') },
-    { value: 'unpaid', label: 'Unpaid', color: 'warning', count: getLengthByStatus('unpaid') },
-    { value: 'overdue', label: 'Overdue', color: 'error', count: getLengthByStatus('overdue') },
-    { value: 'draft', label: 'Draft', color: 'default', count: getLengthByStatus('draft') },
-  ] as const;
+  // const TABS = [
+  //   { value: 'all', label: 'All', color: 'info', count: tableData.length },
+  //   { value: 'paid', label: 'Paid', color: 'success', count: getLengthByStatus('paid') },
+  //   { value: 'unpaid', label: 'Unpaid', color: 'warning', count: getLengthByStatus('unpaid') },
+  //   { value: 'overdue', label: 'Overdue', color: 'error', count: getLengthByStatus('overdue') },
+  //   { value: 'draft', label: 'Draft', color: 'default', count: getLengthByStatus('draft') },
+  // ] as const;
+
+  const { error, loading, data, refetch } = useJobsQuery({ variables: { first: 10 } });
 
   return (
-    <Page title="Invoice: List">
+    <Page title="Ofertas Laborales: Lista">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Invoice List"
+          heading="Ofertas Laborales"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Invoices', href: PATH_DASHBOARD.invoice.root },
-            { name: 'List' },
+            { name: 'Ofertas Laborales', href: PATH_DASHBOARD.jobs.root },
+            { name: 'Lista' },
           ]}
           action={
             <NextLink href={PATH_DASHBOARD.invoice.new} passHref>
               <Button variant="contained" startIcon={<Iconify icon={'eva:plus-fill'} />}>
-                New Invoice
+                Nueva Oferta
               </Button>
             </NextLink>
           }
@@ -214,40 +220,40 @@ export default function InvoiceList() {
             >
               <InvoiceAnalytic
                 title="Total"
-                total={tableData.length}
+                total={data?.jobs.totalCount ?? 0}
                 percent={100}
                 price={sumBy(tableData, 'totalPrice')}
                 icon="ic:round-receipt"
                 color={theme.palette.info.main}
               />
               <InvoiceAnalytic
-                title="Paid"
-                total={getLengthByStatus('paid')}
-                percent={getPercentByStatus('paid')}
+                title="Publicados"
+                total={2}
+                percent={100}
                 price={getTotalPriceByStatus('paid')}
                 icon="eva:checkmark-circle-2-fill"
                 color={theme.palette.success.main}
               />
               <InvoiceAnalytic
-                title="Unpaid"
-                total={getLengthByStatus('unpaid')}
-                percent={getPercentByStatus('unpaid')}
+                title="Por Expirar"
+                total={2}
+                percent={100}
                 price={getTotalPriceByStatus('unpaid')}
                 icon="eva:clock-fill"
                 color={theme.palette.warning.main}
               />
               <InvoiceAnalytic
-                title="Overdue"
-                total={getLengthByStatus('overdue')}
-                percent={getPercentByStatus('overdue')}
+                title="Expirados"
+                total={0}
+                percent={0}
                 price={getTotalPriceByStatus('overdue')}
                 icon="eva:bell-fill"
                 color={theme.palette.error.main}
               />
               <InvoiceAnalytic
-                title="Draft"
-                total={getLengthByStatus('draft')}
-                percent={getPercentByStatus('draft')}
+                title="Borradores"
+                total={0}
+                percent={0}
                 price={getTotalPriceByStatus('draft')}
                 icon="eva:file-fill"
                 color={theme.palette.text.secondary}
@@ -257,7 +263,7 @@ export default function InvoiceList() {
         </Card>
 
         <Card>
-          <Tabs
+          {/* <Tabs
             allowScrollButtonsMobile
             variant="scrollable"
             scrollButtons="auto"
@@ -279,9 +285,9 @@ export default function InvoiceList() {
             ))}
           </Tabs>
 
-          <Divider />
+          <Divider /> */}
 
-          <InvoiceTableToolbar
+          <JobTableToolbar
             filterName={filterName}
             filterService={filterService}
             filterStartDate={filterStartDate}
@@ -357,19 +363,20 @@ export default function InvoiceList() {
                 />
 
                 <TableBody>
-                  {dataFiltered
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => (
-                      <InvoiceTableRow
-                        key={row.id}
-                        row={row}
-                        selected={selected.includes(row.id)}
-                        onSelectRow={() => onSelectRow(row.id)}
-                        onViewRow={() => handleViewRow(row.id)}
-                        onEditRow={() => handleEditRow(row.id)}
-                        onDeleteRow={() => handleDeleteRow(row.id)}
-                      />
-                    ))}
+                  {data?.jobs?.nodes?.map(
+                    (row) =>
+                      row && (
+                        <JobTableRow
+                          key={row.id}
+                          row={row}
+                          selected={selected.includes(row.id)}
+                          onSelectRow={() => onSelectRow(row.id)}
+                          onViewRow={() => handleViewRow(row.id)}
+                          onEditRow={() => handleEditRow(row.id)}
+                          onDeleteRow={() => handleDeleteRow(row.id)}
+                        />
+                      )
+                  )}
 
                   <TableEmptyRows
                     height={denseHeight}

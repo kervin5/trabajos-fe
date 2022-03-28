@@ -7,6 +7,7 @@ import { useMapboxLocationsQuery } from 'src/generated/graphql';
 import { useDebounce } from 'src/hooks/useDebounce';
 import gql from 'graphql-tag';
 import InputAdornment from '@mui/material/InputAdornment';
+import { FieldError } from 'react-hook-form';
 
 interface LocationAutocompleteProps {
   onChange: (value: string | null) => void;
@@ -14,6 +15,7 @@ interface LocationAutocompleteProps {
   label?: string;
   placeholder?: string;
   name?: string;
+  error?: FieldError;
 }
 
 gql`
@@ -33,6 +35,7 @@ export default function LocationAutocomplete({
   label,
   name,
   placeholder,
+  error,
 }: LocationAutocompleteProps) {
   const [locationQuery, setLocationQuery] = React.useState('');
   const [locations, setLocations] = React.useState<string[]>([]);
@@ -76,6 +79,8 @@ export default function LocationAutocomplete({
           label={label}
           placeholder={placeholder}
           name={name}
+          error={!!error}
+          helperText={error?.message}
           InputProps={{
             ...params.InputProps,
             startAdornment: (

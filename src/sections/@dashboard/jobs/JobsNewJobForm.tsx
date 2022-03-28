@@ -22,7 +22,7 @@ import {
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
-import { NewPostFormValues } from '../../../@types/blog';
+import { NewJobFormValues } from 'src/@types/jobs';
 //components
 import {
   RHFSwitch,
@@ -32,7 +32,10 @@ import {
   // RHFUploadSingleFile,
 } from '../../../components/hook-form';
 //
-import BlogNewPostPreview from './BlogNewPostPreview';
+import JobsNewJobPreview from './JobsNewJobPreview';
+import LocationAutocomplete from 'src/components/input/LocationAutocomplete';
+import { useCreateJobMutation } from 'src/generated/graphql';
+import gql from 'graphql-tag';
 
 // ----------------------------------------------------------------------
 
@@ -60,7 +63,17 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function BlogNewPostForm() {
+gql`
+  mutation CreateJob($data: JobCreateInput!) {
+    createJob(data: $data) {
+      id
+      title
+      content
+    }
+  }
+`;
+
+export default function JobsNewJobForm() {
   const { push } = useRouter();
 
   const [open, setOpen] = useState(false);
@@ -75,28 +88,30 @@ export default function BlogNewPostForm() {
     setOpen(false);
   };
 
-  const NewBlogSchema = Yup.object().shape({
-    title: Yup.string().required('Title is required'),
-    description: Yup.string().required('Description is required'),
-    content: Yup.string().min(1000).required('Content is required'),
-    cover: Yup.mixed().required('Cover is required'),
+  const NewJobSchema = Yup.object().shape({
+    title: Yup.string().required('Titulo es requerido'),
+    // description: Yup.string().required('Description is required'),
+    content: Yup.string().min(500).required('El contenido es requerido'),
+    // cover: Yup.mixed().required('Cover is required'),
+    location: Yup.string().required('La ubicación es requerida').nullable(),
   });
 
   const defaultValues = {
     title: '',
-    description: '',
+    // description: '',
     content: '',
-    cover: null,
+    // cover: null,
     tags: [],
     publish: true,
-    comments: true,
-    metaTitle: '',
-    metaDescription: '',
-    metaKeywords: [],
+    // comments: true,
+    // metaTitle: '',
+    // metaDescription: '',
+    // metaKeywords: [],
+    location: '',
   };
 
-  const methods = useForm<NewPostFormValues>({
-    resolver: yupResolver(NewBlogSchema),
+  const methods = useForm<NewJobFormValues>({
+    resolver: yupResolver(NewJobSchema),
     defaultValues,
   });
 
@@ -111,14 +126,20 @@ export default function BlogNewPostForm() {
 
   const values = watch();
 
-  const onSubmit = async (data: NewPostFormValues) => {
+  const [createJob, { error, loading }] = useCreateJobMutation();
+
+  const onSubmit = async (data: NewJobFormValues) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      // await new Promise((resolve) => setTimeout(resolve, 500));
+      await createJob({ variables: { data: { ...values } } });
       reset();
       handleClosePreview();
-      enqueueSnackbar('Post success!');
-      push(PATH_DASHBOARD.blog.posts);
+      enqueueSnackbar(
+        values.publish ? 'La oferta ha sido publicado' : 'El borrador ha sido guardado'
+      );
+      push(PATH_DASHBOARD.jobs.list);
     } catch (error) {
+      enqueueSnackbar('Ha ocurrido un error', { variant: 'error' });
       console.error(error);
     }
   };
@@ -147,7 +168,19 @@ export default function BlogNewPostForm() {
             <Card sx={{ p: 3 }}>
               <Stack spacing={3}>
                 <RHFTextField name="title" label="Titulo" />
-
+                <Controller
+                  name="location"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <LocationAutocomplete
+                      onChange={(newValue) => field.onChange(newValue)}
+                      value={field.value}
+                      label="Ubicación"
+                      placeholder='Ej: "San Francisco, CA"'
+                      error={error}
+                    />
+                  )}
+                />
                 {/* <RHFTextField name="description" label="Description" multiline rows={3} /> */}
 
                 <div>
@@ -209,7 +242,7 @@ export default function BlogNewPostForm() {
                           />
                         ))
                       }
-                      renderInput={(params) => <TextField label="Tags" {...params} />}
+                      renderInput={(params) => <TextField label="Etiquetas" {...params} />}
                     />
                   )}
                 />
@@ -265,16 +298,16 @@ export default function BlogNewPostForm() {
                 type="submit"
                 variant="contained"
                 size="large"
-                loading={isSubmitting}
+                loading={isSubmitting || loading}
               >
-                Publicar Oferta
+                {values.publish ? 'Publicar Oferta' : 'Guardar Borrador'}
               </LoadingButton>
             </Stack>
           </Grid>
         </Grid>
       </FormProvider>
 
-      <BlogNewPostPreview
+      <JobsNewJobPreview
         values={values}
         isOpen={open}
         isValid={isValid}

@@ -3,7 +3,7 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 // components
 import Label from '../../../components/Label';
 import SvgIconStyle from '../../../components/SvgIconStyle';
-import WorkTwoToneIcon from '@mui/icons-material/WorkTwoTone';
+import Iconify from 'src/components/Iconify';
 
 // ----------------------------------------------------------------------
 
@@ -25,28 +25,80 @@ const ICONS = {
   ecommerce: getIcon('ic_ecommerce'),
   analytics: getIcon('ic_analytics'),
   dashboard: getIcon('ic_dashboard'),
-  jobs: <WorkTwoToneIcon />,
+  jobs: <Iconify icon={'uim:bag'} />,
 };
 
 const navConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
-  {
-    subheader: 'general',
-    items: [
-      { title: 'app', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
-      { title: 'e-commerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
-      { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
-      { title: 'banking', path: PATH_DASHBOARD.general.banking, icon: ICONS.banking },
-      { title: 'booking', path: PATH_DASHBOARD.general.booking, icon: ICONS.booking },
-    ],
-  },
+  // {
+  //   subheader: 'general',
+  //   items: [
+  //     { title: 'app', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
+  //     { title: 'e-commerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
+  //     { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
+  //     { title: 'banking', path: PATH_DASHBOARD.general.banking, icon: ICONS.banking },
+  //     { title: 'booking', path: PATH_DASHBOARD.general.booking, icon: ICONS.booking },
+  //   ],
+  // },
 
   // MANAGEMENT
   // ----------------------------------------------------------------------
   {
-    subheader: 'management',
+    // subheader: 'management',
     items: [
+      // E-COMMERCE
+      // {
+      //   title: 'e-commerce',
+      //   path: PATH_DASHBOARD.eCommerce.root,
+      //   icon: ICONS.cart,
+      //   children: [
+      //     { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
+      //     { title: 'product', path: PATH_DASHBOARD.eCommerce.demoView },
+      //     { title: 'list', path: PATH_DASHBOARD.eCommerce.list },
+      //     { title: 'create', path: PATH_DASHBOARD.eCommerce.new },
+      //     { title: 'edit', path: PATH_DASHBOARD.eCommerce.demoEdit },
+      //     { title: 'checkout', path: PATH_DASHBOARD.eCommerce.checkout },
+      //   ],
+      // },
+
+      // INVOICE
+      // {
+      //   title: 'invoice',
+      //   path: PATH_DASHBOARD.invoice.root,
+      //   icon: ICONS.invoice,
+      //   children: [
+      //     { title: 'list', path: PATH_DASHBOARD.invoice.list },
+      //     { title: 'details', path: PATH_DASHBOARD.invoice.demoView },
+      //     { title: 'create', path: PATH_DASHBOARD.invoice.new },
+      //     { title: 'edit', path: PATH_DASHBOARD.invoice.demoEdit },
+      //   ],
+      // },
+
+      // BLOG
+      // {
+      //   title: 'blog',
+      //   path: PATH_DASHBOARD.blog.root,
+      //   icon: ICONS.blog,
+      //   children: [
+      //     { title: 'posts', path: PATH_DASHBOARD.blog.posts },
+      //     { title: 'post', path: PATH_DASHBOARD.blog.demoView },
+      //     { title: 'create', path: PATH_DASHBOARD.blog.new },
+      //   ],
+      // },
+
+      // JOBS
+      {
+        title: 'Ofertas Laborales',
+        path: PATH_DASHBOARD.jobs.root,
+        icon: ICONS.jobs,
+        children: [
+          // { title: 'posts', path: PATH_DASHBOARD.jobs.jobs },
+          // { title: 'post', path: PATH_DASHBOARD.jobs.demoView },
+          { title: 'nueva oferta', path: PATH_DASHBOARD.jobs.new },
+          { title: 'lista', path: PATH_DASHBOARD.jobs.list },
+        ],
+      },
       // USER
       {
         title: 'user',
@@ -61,82 +113,29 @@ const navConfig = [
           { title: 'account', path: PATH_DASHBOARD.user.account },
         ],
       },
-
-      // E-COMMERCE
-      {
-        title: 'e-commerce',
-        path: PATH_DASHBOARD.eCommerce.root,
-        icon: ICONS.cart,
-        children: [
-          { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
-          { title: 'product', path: PATH_DASHBOARD.eCommerce.demoView },
-          { title: 'list', path: PATH_DASHBOARD.eCommerce.list },
-          { title: 'create', path: PATH_DASHBOARD.eCommerce.new },
-          { title: 'edit', path: PATH_DASHBOARD.eCommerce.demoEdit },
-          { title: 'checkout', path: PATH_DASHBOARD.eCommerce.checkout },
-        ],
-      },
-
-      // INVOICE
-      {
-        title: 'invoice',
-        path: PATH_DASHBOARD.invoice.root,
-        icon: ICONS.invoice,
-        children: [
-          { title: 'list', path: PATH_DASHBOARD.invoice.list },
-          { title: 'details', path: PATH_DASHBOARD.invoice.demoView },
-          { title: 'create', path: PATH_DASHBOARD.invoice.new },
-          { title: 'edit', path: PATH_DASHBOARD.invoice.demoEdit },
-        ],
-      },
-
-      // BLOG
-      {
-        title: 'blog',
-        path: PATH_DASHBOARD.blog.root,
-        icon: ICONS.blog,
-        children: [
-          { title: 'posts', path: PATH_DASHBOARD.blog.posts },
-          { title: 'post', path: PATH_DASHBOARD.blog.demoView },
-          { title: 'create', path: PATH_DASHBOARD.blog.new },
-        ],
-      },
-
-      // JOBS
-      {
-        title: 'Ofertas',
-        path: PATH_DASHBOARD.jobs.root,
-        icon: ICONS.jobs,
-        children: [
-          { title: 'posts', path: PATH_DASHBOARD.jobs.jobs },
-          { title: 'post', path: PATH_DASHBOARD.jobs.demoView },
-          { title: 'nuevo', path: PATH_DASHBOARD.jobs.new },
-          { title: 'lista', path: PATH_DASHBOARD.jobs.list },
-        ],
-      },
     ],
   },
 
   // APP
   // ----------------------------------------------------------------------
-  {
-    subheader: 'app',
-    items: [
-      {
-        title: 'mail',
-        path: PATH_DASHBOARD.mail.root,
-        icon: ICONS.mail,
-        info: (
-          <Label variant="outlined" color="error">
-            +32
-          </Label>
-        ),
-      },
-      { title: 'chat', path: PATH_DASHBOARD.chat.root, icon: ICONS.chat },
-      { title: 'calendar', path: PATH_DASHBOARD.calendar, icon: ICONS.calendar },
-      { title: 'kanban', path: PATH_DASHBOARD.kanban, icon: ICONS.kanban },
-    ],
-  },
+  // {
+  //   subheader: 'app',
+  //   items: [
+  //     {
+  //       title: 'mail',
+  //       path: PATH_DASHBOARD.mail.root,
+  //       icon: ICONS.mail,
+  //       info: (
+  //         <Label variant="outlined" color="error">
+  //           +32
+  //         </Label>
+  //       ),
+  //     },
+  //     { title: 'chat', path: PATH_DASHBOARD.chat.root, icon: ICONS.chat },
+  //     { title: 'calendar', path: PATH_DASHBOARD.calendar, icon: ICONS.calendar },
+  //     { title: 'kanban', path: PATH_DASHBOARD.kanban, icon: ICONS.kanban },
+  //   ],
+  // },
 ];
 
 export default navConfig;

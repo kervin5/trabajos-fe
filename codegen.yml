@@ -1,15 +1,15 @@
 overwrite: true
-schema: "http://mclocal.me:4000/graphql"
-documents: "src/components/**/*.{ts,tsx}"
+schema: 'http://mclocal.me:4000/graphql'
+documents: 'src/**/*.{ts,tsx}'
 generates:
   src/generated/schema.json:
     plugins:
       - introspection
   src/generated/graphql.ts:
-    documents: ""
+    documents: ''
     plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-react-apollo"
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
     config:
       nonOptionalTypename: false

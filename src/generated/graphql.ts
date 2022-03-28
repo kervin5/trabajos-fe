@@ -64,8 +64,10 @@ export type JobConnectionTotalCountArgs = {
 };
 
 export type JobCreateInput = {
-  content: Array<Scalars['String']>;
+  content: Scalars['String'];
   location: Scalars['String'];
+  publish?: InputMaybe<Scalars['Boolean']>;
+  tags?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   title: Scalars['String'];
 };
 
@@ -259,6 +261,13 @@ export type MapboxLocationsQueryVariables = Exact<{
 
 export type MapboxLocationsQuery = { __typename?: 'Query', mapboxLocations?: Array<{ __typename?: 'Location', id: string, name: string, latitude: number, longitude: number }> | null };
 
+export type CreateJobMutationVariables = Exact<{
+  data: JobCreateInput;
+}>;
+
+
+export type CreateJobMutation = { __typename?: 'Mutation', createJob?: { __typename?: 'Job', id: string, title: string, content: string } | null };
+
 export type JobsQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
   filter?: InputMaybe<JobFilterInput>;
@@ -269,7 +278,7 @@ export type JobsQueryVariables = Exact<{
 }>;
 
 
-export type JobsQuery = { __typename?: 'Query', jobs: { __typename?: 'JobConnection', nodes?: Array<{ __typename?: 'Job', id: string, title: string, createdAt: any, updatedAt: any, content: string, location?: { __typename?: 'Location', id: string, name: string, latitude: number, longitude: number } | null } | null> | null, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, startCursor?: string | null, hasNextPage: boolean } } };
+export type JobsQuery = { __typename?: 'Query', jobs: { __typename?: 'JobConnection', totalCount?: number | null, nodes?: Array<{ __typename?: 'Job', id: string, title: string, createdAt: any, updatedAt: any, content: string, location?: { __typename?: 'Location', id: string, name: string, latitude: number, longitude: number } | null } | null> | null, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, startCursor?: string | null, hasNextPage: boolean } } };
 
 
 export const MapboxLocationsDocument = gql`
@@ -310,6 +319,41 @@ export function useMapboxLocationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type MapboxLocationsQueryHookResult = ReturnType<typeof useMapboxLocationsQuery>;
 export type MapboxLocationsLazyQueryHookResult = ReturnType<typeof useMapboxLocationsLazyQuery>;
 export type MapboxLocationsQueryResult = Apollo.QueryResult<MapboxLocationsQuery, MapboxLocationsQueryVariables>;
+export const CreateJobDocument = gql`
+    mutation CreateJob($data: JobCreateInput!) {
+  createJob(data: $data) {
+    id
+    title
+    content
+  }
+}
+    `;
+export type CreateJobMutationFn = Apollo.MutationFunction<CreateJobMutation, CreateJobMutationVariables>;
+
+/**
+ * __useCreateJobMutation__
+ *
+ * To run a mutation, you first call `useCreateJobMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateJobMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createJobMutation, { data, loading, error }] = useCreateJobMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateJobMutation(baseOptions?: Apollo.MutationHookOptions<CreateJobMutation, CreateJobMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateJobMutation, CreateJobMutationVariables>(CreateJobDocument, options);
+      }
+export type CreateJobMutationHookResult = ReturnType<typeof useCreateJobMutation>;
+export type CreateJobMutationResult = Apollo.MutationResult<CreateJobMutation>;
+export type CreateJobMutationOptions = Apollo.BaseMutationOptions<CreateJobMutation, CreateJobMutationVariables>;
 export const JobsDocument = gql`
     query Jobs($first: Int, $filter: JobFilterInput, $after: String, $before: String, $last: Int, $orderBy: JobOrderByInput) {
   jobs(
@@ -333,6 +377,7 @@ export const JobsDocument = gql`
         longitude
       }
     }
+    totalCount
     pageInfo {
       endCursor
       startCursor

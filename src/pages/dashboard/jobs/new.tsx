@@ -24,13 +24,13 @@ export default function JobsNewJob() {
   const { themeStretch } = useSettings();
 
   return (
-    <Page title="Ofertas: Nueva Oferta">
+    <Page title="Ofertas Laborales: Nueva Oferta">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Publicar una nueva oferta"
+          heading="Publicar Nueva Oferta"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Ofertas', href: PATH_DASHBOARD.jobs.root },
+            { name: 'Ofertas Laborales', href: PATH_DASHBOARD.jobs.root },
             { name: 'Nueva Oferta' },
           ]}
         />
