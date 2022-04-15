@@ -19,8 +19,8 @@ interface LocationAutocompleteProps {
 }
 
 gql`
-  query MapboxLocations($query: String) {
-    mapboxLocations(query: $query) {
+  query MapboxLocations($filter: MapboxLocationFilterInput!) {
+    mapboxLocations(filter: $filter) {
       id
       name
       latitude
@@ -42,7 +42,7 @@ export default function LocationAutocomplete({
   const debouncedLocationQuery = useDebounce(locationQuery, 500);
 
   const { loading, data } = useMapboxLocationsQuery({
-    variables: { query: debouncedLocationQuery as string },
+    variables: { filter: { locationName: debouncedLocationQuery as string, limit: 10 } },
   });
 
   useEffect(() => {

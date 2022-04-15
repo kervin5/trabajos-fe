@@ -1,3 +1,5 @@
+import { JobQuery } from 'src/generated/graphql';
+
 export type NewPostFormValues = {
   title: string;
   description: string;

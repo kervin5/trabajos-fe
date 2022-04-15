@@ -1,11 +1,10 @@
-import { Stack, InputAdornment, TextField, MenuItem, Tooltip, IconButton } from '@mui/material';
-import DatePicker from '@mui/lab/DatePicker';
+import { Stack, InputAdornment, TextField } from '@mui/material';
 // components
 import Iconify from '../../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
-const INPUT_WIDTH = 160;
+// const INPUT_WIDTH = 160;
 
 type Props = {
   optionsService: string[];

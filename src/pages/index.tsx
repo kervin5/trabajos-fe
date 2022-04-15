@@ -5,17 +5,7 @@ import Layout from '../layouts';
 // components
 import Page from '../components/Page';
 // sections
-import {
-  HomeHero,
-  HomeMinimal,
-  HomeDarkMode,
-  HomeLookingFor,
-  HomeColorPresets,
-  HomePricingPlans,
-  HomeAdvertisement,
-  HomeCleanInterfaces,
-  HomeHugePackElements,
-} from '../sections/home';
+import { HomeHero, HomeJobsList } from '../sections/home';
 
 // ----------------------------------------------------------------------
 
@@ -43,21 +33,7 @@ export default function HomePage() {
       <RootStyle>
         <HomeHero />
         <ContentStyle>
-          <HomeMinimal />
-
-          <HomeHugePackElements />
-
-          <HomeDarkMode />
-
-          <HomeColorPresets />
-
-          <HomeCleanInterfaces />
-
-          <HomePricingPlans />
-
-          <HomeLookingFor />
-
-          <HomeAdvertisement />
+          <HomeJobsList />
         </ContentStyle>
       </RootStyle>
     </Page>

@@ -20,7 +20,7 @@ export default function MainLayout({ children }: Props) {
   const isHome = pathname === '/';
 
   return (
-    <Stack sx={{ minHeight: 1 }}>
+    <Stack sx={{ minHeight: 1, pt: 10 }}>
       <MainHeader />
 
       {children}

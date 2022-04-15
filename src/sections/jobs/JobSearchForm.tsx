@@ -1,5 +1,5 @@
 import React, { SyntheticEvent, useEffect } from 'react';
-import { Button, InputAdornment, Paper, Stack, TextField } from '@mui/material';
+import { Button, Grid, InputAdornment, Paper, Stack, TextField } from '@mui/material';
 import Search from '@mui/icons-material/Search';
 import LocationAutocomplete from '../../components/input/LocationAutocomplete';
 
@@ -31,30 +31,46 @@ const JobSearchForm = ({ onSubmit, initialValues }: Props) => {
           e.preventDefault();
           onSubmit({ location: searchLocation, query: searchQuery });
         }}
+        direction={{ xs: 'column', sm: 'row' }}
+        // spacing={{ xs: 1, sm: 2, md: 4 }}
       >
-        <TextField
-          label="Search"
-          variant="outlined"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search />
-              </InputAdornment>
-            ),
-          }}
-          placeholder="Titulo, industria, etc."
-          onChange={(e) => setQuery(e.target.value)}
-          value={searchQuery}
-        />
-        <LocationAutocomplete
-          onChange={(e) => setLocation(e as string)}
-          value={searchLocation}
-          placeholder="Ciudad, departamento, pais"
-          label="Ubicación"
-          name="location"
-        />
-        <Button variant="contained" color="primary" size="large" type="submit">
-          Search
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Search"
+              variant="outlined"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Search />
+                  </InputAdornment>
+                ),
+              }}
+              placeholder="Titulo, industria, etc."
+              onChange={(e) => setQuery(e.target.value)}
+              value={searchQuery}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <LocationAutocomplete
+              onChange={(e) => setLocation(e as string)}
+              value={searchLocation}
+              placeholder="Ciudad, departamento, pais"
+              label="Ubicación"
+              name="location"
+            />
+          </Grid>
+        </Grid>
+
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          type="submit"
+          sx={{ height: '56px' }}
+        >
+          Buscar
         </Button>
       </Stack>
     </Paper>

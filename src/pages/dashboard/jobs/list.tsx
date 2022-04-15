@@ -48,7 +48,7 @@ import {
   TableSelectedActions,
 } from '../../../components/table';
 // sections
-import InvoiceAnalytic from '../../../sections/@dashboard/invoice/InvoiceAnalytic';
+import JobAnalytic from '../../../sections/@dashboard/jobs/JobAnalytic';
 import { JobTableRow, JobTableToolbar } from '../../../sections/@dashboard/jobs/list';
 import { Job, useJobsQuery } from 'src/generated/graphql';
 
@@ -218,7 +218,7 @@ export default function InvoiceList() {
               divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
               sx={{ py: 2 }}
             >
-              <InvoiceAnalytic
+              <JobAnalytic
                 title="Total"
                 total={data?.jobs.totalCount ?? 0}
                 percent={100}
@@ -226,7 +226,7 @@ export default function InvoiceList() {
                 icon="ic:round-receipt"
                 color={theme.palette.info.main}
               />
-              <InvoiceAnalytic
+              <JobAnalytic
                 title="Publicados"
                 total={2}
                 percent={100}
@@ -234,7 +234,7 @@ export default function InvoiceList() {
                 icon="eva:checkmark-circle-2-fill"
                 color={theme.palette.success.main}
               />
-              <InvoiceAnalytic
+              <JobAnalytic
                 title="Por Expirar"
                 total={2}
                 percent={100}
@@ -242,7 +242,7 @@ export default function InvoiceList() {
                 icon="eva:clock-fill"
                 color={theme.palette.warning.main}
               />
-              <InvoiceAnalytic
+              <JobAnalytic
                 title="Expirados"
                 total={0}
                 percent={0}
@@ -250,7 +250,7 @@ export default function InvoiceList() {
                 icon="eva:bell-fill"
                 color={theme.palette.error.main}
               />
-              <InvoiceAnalytic
+              <JobAnalytic
                 title="Borradores"
                 total={0}
                 percent={0}

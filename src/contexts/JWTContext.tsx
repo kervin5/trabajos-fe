@@ -142,7 +142,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   const login = async (email: string, password: string) => {
     const response = await axios.post('/graphql' as string, {
       query: `mutation {
-              login(email: "${email}", password: "${password}") {
+              login(data: {email: "${email}", password: "${password}"}) {
                 token
                 user {
                   id

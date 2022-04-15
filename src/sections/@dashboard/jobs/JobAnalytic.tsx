@@ -1,7 +1,7 @@
 // @mui
 import { Stack, Typography, Box, CircularProgress } from '@mui/material';
 // utils
-import { fShortenNumber, fCurrency } from '../../../utils/formatNumber';
+import { fShortenNumber } from '../../../utils/formatNumber';
 // components
 import Iconify from '../../../components/Iconify';
 
@@ -16,7 +16,7 @@ type Props = {
   color?: string;
 };
 
-export default function JobAnalytic({ title, total, icon, color, percent, price }: Props) {
+export default function InvoiceAnalytic({ title, total, icon, color, percent, price }: Props) {
   return (
     <Stack
       direction="row"
@@ -50,13 +50,13 @@ export default function JobAnalytic({ title, total, icon, color, percent, price 
         <Typography variant="subtitle2">
           {fShortenNumber(total)}{' '}
           <Box component="span" sx={{ color: 'text.secondary', typography: 'body2' }}>
-            invoice
+            {total === 1 ? 'oferta' : 'ofertas'}
           </Box>
         </Typography>
 
-        <Typography variant="subtitle2" sx={{ color }}>
+        {/* <Typography variant="subtitle2" sx={{ color }}>
           {fCurrency(price)}
-        </Typography>
+        </Typography> */}
       </Stack>
     </Stack>
   );

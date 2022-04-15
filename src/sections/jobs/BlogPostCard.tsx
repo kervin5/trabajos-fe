@@ -4,21 +4,17 @@ import NextLink from 'next/link';
 // @mui
 import { alpha, styled } from '@mui/material/styles';
 import { Box, Card, Avatar, Typography, CardContent, Link, Stack } from '@mui/material';
+import { Post } from 'src/@types/blog';
+import useResponsive from 'src/hooks/useResponsive';
+import SvgIconStyle from 'src/components/SvgIconStyle';
+import { PATH_DASHBOARD } from 'src/routes/paths';
+import { fDate } from 'src/utils/formatTime';
+import TextIconLabel from 'src/components/TextIconLabel';
+import Iconify from 'src/components/Iconify';
+import { fShortenNumber } from 'src/utils/formatNumber';
+import TextMaxLine from 'src/components/TextMaxLine';
+import Image from 'src/components/Image';
 // routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
-// hooks
-import useResponsive from '../../../hooks/useResponsive';
-// utils
-import { fDate } from '../../../utils/formatTime';
-import { fShortenNumber } from '../../../utils/formatNumber';
-// @types
-import { Job } from '../../../@types/jobs';
-// components
-import Image from '../../../components/Image';
-import Iconify from '../../../components/Iconify';
-import TextMaxLine from '../../../components/TextMaxLine';
-import SvgIconStyle from '../../../components/SvgIconStyle';
-import TextIconLabel from '../../../components/TextIconLabel';
 
 // ----------------------------------------------------------------------
 
@@ -34,20 +30,14 @@ const OverlayStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 type Props = {
-  job: Job;
+  post: Post;
   index?: number;
 };
 
-export default function BlogPostCard({ job, index }: Props) {
+export default function BlogPostCard({ post, index }: Props) {
   const isDesktop = useResponsive('up', 'md');
 
-  const { cover, title, view, comment, share, author, createdAt } = {
-    ...job,
-    cover: '',
-    view: 3,
-    comment: 3,
-    share: 3,
-  };
+  const { cover, title, view, comment, share, author, createdAt } = post;
 
   const latestPost = index === 0 || index === 1 || index === 2;
 
@@ -55,8 +45,8 @@ export default function BlogPostCard({ job, index }: Props) {
     return (
       <Card>
         <Avatar
-          alt={author.displayName ?? ''}
-          src={''}
+          alt={author.name}
+          src={author.avatarUrl}
           sx={{
             zIndex: 9,
             top: 24,
@@ -95,8 +85,8 @@ export default function BlogPostCard({ job, index }: Props) {
           }}
         />
         <Avatar
-          alt={author.displayName ?? ''}
-          src={'https://minimal-assets-api.vercel.app/assets/images/avatar.jpg'}
+          alt={author.name}
+          src={author.avatarUrl}
           sx={{
             left: 24,
             zIndex: 9,

@@ -1,16 +1,12 @@
 import { useState } from 'react';
 // @mui
-import { useTheme } from '@mui/material/styles';
+// import { useTheme } from '@mui/material/styles';
 import { Checkbox, TableRow, TableCell, Typography, Stack, Link, MenuItem } from '@mui/material';
 // utils
 import { fDate } from '../../../../utils/formatTime';
-import createAvatar from '../../../../utils/createAvatar';
-import { fCurrency } from '../../../../utils/formatNumber';
-// @types
-import { Invoice } from '../../../../@types/invoice';
+
 // components
-import Label from '../../../../components/Label';
-import Avatar from '../../../../components/Avatar';
+
 import Iconify from '../../../../components/Iconify';
 import { TableMoreMenu } from '../../../../components/table';
 import { Job } from 'src/generated/graphql';
@@ -34,7 +30,7 @@ export default function InvoiceTableRow({
   onEditRow,
   onDeleteRow,
 }: Props) {
-  const theme = useTheme();
+  // const theme = useTheme();
 
   const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null);
 

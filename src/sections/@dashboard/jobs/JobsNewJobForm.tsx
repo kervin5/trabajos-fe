@@ -126,7 +126,7 @@ export default function JobsNewJobForm() {
 
   const values = watch();
 
-  const [createJob, { error, loading }] = useCreateJobMutation();
+  const [createJob, { loading }] = useCreateJobMutation();
 
   const onSubmit = async (data: NewJobFormValues) => {
     try {

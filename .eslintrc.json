@@ -1,12 +1,6 @@
 {
-  "plugins": [
-    "@typescript-eslint"
-  ],
-  "extends": [
-    "next/core-web-vitals",
-    "plugin:@typescript-eslint/recommended",
-    "prettier"
-  ],
+  "plugins": ["@typescript-eslint"],
+  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended", "prettier"],
   "rules": {
     "arrow-body-style": 1,
     "react/display-name": 0,
@@ -17,8 +11,8 @@
     "react/no-unescaped-entities": 0,
     "import/no-useless-path-segments": 1,
     "@typescript-eslint/ban-ts-comment": 0,
-    "@typescript-eslint/no-explicit-any": 0,
-    "@typescript-eslint/no-empty-function": 0,
+    "@typescript-eslint/no-explicit-any": 1,
+    "@typescript-eslint/no-empty-function": 1,
     "@typescript-eslint/no-non-null-assertion": 0,
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "@typescript-eslint/no-unused-vars": [

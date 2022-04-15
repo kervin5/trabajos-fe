@@ -1,3 +1,5 @@
+import { JobQuery } from 'src/generated/graphql';
+
 export type NewJobFormValues = {
   title: string;
   //   description: string;
@@ -11,6 +13,8 @@ export type NewJobFormValues = {
   // metaKeywords: string[];
   location: string;
 };
+
+export type Job = Exclude<JobQuery['job'], null | undefined>;
 
 //   export type PostComment = {
 //     id: string;
