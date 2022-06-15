@@ -95,7 +95,7 @@ export default function Register() {
                 visibleByDefault
                 disabledEffect
                 alt="register"
-                src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_register.png"
+                src="https://minimals.cc/assets/illustrations/illustration_register.png"
               />
             </SectionStyle>
           )}
@@ -116,7 +116,7 @@ export default function Register() {
                     <Image
                       disabledEffect
                       alt={method}
-                      src={`https://minimal-assets-api.vercel.app/assets/icons/auth/ic_${method}.png`}
+                      src={`https://minimal-assets-api-dev.vercel.app/assets/icons/auth/ic_${method}.png`}
                       sx={{ width: 32, height: 32 }}
                     />
                   </>

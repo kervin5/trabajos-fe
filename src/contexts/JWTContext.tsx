@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useEffect, useReducer } from 'react';
 // utils
-import axios from '../utils/axios';
+import axios from 'axios';
 import { isValidToken, setSession } from '../utils/jwt';
 // @types
 import { ActionMap, AuthState, AuthUser, JWTContextType } from '../@types/auth';
@@ -87,10 +87,10 @@ function AuthProvider({ children }: AuthProviderProps) {
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
           const response = await axios.post(
-            '/graphql' as string,
+            process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT as string,
             {
               query: `query {
-              me {
+              identify {
                 id
                 firstName
                 lastName
@@ -106,7 +106,7 @@ function AuthProvider({ children }: AuthProviderProps) {
             }
           );
 
-          const user = response.data.data?.me;
+          const user = response.data.data?.identify;
 
           dispatch({
             type: Types.Initial,
@@ -140,10 +140,10 @@ function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const response = await axios.post('/graphql' as string, {
+    const response = await axios.post(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT as string, {
       query: `mutation {
               login(data: {email: "${email}", password: "${password}"}) {
-                token
+                accessToken
                 user {
                   id
                   firstName
@@ -156,7 +156,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     });
 
     if (response.data.data?.login) {
-      setSession(response.data.data.login.token);
+      setSession(response.data.data.login.accessToken);
       dispatch({
         type: Types.Login,
         payload: {
@@ -167,11 +167,11 @@ function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const register = async (email: string, password: string, firstName: string, lastName: string) => {
-    const response = await axios.post('/graphql' as string, {
+    const response = await axios.post(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT as string, {
       query: `
       mutation {
-        register(email: "${email}", password: "${password}", firstName: "${firstName}", lastName: "${lastName}") {
-          token
+        register(data: { email: "${email}", password: "${password}", firstName: "${firstName}", lastName: "${lastName}", isEmployer: false} ) {
+          accessToken
           user {
             id
             email
@@ -184,9 +184,9 @@ function AuthProvider({ children }: AuthProviderProps) {
     });
 
     if (response.data.data?.register) {
-      const { token, user } = response.data.data.register;
+      const { accessToken, user } = response.data.data.register;
 
-      window.localStorage.setItem('accessToken', token);
+      window.localStorage.setItem('accessToken', accessToken);
       dispatch({
         type: Types.Register,
         payload: {

@@ -35,18 +35,9 @@ module.exports = withTM({
     return [
       { source: '/sitemap.xml', destination: '/api/sitemap' },
       {
-        source: '/api/graphql',
-        destination: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+        source: '/graphql',
+        destination: process.env.NEXT_INTERNAL_GRAPHQL_URL,
       },
     ];
   },
-  // async redirects() {
-  //   return [
-  //     {
-  //       source: '/api/graphql',
-  //       destination: process.env.NEXT_PUBLIC_GRAPHQL_URL,
-  //       permanent: true,
-  //     },
-  //   ];
-  // },
 });

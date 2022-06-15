@@ -2,9 +2,12 @@ import { useMemo } from 'react';
 // import { relayStylePagination } from "@apollo/client/utilities";
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import useAuth from './useAuth';
+import { getBackendUrl } from 'src/lib/api';
 // import { useSession } from "next-auth/react";
 
-const uri = process.env.NEXT_PUBLIC_GRAPHQL_URL as string;
+const uri = getBackendUrl() as string;
+
+console.log('uri', uri);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let apolloClient: ApolloClient<any> | undefined;

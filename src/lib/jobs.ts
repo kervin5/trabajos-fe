@@ -1,34 +1,28 @@
-import axios from "axios";
-import { Job } from "src/generated/graphql";
-import { getBackendUrl } from "./api";
+import axios from 'axios';
+import { Job } from 'src/generated/graphql';
+import { getBackendUrl } from './api';
 
 const jobFields = `
 id
 title
 createdAt
 updatedAt
-content {
-  id
-  data
-  type
-  plainText
-}
+plainTextContent
 location {
   id
   name
 }
 `;
 
-async function getJobsFeed() {
+async function getPublishedJobs() {
   const result = await axios.post(getBackendUrl(), {
     query: `{
-        feed {
+        publishedJobs {
           ${jobFields}
         }
       }`,
   });
-
-  return result.data.data.feed;
+  return result.data.data.publishedJobs;
 }
 
 async function getJob(id: string) {
@@ -46,24 +40,20 @@ async function getJob(id: string) {
   }
 }
 
-export function getJobUrl({
-  title,
-  location,
-  id,
-}: Pick<Job, "title" | "location" | "id">) {
-  return `/jobs/${title.replace(/[\W_]+/g, "-")}-${location?.name.replace(
+export function getJobUrl({ title, location, id }: Pick<Job, 'title' | 'location' | 'id'>) {
+  return `/jobs/${title.replace(/[\W_]+/g, '-')}-${location?.name.replace(
     /[\W_]+/g,
-    "-"
+    '-'
   )}-ijid${id}`;
 }
 
 export function extractJobIdFromUrl(slug: string | undefined) {
   if (slug) {
-    const slugParts = slug.split("-ijid");
+    const slugParts = slug.split('-ijid');
     const jobId = slugParts[slugParts.length - 1];
     return jobId;
   }
-  return "";
+  return '';
 }
 
-export { getJobsFeed, getJob };
+export { getPublishedJobs, getJob };

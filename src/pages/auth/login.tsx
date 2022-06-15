@@ -94,7 +94,7 @@ export default function Login() {
               <Image
                 visibleByDefault
                 disabledEffect
-                src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_login.png"
+                src="https://minimals.cc/assets/illustrations/illustration_login.png"
                 alt="login"
               />
             </SectionStyle>
@@ -117,7 +117,7 @@ export default function Login() {
                     <Image
                       disabledEffect
                       alt={method}
-                      src={`https://minimal-assets-api.vercel.app/assets/icons/auth/ic_${method}.png`}
+                      src={`https://minimal-assets-api-dev.vercel.app/assets/icons/auth/ic_${method}.png`}
                       sx={{ width: 32, height: 32 }}
                     />
                   </>

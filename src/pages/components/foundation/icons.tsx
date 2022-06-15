@@ -98,37 +98,37 @@ export default function FoundationIcons() {
 
             <Box sx={{ position: 'relative' }}>
               <Block title="Local Icons" sx={style}>
-                <SvgIconStyle src="https://minimal-assets-api.vercel.app/assets/icons/browser-edge.svg" />
+                <SvgIconStyle src="https://minimals.cc/assets/icons/browser-edge.svg" />
                 <SvgIconStyle
-                  src="https://minimal-assets-api.vercel.app/assets/icons/browser-edge.svg"
+                  src="https://minimals.cc/assets/icons/browser-edge.svg"
                   sx={{ color: 'action.active' }}
                 />
                 <SvgIconStyle
-                  src="https://minimal-assets-api.vercel.app/assets/icons/browser-edge.svg"
+                  src="https://minimals.cc/assets/icons/browser-edge.svg"
                   sx={{ color: 'action.disabled' }}
                 />
                 <SvgIconStyle
-                  src="https://minimal-assets-api.vercel.app/assets/icons/browser-edge.svg"
+                  src="https://minimals.cc/assets/icons/browser-edge.svg"
                   sx={{ color: 'primary.main' }}
                 />
                 <SvgIconStyle
-                  src="https://minimal-assets-api.vercel.app/assets/icons/browser-edge.svg"
+                  src="https://minimals.cc/assets/icons/browser-edge.svg"
                   sx={{ color: 'secondary.main' }}
                 />
                 <SvgIconStyle
-                  src="https://minimal-assets-api.vercel.app/assets/icons/elephant.svg"
+                  src="https://minimals.cc/assets/icons/elephant.svg"
                   sx={{ color: 'info.main' }}
                 />
                 <SvgIconStyle
-                  src="https://minimal-assets-api.vercel.app/assets/icons/json-logo.svg"
+                  src="https://minimals.cc/assets/icons/json-logo.svg"
                   sx={{ color: 'success.main' }}
                 />
                 <SvgIconStyle
-                  src="https://minimal-assets-api.vercel.app/assets/icons/love-camera.svg"
+                  src="https://minimals.cc/assets/icons/love-camera.svg"
                   sx={{ color: 'warning.main' }}
                 />
                 <SvgIconStyle
-                  src="https://minimal-assets-api.vercel.app/assets/icons/shield.svg"
+                  src="https://minimals.cc/assets/icons/shield.svg"
                   sx={{ color: 'error.main' }}
                 />
               </Block>

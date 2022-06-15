@@ -195,7 +195,7 @@ function renderContent(notification: NotificationItemProps) {
       avatar: (
         <img
           alt={notification.title}
-          src="https://minimal-assets-api.vercel.app/assets/icons/ic_notification_package.svg"
+          src="https://minimals.cc/assets/icons/ic_notification_package.svg"
         />
       ),
       title,
@@ -206,7 +206,7 @@ function renderContent(notification: NotificationItemProps) {
       avatar: (
         <img
           alt={notification.title}
-          src="https://minimal-assets-api.vercel.app/assets/icons/ic_notification_shipping.svg"
+          src="https://minimals.cc/assets/icons/ic_notification_shipping.svg"
         />
       ),
       title,
@@ -217,7 +217,7 @@ function renderContent(notification: NotificationItemProps) {
       avatar: (
         <img
           alt={notification.title}
-          src="https://minimal-assets-api.vercel.app/assets/icons/ic_notification_mail.svg"
+          src="https://minimals.cc/assets/icons/ic_notification_mail.svg"
         />
       ),
       title,
@@ -228,7 +228,7 @@ function renderContent(notification: NotificationItemProps) {
       avatar: (
         <img
           alt={notification.title}
-          src="https://minimal-assets-api.vercel.app/assets/icons/ic_notification_chat.svg"
+          src="https://minimals.cc/assets/icons/ic_notification_chat.svg"
         />
       ),
       title,

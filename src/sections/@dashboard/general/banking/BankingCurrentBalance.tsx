@@ -32,7 +32,7 @@ const CardItemStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(3),
   backgroundRepeat: 'no-repeat',
   color: theme.palette.common.white,
-  backgroundImage: 'url("https://minimal-assets-api.vercel.app/assets/bg_card.png")',
+  backgroundImage: 'url("https://minimals.cc/assets/bg_card.png")',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
@@ -137,7 +137,7 @@ function CardItem({ card }: CardItemProps) {
             disabledEffect
             visibleByDefault
             alt="credit-card"
-            src={`https://minimal-assets-api.vercel.app/assets/icons/ic_${
+            src={`https://minimals.cc/assets/icons/ic_${
               cardType === 'mastercard' ? 'mastercard' : 'visa'
             }.svg`}
             sx={{ height: 24 }}

@@ -67,7 +67,7 @@ export default function HomeLookingFor() {
               <Image
                 disabledEffect
                 alt="rocket"
-                src="https://minimal-assets-api.vercel.app/assets/images/home/zone_screen.png"
+                src="https://minimals.cc/assets/images/home/zone_screen.png"
               />
             </Box>
           </Grid>

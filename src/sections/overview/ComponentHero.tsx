@@ -78,7 +78,7 @@ export default function ComponentHero() {
               visibleByDefault
               disabledEffect
               alt="hero"
-              src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_components.png"
+              src="https://minimals.cc/assets/illustrations/illustration_components.png"
               sx={{ maxWidth: 320 }}
             />
           </m.div>

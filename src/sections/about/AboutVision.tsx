@@ -19,7 +19,7 @@ export default function AboutVision() {
         }}
       >
         <Image
-          src="https://minimal-assets-api.vercel.app/assets/images/about/vision.jpg"
+          src="https://minimals.cc/assets/images/about/vision.jpg"
           alt="about-vision"
           effect="black-and-white"
         />
@@ -40,7 +40,7 @@ export default function AboutVision() {
               <m.div key={logo} variants={varFade().in}>
                 <Image
                   alt={logo}
-                  src={`https://minimal-assets-api.vercel.app/assets/images/logos/${logo}.svg`}
+                  src={`https://minimals.cc/assets/images/logos/${logo}.svg`}
                   sx={{
                     m: { xs: 1.5, md: 3 },
                     height: { xs: 24, md: 32 },

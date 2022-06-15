@@ -9,7 +9,7 @@ import { MotionViewport, varFade } from '../../components/animate';
 // ----------------------------------------------------------------------
 
 const IMG = [...Array(10)].map(
-  (_, index) => `https://minimal-assets-api.vercel.app/assets/images/home/clean-${index + 1}.png`
+  (_, index) => `https://minimals.cc/assets/images/home/clean-${index + 1}.png`
 );
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -78,9 +78,7 @@ export default function HomeCleanInterfaces() {
                 disabledEffect
                 visibleByDefault
                 alt={`clean-${index + 1}`}
-                src={`https://minimal-assets-api.vercel.app/assets/images/home/clean-${
-                  index + 1
-                }.png`}
+                src={`https://minimals.cc/assets/images/home/clean-${index + 1}.png`}
               />
             </Box>
           ))}
