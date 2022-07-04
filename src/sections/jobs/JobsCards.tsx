@@ -1,8 +1,17 @@
 import React, { useEffect, useMemo } from 'react';
+import NextLink from 'next/link';
 import gql from 'graphql-tag';
 import { SortOrder, useJobsQuery } from 'src/generated/graphql';
 import usePrevious from 'src/hooks/usePrevious';
-import { Button, Card, CardActions, CardContent, CardHeader, IconButton } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  IconButton,
+  Link,
+} from '@mui/material';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
@@ -82,8 +91,6 @@ const JobsCards = ({
     },
   });
 
-  console.log('JobsCards.data', data);
-
   const previousQuery = usePrevious(searchQuery);
   const previousLocation = usePrevious(searchLocation);
 
@@ -115,7 +122,23 @@ const JobCard = ({
   job && (
     <Card sx={{ pb: 2, mb: 3 }}>
       <CardHeader
-        title={job.title}
+        title={
+          <NextLink href={'/jobs'} passHref>
+            <Link
+              key={'perrote'}
+              variant="body2"
+              sx={{
+                lineHeight: 2,
+                display: 'flex',
+                alignItems: 'center',
+                color: 'text.primary',
+                '& > div': { display: 'inherit' },
+              }}
+            >
+              {job.title}
+            </Link>
+          </NextLink>
+        }
         subheader={job.location?.name}
         action={
           <IconButton aria-label="compartir">
@@ -125,7 +148,12 @@ const JobCard = ({
       />
 
       <CardContent>
-        {job.plainTextContent && job.plainTextContent.substring(0, 200)}... <strong>ver más</strong>
+        <Link href={`/jobs/${job.id}`}>
+          <a>
+            {job.plainTextContent && job.plainTextContent.substring(0, 200)}...{' '}
+            <strong>ver más</strong>
+          </a>
+        </Link>
       </CardContent>
       <CardActions sx={{ px: 3 }}>
         <Button variant="contained" size="large" fullWidth>

@@ -7,8 +7,6 @@ import { getBackendUrl } from 'src/lib/api';
 
 const uri = getBackendUrl() as string;
 
-console.log('uri', uri);
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let apolloClient: ApolloClient<any> | undefined;
 

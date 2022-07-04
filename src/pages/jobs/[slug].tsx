@@ -11,11 +11,11 @@ import axios from 'axios';
 import { Post } from 'src/@types/blog';
 import Page from 'src/components/Page';
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs';
-import { PATH_DASHBOARD } from 'src/routes/paths';
+import { PATH_DASHBOARD, PATH_PAGE } from 'src/routes/paths';
 import {
   BlogPostCommentForm,
   BlogPostCommentList,
-  BlogPostHero,
+  JobPostHero,
   BlogPostTags,
 } from 'src/sections/jobs';
 import Markdown from 'src/components/Markdown';
@@ -127,20 +127,19 @@ export default function JobListingPage() {
   //   }, [getRecentPosts, getPost]);
 
   return (
-    <Page title="Blog: Post Details">
+    <Page title={`Ofertas Laborales: ${job?.title}`}>
       <Container component={MotionViewport} sx={{ pt: 4, mb: 4 }}>
         <HeaderBreadcrumbs
-          heading="Post Details"
+          heading="Detalles"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Blog', href: PATH_DASHBOARD.blog.root },
-            { name: sentenceCase(title as string) },
+            { name: 'Ofertas Laborales', href: PATH_PAGE.jobs },
+            { name: sentenceCase((job?.title as string) ?? '') },
           ]}
         />
 
         {job && (
           <Card>
-            <BlogPostHero job={job} />
+            <JobPostHero job={job} />
 
             <Box sx={{ p: { xs: 3, md: 5 } }}>
               <Typography variant="h6" sx={{ mb: 5 }}>

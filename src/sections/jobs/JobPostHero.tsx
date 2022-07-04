@@ -82,7 +82,7 @@ type Props = {
   job: Job;
 };
 
-export default function BlogPostHero({ job }: Props) {
+export default function JobPostHero({ job }: Props) {
   const isDesktop = useResponsive('up', 'sm');
 
   const { images, title, author, createdAt } = job;
@@ -93,14 +93,14 @@ export default function BlogPostHero({ job }: Props) {
 
       <FooterStyle>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar sx={{ bgcolor: deepOrange[500], width: 48, height: 48 }}>
+          <Avatar sx={{ color: 'common.white', bgcolor: deepOrange[500], width: 48, height: 48 }}>
             {author?.firstName?.[0]}
           </Avatar>
           <Box sx={{ ml: 2 }}>
             <Typography variant="subtitle1" sx={{ color: 'common.white' }}>
               {author?.displayName}
             </Typography>
-            <Typography variant="body2" sx={{ color: 'grey.500' }}>
+            <Typography variant="body2" sx={{ color: 'common.white' }}>
               {fDate(createdAt)}
             </Typography>
           </Box>
@@ -125,7 +125,7 @@ export default function BlogPostHero({ job }: Props) {
       </FooterStyle>
 
       <OverlayStyle />
-      <Image alt="post cover" src={images?.[0]?.signedUrl ?? ''} ratio="16/9" />
+      <Image alt="post cover" src={images?.[0]?.signedUrl ?? ''} ratio="21/9" />
     </Box>
   );
 }
