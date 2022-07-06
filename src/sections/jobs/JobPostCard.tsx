@@ -4,7 +4,7 @@ import NextLink from 'next/link';
 // @mui
 import { alpha, styled } from '@mui/material/styles';
 import { Box, Card, Avatar, Typography, CardContent, Link, Stack } from '@mui/material';
-import { Post } from 'src/@types/blog';
+import { Job } from 'src/@types/jobs';
 import useResponsive from 'src/hooks/useResponsive';
 import SvgIconStyle from 'src/components/SvgIconStyle';
 import { PATH_DASHBOARD } from 'src/routes/paths';
@@ -14,6 +14,7 @@ import Iconify from 'src/components/Iconify';
 import { fShortenNumber } from 'src/utils/formatNumber';
 import TextMaxLine from 'src/components/TextMaxLine';
 import Image from 'src/components/Image';
+import { deepOrange } from '@mui/material/colors';
 // routes
 
 // ----------------------------------------------------------------------
@@ -30,22 +31,24 @@ const OverlayStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 type Props = {
-  post: Post;
+  job: Job;
   index?: number;
 };
 
-export default function BlogPostCard({ post, index }: Props) {
+export default function JobPostCard({ job, index }: Props) {
   const isDesktop = useResponsive('up', 'md');
 
-  const { cover, title, view, comment, share, author, createdAt } = post;
+  const { title,  author, createdAt } = job;
+
+  // const { cover, title, views, comment, share, author, createdAt } = job;
 
   const latestPost = index === 0 || index === 1 || index === 2;
 
   if (isDesktop && latestPost) {
     return (
       <Card>
-        <Avatar
-          alt={author.name}
+        {/* <Avatar
+          alt={author?.firstName ?? ""}
           src={author.avatarUrl}
           sx={{
             zIndex: 9,
@@ -55,17 +58,20 @@ export default function BlogPostCard({ post, index }: Props) {
             height: 40,
             position: 'absolute',
           }}
-        />
+        /> */}
+          <Avatar sx={{ color: 'common.white', bgcolor: deepOrange[500], width: 48, height: 48 }}>
+            {author?.firstName?.[0]}
+          </Avatar>
         <PostContent
           title={title}
-          view={view}
-          comment={comment}
-          share={share}
+          view={22}
+          comment={44}
+          share={44}
           createdAt={createdAt}
           index={index}
         />
         <OverlayStyle />
-        <Image alt="cover" src={cover} sx={{ height: 360 }} />
+        {/* <Image alt="cover" src={cover} sx={{ height: 360 }} /> */}
       </Card>
     );
   }
@@ -84,7 +90,10 @@ export default function BlogPostCard({ post, index }: Props) {
             color: 'background.paper',
           }}
         />
-        <Avatar
+         <Avatar sx={{ color: 'common.white', bgcolor: deepOrange[500], width: 48, height: 48 }}>
+            {author?.firstName?.[0]}
+          </Avatar>
+        {/* <Avatar
           alt={author.name}
           src={author.avatarUrl}
           sx={{
@@ -95,15 +104,15 @@ export default function BlogPostCard({ post, index }: Props) {
             bottom: -16,
             position: 'absolute',
           }}
-        />
-        <Image alt="cover" src={cover} ratio="4/3" />
+        /> */}
+        {/* <Image alt="cover" src={cover} ratio="4/3" /> */}
       </Box>
 
       <PostContent
         title={title}
-        view={view}
-        comment={comment}
-        share={share}
+        view={33}
+        comment={44}
+        share={99}
         createdAt={createdAt}
       />
     </Card>

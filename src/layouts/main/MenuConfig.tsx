@@ -62,10 +62,15 @@ const menuConfig = [
       },
     ],
   },
+  // {
+  //   title: 'Documentation',
+  //   icon: <Iconify icon={'eva:book-open-fill'} {...ICON_SIZE} />,
+  //   path: PATH_DOCS,
+  // },
   {
-    title: 'Documentation',
+    title: 'Iniciar Sesión',
     icon: <Iconify icon={'eva:book-open-fill'} {...ICON_SIZE} />,
-    path: PATH_DOCS,
+    path: PATH_AUTH.login,
   },
 ];
 

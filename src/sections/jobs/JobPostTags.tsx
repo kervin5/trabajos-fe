@@ -13,7 +13,7 @@ type Props = {
   job: Job;
 };
 
-export default function BlogPostTags({ job }: Props) {
+export default function JobPostTags({ job }: Props) {
   // const { favorite, tags, favoritePerson } = job;
   const { favorite, tags, favoritePerson } = {
     tags: ['finance', 'marketing', 'sales'],

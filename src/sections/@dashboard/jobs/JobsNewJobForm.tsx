@@ -34,7 +34,7 @@ import {
 //
 import JobsNewJobPreview from './JobsNewJobPreview';
 import LocationAutocomplete from 'src/components/input/LocationAutocomplete';
-import { useCreateJobMutation } from 'src/generated/graphql';
+import { JobCreateInput, JobStatus, useCreateJobMutation } from 'src/generated/graphql';
 import gql from 'graphql-tag';
 
 // ----------------------------------------------------------------------
@@ -102,12 +102,13 @@ export default function JobsNewJobForm() {
     content: '',
     // cover: null,
     tags: [],
-    publish: true,
+    // publish: true,
     // comments: true,
     // metaTitle: '',
     // metaDescription: '',
     // metaKeywords: [],
     location: '',
+    status: JobStatus.Draft
   };
 
   const methods = useForm<NewJobFormValues>({
@@ -125,13 +126,14 @@ export default function JobsNewJobForm() {
   } = methods;
 
   const values = watch();
+  const {publish,...mutationValues} = values;
 
   const [createJob, { loading }] = useCreateJobMutation();
 
   const onSubmit = async (data: NewJobFormValues) => {
     try {
       // await new Promise((resolve) => setTimeout(resolve, 500));
-      await createJob({ variables: { data: { ...values } } });
+      await createJob({ variables: { data: { ...mutationValues, status: values.publish ? JobStatus.Published : JobStatus.Draft } } });
       reset();
       handleClosePreview();
       enqueueSnackbar(

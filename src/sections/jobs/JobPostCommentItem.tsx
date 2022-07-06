@@ -17,7 +17,7 @@ import { fDate } from '../../utils/formatTime';
 
 // ----------------------------------------------------------------------
 
-interface BlogPostCommentItemProps extends ListItemProps {
+interface JobPostCommentItemProps extends ListItemProps {
   name: string;
   avatarUrl?: string;
   message: string;
@@ -26,14 +26,14 @@ interface BlogPostCommentItemProps extends ListItemProps {
   hasReply?: boolean;
 }
 
-export default function BlogPostCommentItem({
+export default function JobPostCommentItem({
   name,
   avatarUrl,
   message,
   tagUser,
   postedAt,
   hasReply,
-}: BlogPostCommentItemProps) {
+}: JobPostCommentItemProps) {
   const [openReply, setOpenReply] = useState(false);
 
   const handleOpenReply = () => {

@@ -95,10 +95,10 @@ export default function HomeHero() {
           <ContentStyle>
             <m.div variants={varFade().inRight}>
               <Typography variant="h1" sx={{ color: 'common.white' }}>
-                Ofertas de
+                Oportunidades en
                 <br />
                 <Typography component="span" variant="h1" sx={{ color: 'primary.main' }}>
-                  &nbsp;Empleo
+                  Managua
                 </Typography>
               </Typography>
             </m.div>

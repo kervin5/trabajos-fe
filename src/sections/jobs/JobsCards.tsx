@@ -123,10 +123,10 @@ const JobCard = ({
     <Card sx={{ pb: 2, mb: 3 }}>
       <CardHeader
         title={
-          <NextLink href={'/jobs'} passHref>
+          <NextLink href={`/jobs/${job.id}`} passHref>
             <Link
-              key={'perrote'}
-              variant="body2"
+              key={job.id+"job-title"}
+              variant="h4"
               sx={{
                 lineHeight: 2,
                 display: 'flex',
@@ -148,12 +148,18 @@ const JobCard = ({
       />
 
       <CardContent>
-        <Link href={`/jobs/${job.id}`}>
-          <a>
-            {job.plainTextContent && job.plainTextContent.substring(0, 200)}...{' '}
+        <NextLink href={`/jobs/${job.id}`}>
+          <Link href={`/jobs/${job.id}`}  sx={{
+                // lineHeight: 2,
+                // display: 'flex',
+                // alignItems: 'center',
+                color: 'text.primary',
+                '&:hover': { textDecoration: 'none' },
+              }}>
+            {job.plainTextContent && job.plainTextContent.substring(0, 500)}...{' '}
             <strong>ver más</strong>
-          </a>
-        </Link>
+          </Link>
+        </NextLink>
       </CardContent>
       <CardActions sx={{ px: 3 }}>
         <Button variant="contained" size="large" fullWidth>

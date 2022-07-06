@@ -1,18 +1,31 @@
 // @mui
 import { Box, List } from '@mui/material';
 // @types
-import { Post } from '../../../@types/blog';
+import { Job } from '../../@types/jobs';
 //
-import BlogPostCommentItem from './BlogPostCommentItem';
+import JobPostCommentItem from './JobPostCommentItem';
 
 // ----------------------------------------------------------------------
 
-type BlogPostCommentListProps = {
-  post: Post;
+type JobPostCommentListProps = {
+  job: Job;
 };
 
-export default function BlogPostCommentList({ post }: BlogPostCommentListProps) {
-  const { comments } = post;
+export default function JobPostCommentList({ job }: JobPostCommentListProps) {
+  // const { comments } = post;
+  const { comments } = {
+    comments: [
+      {
+        id: 1,
+        name: 'Kervin',
+        avatarUrl: '',
+        postedAt: new Date(),
+        replyComment: [],
+        users: [],
+        message: 'This is cool',
+      },
+    ],
+  };
 
   return (
     <List disablePadding>
@@ -22,17 +35,17 @@ export default function BlogPostCommentList({ post }: BlogPostCommentListProps) 
 
         return (
           <Box key={id} sx={{}}>
-            <BlogPostCommentItem
+            <JobPostCommentItem
               name={comment.name}
               avatarUrl={comment.avatarUrl}
               postedAt={comment.postedAt}
               message={comment.message}
             />
-            {hasReply &&
+            {/* {hasReply &&
               replyComment.map((reply) => {
                 const user = users.find((_user) => _user.id === reply.userId);
                 return (
-                  <BlogPostCommentItem
+                  <JobPostCommentItem
                     key={reply.id}
                     tagUser={reply.tagUser}
                     postedAt={reply.postedAt}
@@ -42,7 +55,7 @@ export default function BlogPostCommentList({ post }: BlogPostCommentListProps) 
                     hasReply
                   />
                 );
-              })}
+              })} */}
           </Box>
         );
       })}

@@ -17,6 +17,12 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type AuthResponse = {
+  __typename?: 'AuthResponse';
+  accessToken: Scalars['String'];
+  user: User;
+};
+
 export type BoolFilter = {
   equals?: InputMaybe<Scalars['Boolean']>;
   not?: InputMaybe<NestedBoolFilter>;
@@ -233,6 +239,7 @@ export type JobCountOrderByAggregateInput = {
 export type JobCreateInput = {
   content: Scalars['String'];
   location: Scalars['String'];
+  status?: InputMaybe<JobStatus>;
   tags?: InputMaybe<Array<Scalars['String']>>;
   title: Scalars['String'];
 };
@@ -423,12 +430,6 @@ export type LoginInput = {
   password: Scalars['String'];
 };
 
-export type LoginResponse = {
-  __typename?: 'LoginResponse';
-  accessToken: Scalars['String'];
-  user: User;
-};
-
 /** a single mapbox location */
 export type MapboxLocation = {
   __typename?: 'MapboxLocation';
@@ -446,7 +447,8 @@ export type MapboxLocationFilterInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createJob: Job;
-  login: LoginResponse;
+  login: AuthResponse;
+  register: AuthResponse;
 };
 
 
@@ -456,7 +458,12 @@ export type MutationCreateJobArgs = {
 
 
 export type MutationLoginArgs = {
-  loginInput: LoginInput;
+  data: LoginInput;
+};
+
+
+export type MutationRegisterArgs = {
+  data: RegisterInput;
 };
 
 export type NestedBoolFilter = {
@@ -576,16 +583,18 @@ export type PageInfo = {
 
 export type Query = {
   __typename?: 'Query';
+  identify: User;
   job: Job;
   jobs: JobsConnection;
   mapboxLocations: Array<MapboxLocation>;
+  publishedJobs: Array<Job>;
   user: User;
   users: Array<User>;
 };
 
 
 export type QueryJobArgs = {
-  id: Scalars['String'];
+  id?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -622,6 +631,14 @@ export enum QueryMode {
   Default = 'default',
   Insensitive = 'insensitive'
 }
+
+export type RegisterInput = {
+  email: Scalars['String'];
+  firstName: Scalars['String'];
+  isEmployer: Scalars['Boolean'];
+  lastName: Scalars['String'];
+  password: Scalars['String'];
+};
 
 export enum SortOrder {
   Asc = 'asc',

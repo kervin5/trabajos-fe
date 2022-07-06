@@ -13,14 +13,14 @@ import Page from 'src/components/Page';
 import HeaderBreadcrumbs from 'src/components/HeaderBreadcrumbs';
 import { PATH_DASHBOARD, PATH_PAGE } from 'src/routes/paths';
 import {
-  BlogPostCommentForm,
-  BlogPostCommentList,
+  JobPostCommentForm,
+  JobPostCommentList,
   JobPostHero,
-  BlogPostTags,
+  JobPostTags,
+  JobPostRecent
 } from 'src/sections/jobs';
 import Markdown from 'src/components/Markdown';
 import { SkeletonPost } from 'src/components/skeleton';
-import BlogPostRecent from 'src/sections/@dashboard/jobs/BlogPostRecent';
 import { MotionViewport } from 'src/components/animate';
 import gql from 'graphql-tag';
 import { useJobQuery, useJobsQuery } from 'src/generated/graphql';
@@ -74,9 +74,11 @@ export default function JobListingPage() {
 
   const { query } = useRouter();
 
+  console.log(query);
+
   //   const { title } = query;
-  const title = 'Hello world';
-  const jobId = '94c025b8-1eed-4a63-b40d-0b17a76ea87e';
+ 
+  const jobId = query?.slug as string;
 
   const [recentPosts, setRecentPosts] = useState([]);
 
@@ -106,6 +108,7 @@ export default function JobListingPage() {
   });
 
   const job = data?.job;
+  // const title = data?.job.title ?? "Cargando...";
 
   //   const getRecentPosts = useCallback(async () => {
   //     try {
@@ -126,6 +129,7 @@ export default function JobListingPage() {
   //     getRecentPosts();
   //   }, [getRecentPosts, getPost]);
 
+
   return (
     <Page title={`Ofertas Laborales: ${job?.title}`}>
       <Container component={MotionViewport} sx={{ pt: 4, mb: 4 }}>
@@ -143,14 +147,14 @@ export default function JobListingPage() {
 
             <Box sx={{ p: { xs: 3, md: 5 } }}>
               <Typography variant="h6" sx={{ mb: 5 }}>
-                {job.plainTextContent?.substring(0, 100)}
+                {job.location?.name}
               </Typography>
 
               <Markdown children={job.content} />
 
               <Box sx={{ my: 5 }}>
                 <Divider />
-                <BlogPostTags job={job} />
+                <JobPostTags job={job} />
                 <Divider />
               </Box>
 
@@ -162,22 +166,22 @@ export default function JobListingPage() {
                 </Typography>
               </Box>
 
-              <BlogPostCommentList job={job} />
+              <JobPostCommentList job={job} />
 
               <Box sx={{ mb: 5, mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                 <Pagination count={8} color="primary" />
               </Box>
 
-              <BlogPostCommentForm />
+              <JobPostCommentForm />
             </Box>
           </Card>
         )}
 
         {!job && !error && <SkeletonPost />}
 
-        {error && <Typography variant="h6">404 {error}!</Typography>}
+        {error && <Typography variant="h6">404 {error.message}!</Typography>}
 
-        {recentJobsData?.jobs.nodes?.length && <BlogPostRecent jobs={recentJobsData.jobs.nodes} />}
+        {recentJobsData?.jobs.nodes?.length && <JobPostRecent jobs={recentJobsData.jobs.nodes} />}
       </Container>
     </Page>
   );
