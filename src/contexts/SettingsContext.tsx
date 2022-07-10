@@ -98,6 +98,7 @@ function SettingsProvider({
     <SettingsContext.Provider
       value={{
         ...settings,
+        themeMode: 'light',
         // Mode
         onChangeMode,
         onToggleMode,
