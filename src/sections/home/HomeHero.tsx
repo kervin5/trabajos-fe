@@ -57,8 +57,8 @@ const HeroImgStyle = styled(m.img)(({ theme }) => ({
   right: 0,
   bottom: 0,
   zIndex: 8,
-  width: '100%',
-  margin: 'auto',
+  // width: '100%',
+  margin: 0,
   position: 'absolute',
   // [theme.breakpoints.up('lg')]: {
   //   right: '8%',

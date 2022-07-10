@@ -80,7 +80,7 @@ export default function MenuMobile({ isOffset, isHome, navConfig }: MenuProps) {
           ...(isOffset && { color: 'text.primary' }),
         }}
       >
-        <Iconify icon={'eva:menu-2-fill'} />
+        <Iconify icon={'eva:menu-2-fill'} sx={{ color: 'text.primary' }} />
       </IconButtonAnimate>
 
       <Drawer
