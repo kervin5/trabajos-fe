@@ -9,12 +9,16 @@ import { fDate } from '../../../../utils/formatTime';
 
 import Iconify from '../../../../components/Iconify';
 import { TableMoreMenu } from '../../../../components/table';
-import { Job } from 'src/generated/graphql';
+import { Job, Location } from 'src/generated/graphql';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  row: Pick<Job, 'id' | 'title' | 'location' | 'createdAt'> | null;
+  row:
+    | (Pick<Omit<Job, 'location'>, 'id' | 'title' | 'createdAt'> & {
+        location?: Pick<Location, 'id' | 'latitude' | 'longitude' | 'name'> | null;
+      })
+    | null;
   selected: boolean;
   onSelectRow: VoidFunction;
   onViewRow: VoidFunction;
