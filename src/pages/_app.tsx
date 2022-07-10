@@ -105,7 +105,7 @@ export default function MyApp(props: MyAppProps) {
                             <ThemeLocalization>
                               <RtlLayout>
                                 <ChartStyle />
-                                <Settings />
+                                {/* <Settings /> */}
                                 <ProgressBar />
                                 {getLayout(<Component {...pageProps} />)}
                               </RtlLayout>
