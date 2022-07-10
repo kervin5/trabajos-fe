@@ -17,7 +17,7 @@ import {
   JobPostCommentList,
   JobPostHero,
   JobPostTags,
-  JobPostRecent
+  JobPostRecent,
 } from 'src/sections/jobs';
 import Markdown from 'src/components/Markdown';
 import { SkeletonPost } from 'src/components/skeleton';
@@ -74,10 +74,8 @@ export default function JobListingPage() {
 
   const { query } = useRouter();
 
-  console.log(query);
-
   //   const { title } = query;
- 
+
   const jobId = query?.slug as string;
 
   const [recentPosts, setRecentPosts] = useState([]);
@@ -101,7 +99,7 @@ export default function JobListingPage() {
   //     }
   //   }, [isMountedRef, title]);
 
-  const { error, loading, data } = useJobQuery({ variables: { jobId } });
+  const { error, loading, data } = useJobQuery({ variables: { jobId }, skip: !jobId });
 
   const { data: recentJobsData, loading: recentJobsLoading } = useJobsQuery({
     variables: { last: 5 },
@@ -128,7 +126,6 @@ export default function JobListingPage() {
   //     getPost();
   //     getRecentPosts();
   //   }, [getRecentPosts, getPost]);
-
 
   return (
     <Page title={`Ofertas Laborales: ${job?.title}`}>
