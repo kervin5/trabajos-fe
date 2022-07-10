@@ -7,6 +7,7 @@ import { Box, Container, Typography, Stack, StackProps } from '@mui/material';
 // routes
 import { MotionContainer, varFade } from '../../components/animate';
 import dynamic from 'next/dynamic';
+import useGuestLocation from 'src/hooks/useGuestLocation';
 
 const JobSearchForm = dynamic(() => import('src/sections/jobs/JobSearchForm'), {
   ssr: false,
@@ -72,6 +73,10 @@ const HeroImgStyle = styled(m.img)(({ theme }) => ({
 export default function HomeHero() {
   const router = useRouter();
 
+  const { loading, data } = useGuestLocation();
+
+  const location = loading ? '' : data?.city ?? data?.country ?? '';
+
   const handleFormSubmit = ({ query, location }: { query: string; location: string }) => {
     router.push(`/jobs?query=${query}&location=${location}`);
   };
@@ -91,10 +96,10 @@ export default function HomeHero() {
           <ContentStyle>
             <m.div variants={varFade().inRight}>
               <Typography variant="h1" sx={{ color: 'common.white' }}>
-                Oportunidades en
+                Oportunidades {location === '' ? '' : 'en'}
                 <br />
                 <Typography component="span" variant="h1" sx={{ color: 'primary.main' }}>
-                  Managua
+                  {location === '' ? 'cerca de ti' : location}
                 </Typography>
               </Typography>
             </m.div>

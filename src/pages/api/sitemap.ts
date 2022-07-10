@@ -12,8 +12,6 @@ const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath: string) => path.resolve(appDirectory, relativePath);
 const SOURCE = process.env.SOURCE || path.join(resolveApp('src/pages'), '/**/!(_*).tsx');
 
-console.log('SOURCE', SOURCE);
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   res.setHeader('Content-Type', 'text/xml');
   try {

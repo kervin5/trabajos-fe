@@ -5,6 +5,7 @@ import { Box, Container, Typography } from '@mui/material';
 // components
 import { varFade, MotionViewport } from '../../components/animate';
 import { JobsCards } from '../jobs';
+import useGuestLocation from 'src/hooks/useGuestLocation';
 
 // ----------------------------------------------------------------------
 
@@ -20,8 +21,11 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 export default function HomePricingPlans() {
   const theme = useTheme();
+  const { loading, data } = useGuestLocation();
 
   const isLight = theme.palette.mode === 'light';
+
+  const location = loading ? 'Cargando' : data?.city ?? data?.country ?? '';
 
   return (
     <RootStyle>
@@ -43,7 +47,7 @@ export default function HomePricingPlans() {
           </m.div>
         </Box>
 
-        <JobsCards searchLocation="Managua, Nicaragua" searchQuery={''} />
+        <JobsCards searchLocation={location} searchQuery={''} />
       </Container>
     </RootStyle>
   );
