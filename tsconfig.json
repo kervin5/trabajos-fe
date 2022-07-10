@@ -9,7 +9,7 @@
     "jsx": "preserve",
     "module": "esnext",
     "incremental": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "esModuleInterop": true,
