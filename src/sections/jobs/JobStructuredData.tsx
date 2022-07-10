@@ -1,10 +1,10 @@
-import React from "react";
-import { Job } from "src/generated/graphql";
+import React from 'react';
+import { Job } from 'src/generated/graphql';
 
 const JobStructuredData = ({
-  job: { title, content, updatedAt, location },
+  job: { title, plainTextContent, updatedAt, location },
 }: {
-  job: Pick<Job, "title" | "content" | "updatedAt" | "location">;
+  job: Pick<Job, 'title' | 'content' | 'plainTextContent' | 'updatedAt' | 'location'>;
 }) => (
   <script
     type="application/ld+json"
@@ -13,10 +13,7 @@ const JobStructuredData = ({
       "@context": "http://schema.org/",
       "@type": "JobPosting",
       "title": "${title}",
-      "description": "${content
-        .map((c) => c.plainText)
-        .join(" ")
-        .replace(/"/g, '\\"')}",
+      "description": "${plainTextContent}",
       "datePosted": "${updatedAt}",
       "employmentType": "Tiempo completo",
       "industry": "Profesional",
@@ -24,8 +21,8 @@ const JobStructuredData = ({
           "@type": "Place",
           "address": {
             "@type": "PostalAddress",
-            "addressLocality": "${location?.name.split(",")[0]}",
-            "addressRegion": "${location?.name.split(",")[1]}"
+            "addressLocality": "${location?.name.split(',')[0]}",
+            "addressRegion": "${location?.name.split(',')[1]}"
           }
         },
         "hiringOrganization": "Jobs"
