@@ -29,7 +29,6 @@ import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import '@fullcalendar/common/main.min.css';
 import '@fullcalendar/daygrid/main.min.css';
 
-import cookie from 'cookie';
 import { ReactElement, ReactNode } from 'react';
 // next
 import { NextPage } from 'next';
