@@ -33,14 +33,33 @@ const SOCIALS = [
   },
 ];
 
-const OverlayStyle = styled('h1')(({ theme }) => ({
-  top: 0,
-  right: 0,
-  bottom: 0,
-  left: 0,
-  zIndex: 9,
-  position: 'absolute',
-  backgroundColor: alpha(theme.palette.grey[900], 0.72),
+// const OverlayStyle = styled('h1')(({ theme }) => ({
+//   top: 0,
+//   right: 0,
+//   bottom: 0,
+//   left: 0,
+//   zIndex: 9,
+//   position: 'absolute',
+//   backgroundColor: alpha(theme.palette.grey[900], 0.72),
+// }));
+
+const HeroBackgroundStyle = styled(Box)(({ theme }) => ({
+  backgroundImage: "url('/images/gradient-bg.jpg')",
+  backgroundAttachment: 'fixed',
+  backgroundPosition: 'center',
+  backgroundSize: 'cover',
+  position: 'relative',
+  paddingBottom: theme.spacing(10),
+  '&:after': {
+    top: 0,
+    bottom: 0,
+    width: '100%',
+    backgroundColor: theme.palette.grey[800],
+    display: 'block',
+    content: '""',
+    position: 'absolute',
+    opacity: 0.6,
+  },
 }));
 
 const TitleStyle = styled('h1')(({ theme }) => ({
@@ -48,12 +67,28 @@ const TitleStyle = styled('h1')(({ theme }) => ({
   top: 0,
   zIndex: 10,
   width: '100%',
-  position: 'absolute',
+  position: 'relative',
   padding: theme.spacing(3),
-  color: theme.palette.common.white,
-  [theme.breakpoints.up('lg')]: {
-    padding: theme.spacing(10),
-  },
+  paddingBottom: 0,
+  color: theme.palette.common.white, //,
+  // [theme.breakpoints.up('lg')]: {
+  //   padding: theme.spacing(10),
+  // },
+}));
+
+const LocationStyle = styled('h2')(({ theme }) => ({
+  ...theme.typography.h5,
+  top: 0,
+  zIndex: 10,
+  width: '100%',
+  position: 'relative',
+  padding: theme.spacing(3),
+  paddingTop: 0,
+  fontWeight: theme.typography.fontWeightLight,
+  color: theme.palette.common.white, //,
+  // [theme.breakpoints.up('lg')]: {
+  //   padding: theme.spacing(10),
+  // },
 }));
 
 const FooterStyle = styled('div')(({ theme }) => ({
@@ -70,10 +105,10 @@ const FooterStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     alignItems: 'center',
     paddingRight: theme.spacing(3),
-  },
-  [theme.breakpoints.up('lg')]: {
-    padding: theme.spacing(10),
-  },
+  }, //,
+  // [theme.breakpoints.up('lg')]: {
+  //   padding: theme.spacing(10),
+  // },
 }));
 
 // ----------------------------------------------------------------------
@@ -85,11 +120,12 @@ type Props = {
 export default function JobPostHero({ job }: Props) {
   const isDesktop = useResponsive('up', 'sm');
 
-  const { images, title, author, createdAt } = job;
+  const { title, author, createdAt, location } = job;
 
   return (
-    <Box sx={{ position: 'relative' }}>
+    <HeroBackgroundStyle>
       <TitleStyle>{title}</TitleStyle>
+      <LocationStyle>{location?.name}</LocationStyle>
 
       <FooterStyle>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -124,8 +160,8 @@ export default function JobPostHero({ job }: Props) {
         </SpeedDial>
       </FooterStyle>
 
-      <OverlayStyle />
-      <Image alt="post cover" src={images?.[0]?.signedUrl ?? ''} ratio="21/9" />
-    </Box>
+      {/* <OverlayStyle /> */}
+      {/* <Image alt="post cover" src={images?.[0]?.signedUrl ?? '/images/gradient-bg.jpg'} ratio="21/9" /> */}
+    </HeroBackgroundStyle>
   );
 }

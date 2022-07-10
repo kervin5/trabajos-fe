@@ -60,11 +60,11 @@ const HeroImgStyle = styled(m.img)(({ theme }) => ({
   width: '100%',
   margin: 'auto',
   position: 'absolute',
-  [theme.breakpoints.up('lg')]: {
-    right: '8%',
-    width: 'auto',
-    height: '48vh',
-  },
+  // [theme.breakpoints.up('lg')]: {
+  //   right: '8%',
+  //   width: 'auto',
+  //   height: '48vh',
+  // },
 }));
 
 // ----------------------------------------------------------------------
@@ -85,11 +85,7 @@ export default function HomeHero() {
           variants={varFade().in}
         />
 
-        <HeroImgStyle
-          alt="hero"
-          src="https://minimals.cc/assets/images/home/hero.png"
-          variants={varFade().inUp}
-        />
+        <HeroImgStyle alt="hero" src="/images/gradient-bg.jpg" variants={varFade().inUp} />
 
         <Container>
           <ContentStyle>

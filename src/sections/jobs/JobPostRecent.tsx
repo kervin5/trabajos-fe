@@ -15,7 +15,7 @@ export default function JobPostRecent({ jobs }: Props) {
   return (
     <>
       <Typography variant="h4" sx={{ mt: 10, mb: 5 }}>
-        Recent posts
+        Oportunidades similares
       </Typography>
 
       <Grid container spacing={3}>

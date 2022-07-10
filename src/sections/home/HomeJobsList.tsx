@@ -28,8 +28,8 @@ export default function HomePricingPlans() {
       <Container component={MotionViewport}>
         <Box sx={{ mb: 10, textAlign: 'center' }}>
           <m.div variants={varFade().inDown}>
-            <Typography variant="h2" sx={{ mb: 3 }}>
-              Ofertas Recientes
+            <Typography variant="h2" sx={{ mb: 2 }}>
+              Ofertas Recientes 🔥
             </Typography>
           </m.div>
           <m.div variants={varFade().inDown}>

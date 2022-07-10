@@ -146,9 +146,9 @@ export default function JobListingPage() {
             <JobPostHero job={job} />
 
             <Box sx={{ p: { xs: 3, md: 5 } }}>
-              <Typography variant="h6" sx={{ mb: 5 }}>
+              {/* <Typography variant="h6" sx={{ mb: 5 }}>
                 {job.location?.name}
-              </Typography>
+              </Typography> */}
 
               <Markdown children={job.content} />
 
