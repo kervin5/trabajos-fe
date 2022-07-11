@@ -156,7 +156,7 @@ export default function JobListingPage() {
               </Box>
 
               <Box sx={{ display: 'flex', mb: 2 }}>
-                <Typography variant="h4">Comments</Typography>
+                <Typography variant="h4">Comentarios</Typography>
                 <Typography variant="subtitle2" sx={{ color: 'text.disabled' }}>
                   {/* ({post.comments.length}) */}
                   {30}

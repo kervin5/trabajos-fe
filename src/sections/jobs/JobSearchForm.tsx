@@ -37,7 +37,7 @@ const JobSearchForm = ({ onSubmit, initialValues }: Props) => {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
-              label="Search"
+              label="Búsqueda"
               variant="outlined"
               InputProps={{
                 startAdornment: (

@@ -81,7 +81,7 @@ export default function JobPostCommentItem({
 
         {!hasReply && (
           <Button size="small" onClick={handleOpenReply} sx={{ position: 'absolute', right: 0 }}>
-            Reply
+            Responder
           </Button>
         )}
       </ListItem>
@@ -97,7 +97,7 @@ export default function JobPostCommentItem({
           <TextField
             fullWidth
             size="small"
-            placeholder="Write comment"
+            placeholder="Escribir comentario"
             InputProps={{
               sx: {
                 border: (theme) => `solid 1px ${theme.palette.grey[500_32]} !important`,

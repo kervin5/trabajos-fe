@@ -106,8 +106,7 @@ export default function HomeHero() {
 
             <m.div variants={varFade().inRight}>
               <Typography sx={{ color: 'common.white' }}>
-                The starting point for your next project based on easy-to-customize MUI helps you
-                build apps faster and better.
+                Encuentra oportunidades laborales en tu ciudad.
               </Typography>
             </m.div>
             <JobSearchForm onSubmit={handleFormSubmit} />

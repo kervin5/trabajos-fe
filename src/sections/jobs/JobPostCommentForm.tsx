@@ -61,19 +61,19 @@ export default function JobPostCommentForm() {
   return (
     <RootStyles>
       <Typography variant="subtitle1" sx={{ mb: 3 }}>
-        Add Comment
+        Agregar Comentario
       </Typography>
 
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3} alignItems="flex-end">
-          <RHFTextField name="comment" label="Comment *" multiline rows={3} />
+          <RHFTextField name="comment" label="Comentario *" multiline rows={3} />
 
-          <RHFTextField name="name" label="Name *" />
+          <RHFTextField name="name" label="Nombre *" />
 
-          <RHFTextField name="email" label="Email *" />
+          <RHFTextField name="email" label="Correo electronico *" />
 
           <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-            Post comment
+            Enviar comentario
           </LoadingButton>
         </Stack>
       </FormProvider>

@@ -38,7 +38,7 @@ type Props = {
 export default function JobPostCard({ job, index }: Props) {
   const isDesktop = useResponsive('up', 'md');
 
-  const { title,  author, createdAt } = job;
+  const { title, author, createdAt, plainTextContent } = job;
 
   // const { cover, title, views, comment, share, author, createdAt } = job;
 
@@ -59,11 +59,23 @@ export default function JobPostCard({ job, index }: Props) {
             position: 'absolute',
           }}
         /> */}
-          <Avatar sx={{ color: 'common.white', bgcolor: deepOrange[500], width: 48, height: 48 }}>
-            {author?.firstName?.[0]}
-          </Avatar>
+        <Avatar
+          sx={{
+            color: 'common.white',
+            bgcolor: deepOrange[500],
+            width: 40,
+            height: 40,
+            zIndex: 9,
+            top: 24,
+            left: 24,
+            position: 'absolute',
+          }}
+        >
+          {author?.firstName?.[0]}
+        </Avatar>
         <PostContent
           title={title}
+          plainTextContent={plainTextContent ?? ''}
           view={22}
           comment={44}
           share={44}
@@ -71,7 +83,7 @@ export default function JobPostCard({ job, index }: Props) {
           index={index}
         />
         <OverlayStyle />
-        {/* <Image alt="cover" src={cover} sx={{ height: 360 }} /> */}
+        {/* <Image alt="cover" src={'/images/gradient-bg.jpg'} sx={{ height: 360 }} /> */}
       </Card>
     );
   }
@@ -90,9 +102,18 @@ export default function JobPostCard({ job, index }: Props) {
             color: 'background.paper',
           }}
         />
-         <Avatar sx={{ color: 'common.white', bgcolor: deepOrange[500], width: 48, height: 48 }}>
-            {author?.firstName?.[0]}
-          </Avatar>
+        <Avatar
+          sx={{
+            color: 'common.white',
+            bgcolor: deepOrange[500],
+            width: 48,
+            height: 48,
+            top: '20px',
+            left: '20px',
+          }}
+        >
+          {author?.firstName?.[0]}
+        </Avatar>
         {/* <Avatar
           alt={author.name}
           src={author.avatarUrl}
@@ -105,7 +126,7 @@ export default function JobPostCard({ job, index }: Props) {
             position: 'absolute',
           }}
         /> */}
-        {/* <Image alt="cover" src={cover} ratio="4/3" /> */}
+        {/* <Image alt="cover" src={'/images/gradient-bg.jpg'} ratio="16/9" /> */}
       </Box>
 
       <PostContent
@@ -114,6 +135,7 @@ export default function JobPostCard({ job, index }: Props) {
         comment={44}
         share={99}
         createdAt={createdAt}
+        plainTextContent={plainTextContent ?? ''}
       />
     </Card>
   );
@@ -123,6 +145,7 @@ export default function JobPostCard({ job, index }: Props) {
 
 type PostContentProps = {
   title: string;
+  plainTextContent: string;
   view: number;
   comment: number;
   share: number;
@@ -130,8 +153,16 @@ type PostContentProps = {
   index?: number;
 };
 
-export function PostContent({ title, view, comment, share, createdAt, index }: PostContentProps) {
-  const isDesktop = useResponsive('up', 'md');
+export function PostContent({
+  title,
+  view,
+  comment,
+  share,
+  createdAt,
+  index,
+  plainTextContent,
+}: PostContentProps) {
+  // const isDesktop = useResponsive('up', 'md');
 
   const linkTo = PATH_DASHBOARD.blog.view(paramCase(title));
 
@@ -175,12 +206,14 @@ export function PostContent({ title, view, comment, share, createdAt, index }: P
 
       <NextLink href={linkTo} passHref>
         <Link color="inherit">
-          <TextMaxLine
-            variant={isDesktop && latestPostLarge ? 'h5' : 'subtitle2'}
-            line={2}
-            persistent
-          >
-            {title}
+          <TextMaxLine variant={'h5'}>{title}</TextMaxLine>
+        </Link>
+      </NextLink>
+
+      <NextLink href={linkTo} passHref>
+        <Link color="inherit">
+          <TextMaxLine variant={'body1'} line={4} persistent>
+            {plainTextContent}
           </TextMaxLine>
         </Link>
       </NextLink>

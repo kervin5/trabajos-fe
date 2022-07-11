@@ -63,7 +63,7 @@ const HeroBackgroundStyle = styled(Box)(({ theme }) => ({
 }));
 
 const TitleStyle = styled('h1')(({ theme }) => ({
-  ...theme.typography.h2,
+  ...theme.typography.h3,
   top: 0,
   zIndex: 10,
   width: '100%',
@@ -77,7 +77,7 @@ const TitleStyle = styled('h1')(({ theme }) => ({
 }));
 
 const LocationStyle = styled('h2')(({ theme }) => ({
-  ...theme.typography.h5,
+  ...theme.typography.h6,
   top: 0,
   zIndex: 10,
   width: '100%',
@@ -129,13 +129,13 @@ export default function JobPostHero({ job }: Props) {
 
       <FooterStyle>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar sx={{ color: 'common.white', bgcolor: deepOrange[500], width: 48, height: 48 }}>
+          {/* <Avatar sx={{ color: 'common.white', bgcolor: deepOrange[500], width: 48, height: 48 }}>
             {author?.firstName?.[0]}
-          </Avatar>
-          <Box sx={{ ml: 2 }}>
-            <Typography variant="subtitle1" sx={{ color: 'common.white' }}>
+          </Avatar> */}
+          <Box sx={{ ml: 0 }}>
+            {/* <Typography variant="subtitle1" sx={{ color: 'common.white' }}>
               {author?.displayName}
-            </Typography>
+            </Typography> */}
             <Typography variant="body2" sx={{ color: 'common.white' }}>
               {fDate(createdAt)}
             </Typography>
