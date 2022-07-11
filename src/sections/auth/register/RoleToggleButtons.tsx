@@ -53,7 +53,7 @@ export default function ToggleButtons() {
           empleo
         </ToggleButton>
         <ToggleButton value={SystemRole.Employer} color="primary">
-          <Iconify icon="ic:round-mode-edit" sx={{ mr: 2 }} height={'24px'} width="24px" />
+          <Iconify icon="ic:round-mode-edit" sx={{ mr: 1 }} height={'24px'} width="24px" />
           Publicar puestos
         </ToggleButton>
       </ToggleButtonGroup>
