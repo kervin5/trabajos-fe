@@ -23,7 +23,7 @@ type Props = {
   onSubmit: VoidFunction;
 };
 
-export default function BlogNewPostPreview({
+export default function JobsNewJobPreview({
   values,
   isValid,
   isSubmitting,

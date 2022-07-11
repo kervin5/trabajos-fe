@@ -27,7 +27,7 @@ type FormValuesProps = {
 };
 
 export default function LoginForm() {
-  const { login } = useAuth();
+  const { login, ...rest } = useAuth();
 
   const isMountedRef = useIsMountedRef();
 
@@ -60,7 +60,7 @@ export default function LoginForm() {
     try {
       await login(data.email, data.password);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
 
       reset();
 
@@ -75,11 +75,11 @@ export default function LoginForm() {
       <Stack spacing={3}>
         {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
-        <RHFTextField name="email" label="Email address" />
+        <RHFTextField name="email" label="Correo electrónico" />
 
         <RHFTextField
           name="password"
-          label="Password"
+          label="Contraseña"
           type={showPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -94,9 +94,9 @@ export default function LoginForm() {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <RHFCheckbox name="remember" label="Remember me" />
+        <RHFCheckbox name="remember" label="Recordarme" />
         <NextLink href={PATH_AUTH.resetPassword} passHref>
-          <Link variant="subtitle2">Forgot password?</Link>
+          <Link variant="subtitle2">¿Olvidaste tu contraseña?</Link>
         </NextLink>
       </Stack>
 
@@ -107,7 +107,7 @@ export default function LoginForm() {
         variant="contained"
         loading={isSubmitting}
       >
-        Login
+        Iniciar Sesión
       </LoadingButton>
     </FormProvider>
   );

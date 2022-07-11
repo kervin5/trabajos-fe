@@ -155,7 +155,7 @@ function AuthProvider({ children }: AuthProviderProps) {
             }`,
     });
 
-    if (response.data.data?.login) {
+    if (response.data.data?.login?.user) {
       setSession(response.data.data.login.accessToken);
       dispatch({
         type: Types.Login,
@@ -163,6 +163,15 @@ function AuthProvider({ children }: AuthProviderProps) {
           user: response.data.data.login.user,
         },
       });
+    } else {
+      if (
+        response?.data?.errors?.length &&
+        response?.data?.errors?.some((e: Error) => e.message === 'Unauthorized')
+      ) {
+        throw new Error('El usuario o la contraseña son invalidos.');
+      } else {
+        throw new Error('Ha ocurrido un error.');
+      }
     }
   };
 

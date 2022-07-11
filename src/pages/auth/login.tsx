@@ -78,9 +78,9 @@ export default function Login() {
             <Logo />
             {smUp && (
               <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-                Don’t have an account? {''}
+                ¿No tienes una cuenta? {''}
                 <NextLink href={PATH_AUTH.register} passHref>
-                  <Link variant="subtitle2">Get started</Link>
+                  <Link variant="subtitle2">Crea una nueva</Link>
                 </NextLink>
               </Typography>
             )}
@@ -89,7 +89,7 @@ export default function Login() {
           {mdUp && (
             <SectionStyle>
               <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-                Hi, Welcome Back
+                Hola, Bienvenido!
               </Typography>
               <Image
                 visibleByDefault
@@ -105,11 +105,9 @@ export default function Login() {
               <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
                 <Box sx={{ flexGrow: 1 }}>
                   <Typography variant="h4" gutterBottom>
-                    Sign in to Minimal
+                    Iniciar Sesión
                   </Typography>
-                  <Typography sx={{ color: 'text.secondary' }}>
-                    Enter your details below.
-                  </Typography>
+                  <Typography sx={{ color: 'text.secondary' }}>Ingrese sus detalles.</Typography>
                 </Box>
 
                 <Tooltip title={capitalCase(method)} placement="right">
@@ -124,17 +122,17 @@ export default function Login() {
                 </Tooltip>
               </Stack>
 
-              <Alert severity="info" sx={{ mb: 3 }}>
+              {/* <Alert severity="info" sx={{ mb: 3 }}>
                 Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
-              </Alert>
+              </Alert> */}
 
               <LoginForm />
 
               {!smUp && (
                 <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                  Don’t have an account?{' '}
+                  ¿No tienes una cuenta?{' '}
                   <NextLink href={PATH_AUTH.register} passHref>
-                    <Link variant="subtitle2">Get started</Link>
+                    <Link variant="subtitle2">Crea una nueva</Link>
                   </NextLink>
                 </Typography>
               )}

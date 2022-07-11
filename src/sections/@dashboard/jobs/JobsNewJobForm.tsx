@@ -108,7 +108,7 @@ export default function JobsNewJobForm() {
     // metaDescription: '',
     // metaKeywords: [],
     location: '',
-    status: JobStatus.Draft
+    status: JobStatus.Draft,
   };
 
   const methods = useForm<NewJobFormValues>({
@@ -125,15 +125,23 @@ export default function JobsNewJobForm() {
     formState: { isSubmitting, isValid },
   } = methods;
 
+  console.log({ isValid });
   const values = watch();
-  const {publish,...mutationValues} = values;
+  const { publish, ...mutationValues } = values;
 
   const [createJob, { loading }] = useCreateJobMutation();
 
   const onSubmit = async (data: NewJobFormValues) => {
     try {
       // await new Promise((resolve) => setTimeout(resolve, 500));
-      await createJob({ variables: { data: { ...mutationValues, status: values.publish ? JobStatus.Published : JobStatus.Draft } } });
+      await createJob({
+        variables: {
+          data: {
+            ...mutationValues,
+            status: values.publish ? JobStatus.Published : JobStatus.Draft,
+          },
+        },
+      });
       reset();
       handleClosePreview();
       enqueueSnackbar(

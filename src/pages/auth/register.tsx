@@ -17,6 +17,7 @@ import Logo from '../../components/Logo';
 import Image from '../../components/Image';
 // sections
 import { RegisterForm } from '../../sections/auth/register';
+import RoleToggleButtons from 'src/sections/auth/register/RoleToggleButtons';
 
 // ----------------------------------------------------------------------
 
@@ -78,9 +79,9 @@ export default function Register() {
             <Logo />
             {smUp && (
               <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-                Already have an account? {''}
+                ¿Ya tienes una cuenta? {''}
                 <NextLink href={PATH_AUTH.login} passHref>
-                  <Link variant="subtitle2">Login</Link>
+                  <Link variant="subtitle2">Inicia Sesión</Link>
                 </NextLink>
               </Typography>
             )}
@@ -89,7 +90,7 @@ export default function Register() {
           {mdUp && (
             <SectionStyle>
               <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-                Manage the job more effectively with Minimal
+                Administrar los puestos más efectivamente con Jobe
               </Typography>
               <Image
                 visibleByDefault
@@ -102,13 +103,13 @@ export default function Register() {
 
           <Container>
             <ContentStyle>
-              <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
+              <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
                 <Box sx={{ flexGrow: 1 }}>
                   <Typography variant="h4" gutterBottom>
-                    Get started absolutely free.
+                    Crea una cuenta gratis.
                   </Typography>
                   <Typography sx={{ color: 'text.secondary' }}>
-                    Free forever. No credit card needed.
+                    Gratis por siempre. Sin necesidad de tarjeta.
                   </Typography>
                 </Box>
                 <Tooltip title={capitalCase(method)}>
@@ -123,18 +124,19 @@ export default function Register() {
                 </Tooltip>
               </Box>
 
+              <RoleToggleButtons />
               <RegisterForm />
 
               <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
-                By registering, I agree to Minimal&nbsp;
+                Al registrarme, acepto las&nbsp;
                 <Link underline="always" color="text.primary" href="#">
-                  Terms of Service
-                </Link>
-                {''}and{''}
+                  Condiciones de Servicio
+                </Link>{' '}
+                y la{' '}
                 <Link underline="always" color="text.primary" href="#">
-                  Privacy Policy
-                </Link>
-                .
+                  Política de Privacidad
+                </Link>{' '}
+                de Jobe .
               </Typography>
 
               {!smUp && (
