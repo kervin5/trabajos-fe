@@ -141,9 +141,9 @@ export default function Register() {
 
               {!smUp && (
                 <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
-                  Already have an account?{' '}
+                  ¿Ya tienes una cuenta?{' '}
                   <NextLink href={PATH_AUTH.login} passHref>
-                    <Link variant="subtitle2">Login</Link>
+                    <Link variant="subtitle2">Inicia Sesión</Link>
                   </NextLink>
                 </Typography>
               )}
