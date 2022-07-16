@@ -148,6 +148,7 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 import Label from '../../../components/Label';
 import Iconify from '../../../components/Iconify';
 import SvgIconStyle from '../../../components/SvgIconStyle';
+import { SystemRole } from 'src/generated/graphql';
 
 // ----------------------------------------------------------------------
 
@@ -292,7 +293,7 @@ const navConfig = [
         title: 'item_by_roles',
         path: PATH_DASHBOARD.permissionDenied,
         icon: ICONS.menuItem,
-        roles: ['admin'],
+        roles: [SystemRole.Admin],
         caption: 'only_admin_can_see_this_item',
       },
       {

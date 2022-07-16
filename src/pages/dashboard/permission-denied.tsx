@@ -20,6 +20,7 @@ import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 // guards
 import RoleBasedGuard from '../../guards/RoleBasedGuard';
+import { SystemRole } from 'src/generated/graphql';
 
 // ----------------------------------------------------------------------
 
@@ -32,9 +33,9 @@ PermissionDenied.getLayout = function getLayout(page: React.ReactElement) {
 export default function PermissionDenied() {
   const { themeStretch } = useSettings();
 
-  const [role, setRole] = useState('admin');
+  const [role, setRole] = useState(SystemRole.Admin);
 
-  const handleChangeRole = (event: React.MouseEvent<HTMLElement>, newRole: string | null) => {
+  const handleChangeRole = (event: React.MouseEvent<HTMLElement>, newRole: SystemRole | null) => {
     if (newRole !== null) {
       setRole(newRole);
     }
@@ -61,11 +62,11 @@ export default function PermissionDenied() {
           color="primary"
           sx={{ mb: 5 }}
         >
-          <ToggleButton value="admin" aria-label="admin role">
+          <ToggleButton value={SystemRole.Admin} aria-label="admin role">
             isAdmin
           </ToggleButton>
 
-          <ToggleButton value="user" aria-label="user role">
+          <ToggleButton value={SystemRole.Candidate} aria-label="user role">
             isUser
           </ToggleButton>
         </ToggleButtonGroup>

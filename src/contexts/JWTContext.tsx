@@ -96,6 +96,7 @@ function AuthProvider({ children }: AuthProviderProps) {
                 lastName
                 displayName
                 email
+                role
               }
             }`,
             },
