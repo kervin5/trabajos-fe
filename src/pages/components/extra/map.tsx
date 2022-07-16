@@ -1,4 +1,5 @@
-import { Suspense, lazy } from 'react';
+// next
+import dynamic from 'next/dynamic';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Card, Stack, Container, CardHeader, CardContent } from '@mui/material';
@@ -13,36 +14,38 @@ import { countries as COUNTRIES } from '../../../_mock/map/countries';
 import Layout from '../../../layouts';
 // components
 import Page from '../../../components/Page';
-import { SkeletonMap } from '../../../components/skeleton';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 // sections
-const MapHeatmap = lazy(() => import('../../../sections/overview/extra/map/heatmap'));
-const MapGeojson = lazy(() => import('../../../sections/overview/extra/map/geojson'));
-const MapClusters = lazy(() => import('../../../sections/overview/extra/map/MapClusters'));
-const MapInteraction = lazy(() => import('../../../sections/overview/extra/map/interaction'));
-const MapChangeTheme = lazy(() => import('../../../sections/overview/extra/map/change-theme'));
-const MapZoomToBounds = lazy(() => import('../../../sections/overview/extra/map/MapZoomToBounds'));
-const MapMarkersPopups = lazy(
+const MapHeatmap = dynamic(() => import('../../../sections/overview/extra/map/heatmap'));
+const MapGeojson = dynamic(() => import('../../../sections/overview/extra/map/geojson'));
+const MapClusters = dynamic(() => import('../../../sections/overview/extra/map/clusters'));
+const MapInteraction = dynamic(() => import('../../../sections/overview/extra/map/interaction'));
+const MapChangeTheme = dynamic(() => import('../../../sections/overview/extra/map/change-theme'));
+const MapZoomToBounds = dynamic(
+  () => import('../../../sections/overview/extra/map/zoom-to-bounds')
+);
+const MapMarkersPopups = dynamic(
   () => import('../../../sections/overview/extra/map/MapMarkersPopups')
 );
-const MapDeckglOverlay = lazy(
+const MapDeckglOverlay = dynamic(
   () => import('../../../sections/overview/extra/map/MapDeckglOverlay')
 );
-const MapDynamicStyling = lazy(
+const MapDynamicStyling = dynamic(
   () => import('../../../sections/overview/extra/map/dynamic-styling')
 );
-const MapDraggableMarkers = lazy(
+const MapDraggableMarkers = dynamic(
   () => import('../../../sections/overview/extra/map/draggable-markers')
 );
-const MapGeoJSONAnimation = lazy(
+const MapGeoJSONAnimation = dynamic(
   () => import('../../../sections/overview/extra/map/MapGeoJSONAnimation')
 );
-const MapViewportAnimation = lazy(
+const MapViewportAnimation = dynamic(
   () => import('../../../sections/overview/extra/map/viewport-animation')
 );
-const MapHighlightByFilter = lazy(
+const MapHighlightByFilter = dynamic(
   () => import('../../../sections/overview/extra/map/MapHighlightByFilter')
 );
+const MapSideBySide = dynamic(() => import('../../../sections/overview/extra/map/side-by-side'));
 
 // ----------------------------------------------------------------------
 
@@ -56,9 +59,7 @@ const THEMES = {
 };
 
 const baseSettings = {
-  mapboxApiAccessToken: MAPBOX_API,
-  width: '100%',
-  height: '100%',
+  mapboxAccessToken: MAPBOX_API,
   minZoom: 1,
 };
 
@@ -111,130 +112,137 @@ export default function DemoMap() {
         </Box>
 
         <Container maxWidth="lg">
-          <Suspense fallback={<SkeletonMap />}>
-            <Stack spacing={5}>
-              <Card>
-                <CardHeader title="Map Change Theme" />
-                <CardContent>
-                  <MapWrapperStyle>
-                    <MapChangeTheme {...baseSettings} themes={THEMES} />
-                  </MapWrapperStyle>
-                </CardContent>
-              </Card>
+          <Stack spacing={5}>
+            <Card>
+              <CardHeader title="Change Theme" />
+              <CardContent>
+                <MapWrapperStyle>
+                  <MapChangeTheme {...baseSettings} themes={THEMES} />
+                </MapWrapperStyle>
+              </CardContent>
+            </Card>
 
-              <Card>
-                <CardHeader title="Map Dynamic Styling" />
-                <CardContent>
-                  <MapWrapperStyle>
-                    <MapDynamicStyling {...baseSettings} />
-                  </MapWrapperStyle>
-                </CardContent>
-              </Card>
+            <Card>
+              <CardHeader title="Dynamic Styling" />
+              <CardContent>
+                <MapWrapperStyle>
+                  <MapDynamicStyling {...baseSettings} />
+                </MapWrapperStyle>
+              </CardContent>
+            </Card>
 
-              <Card>
-                <CardHeader title="Map Markers & Popups" />
-                <CardContent>
-                  <MapWrapperStyle>
-                    <MapMarkersPopups {...baseSettings} data={COUNTRIES} mapStyle={THEMES.light} />
-                  </MapWrapperStyle>
-                </CardContent>
-              </Card>
+            <Card>
+              <CardHeader title="Markers & Popups" />
+              <CardContent>
+                <MapWrapperStyle>
+                  <MapMarkersPopups {...baseSettings} data={COUNTRIES} mapStyle={THEMES.light} />
+                </MapWrapperStyle>
+              </CardContent>
+            </Card>
 
-              <Card>
-                <CardHeader title="Map Draggable Markers" />
-                <CardContent>
-                  <MapWrapperStyle>
-                    <MapDraggableMarkers {...baseSettings} mapStyle={THEMES.light} />
-                  </MapWrapperStyle>
-                </CardContent>
-              </Card>
+            <Card>
+              <CardHeader title="Draggable Markers" />
+              <CardContent>
+                <MapWrapperStyle>
+                  <MapDraggableMarkers {...baseSettings} mapStyle={THEMES.light} />
+                </MapWrapperStyle>
+              </CardContent>
+            </Card>
 
-              <Card>
-                <CardHeader title="Map Geojson" />
-                <CardContent>
-                  <MapWrapperStyle>
-                    <MapGeojson {...baseSettings} mapStyle={THEMES.light} />
-                  </MapWrapperStyle>
-                </CardContent>
-              </Card>
+            <Card>
+              <CardHeader title="Geojson" />
+              <CardContent>
+                <MapWrapperStyle>
+                  <MapGeojson {...baseSettings} mapStyle={THEMES.light} />
+                </MapWrapperStyle>
+              </CardContent>
+            </Card>
 
-              <Card>
-                <CardHeader title="Map Geojson Animation" />
-                <CardContent>
-                  <MapWrapperStyle>
-                    <MapGeoJSONAnimation {...baseSettings} mapStyle={THEMES.satelliteStreets} />
-                  </MapWrapperStyle>
-                </CardContent>
-              </Card>
+            <Card>
+              <CardHeader title="Geojson Animation" />
+              <CardContent>
+                <MapWrapperStyle>
+                  <MapGeoJSONAnimation {...baseSettings} mapStyle={THEMES.satelliteStreets} />
+                </MapWrapperStyle>
+              </CardContent>
+            </Card>
 
-              <Card>
-                <CardHeader title="Map Clusters" />
-                <CardContent>
-                  <MapWrapperStyle>
-                    <MapClusters {...baseSettings} mapStyle={THEMES.light} />
-                  </MapWrapperStyle>
-                </CardContent>
-              </Card>
+            <Card>
+              <CardHeader title="Clusters" />
+              <CardContent>
+                <MapWrapperStyle>
+                  <MapClusters {...baseSettings} mapStyle={THEMES.light} />
+                </MapWrapperStyle>
+              </CardContent>
+            </Card>
 
-              <Card>
-                <CardHeader title="Map Interaction" />
-                <CardContent>
-                  <MapWrapperStyle>
-                    <MapInteraction {...baseSettings} mapStyle={THEMES.light} />
-                  </MapWrapperStyle>
-                </CardContent>
-              </Card>
+            <Card>
+              <CardHeader title="Interaction" />
+              <CardContent>
+                <MapWrapperStyle>
+                  <MapInteraction {...baseSettings} mapStyle={THEMES.light} />
+                </MapWrapperStyle>
+              </CardContent>
+            </Card>
 
-              <Card>
-                <CardHeader title="Map Viewport Animation" />
-                <CardContent>
-                  <MapWrapperStyle>
-                    <MapViewportAnimation
-                      {...baseSettings}
-                      data={CITIES.filter((city) => city.state === 'Texas')}
-                      mapStyle={THEMES.light}
-                    />
-                  </MapWrapperStyle>
-                </CardContent>
-              </Card>
+            <Card>
+              <CardHeader title="Viewport Animation" />
+              <CardContent>
+                <MapWrapperStyle>
+                  <MapViewportAnimation
+                    {...baseSettings}
+                    data={CITIES.filter((city) => city.state === 'Texas')}
+                    mapStyle={THEMES.light}
+                  />
+                </MapWrapperStyle>
+              </CardContent>
+            </Card>
 
-              <Card>
-                <CardHeader title="Map Highlight By Filter" />
-                <CardContent>
-                  <MapWrapperStyle>
-                    <MapHighlightByFilter {...baseSettings} mapStyle={THEMES.light} />
-                  </MapWrapperStyle>
-                </CardContent>
-              </Card>
+            <Card>
+              <CardHeader title="Highlight By Filter" />
+              <CardContent>
+                <MapWrapperStyle>
+                  <MapHighlightByFilter {...baseSettings} mapStyle={THEMES.light} />
+                </MapWrapperStyle>
+              </CardContent>
+            </Card>
 
-              <Card>
-                <CardHeader title="Map Zoom To Bounds" />
-                <CardContent>
-                  <MapWrapperStyle>
-                    <MapZoomToBounds {...baseSettings} />
-                  </MapWrapperStyle>
-                </CardContent>
-              </Card>
+            <Card>
+              <CardHeader title="Zoom To Bounds" />
+              <CardContent>
+                <MapWrapperStyle>
+                  <MapZoomToBounds {...baseSettings} />
+                </MapWrapperStyle>
+              </CardContent>
+            </Card>
 
-              <Card>
-                <CardHeader title="Map Deckgl Overlay" />
-                <CardContent>
-                  <MapWrapperStyle>
-                    <MapDeckglOverlay {...baseSettings} mapStyle={THEMES.light} />
-                  </MapWrapperStyle>
-                </CardContent>
-              </Card>
+            <Card>
+              <CardHeader title="Deckgl Overlay" />
+              <CardContent>
+                <MapWrapperStyle>
+                  <MapDeckglOverlay {...baseSettings} mapStyle={THEMES.light} />
+                </MapWrapperStyle>
+              </CardContent>
+            </Card>
 
-              <Card>
-                <CardHeader title="Map Heatmap" />
-                <CardContent>
-                  <MapWrapperStyle>
-                    <MapHeatmap {...baseSettings} mapStyle={THEMES.light} />
-                  </MapWrapperStyle>
-                </CardContent>
-              </Card>
-            </Stack>
-          </Suspense>
+            <Card>
+              <CardHeader title="Heatmap" />
+              <CardContent>
+                <MapWrapperStyle>
+                  <MapHeatmap {...baseSettings} mapStyle={THEMES.light} />
+                </MapWrapperStyle>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader title="Side By Side" />
+              <CardContent>
+                <MapWrapperStyle>
+                  <MapSideBySide {...baseSettings} />
+                </MapWrapperStyle>
+              </CardContent>
+            </Card>
+          </Stack>
         </Container>
       </RootStyle>
     </Page>

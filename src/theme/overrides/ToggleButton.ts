@@ -9,11 +9,13 @@ export default function ToggleButton(theme: Theme) {
     props: { color },
     style: {
       '&:hover': {
-        borderColor: alpha(theme.palette[color].main, 0.48),
-        backgroundColor: alpha(theme.palette[color].main, theme.palette.action.hoverOpacity),
+        borderColor: theme.palette[color]?.main && alpha(theme.palette[color]?.main, 0.48),
+        backgroundColor:
+          theme.palette[color]?.main &&
+          alpha(theme.palette[color].main, theme.palette.action.hoverOpacity),
       },
       '&.Mui-selected': {
-        borderColor: alpha(theme.palette[color].main, 0.48),
+        borderColor: theme.palette[color]?.main && alpha(theme.palette[color].main, 0.48),
       },
     },
   });

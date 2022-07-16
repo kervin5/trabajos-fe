@@ -8,7 +8,7 @@ import uuidv4 from '../../../utils/uuidv4';
 import { SendMessage } from '../../../@types/chat';
 // components
 import Iconify from '../../../components/Iconify';
-import EmojiPicker from '../../../components/EmojiPicker';
+import EmojiPicker from '../../../components/emoji-picker';
 
 // ----------------------------------------------------------------------
 
@@ -30,6 +30,7 @@ type Props = {
 
 export default function ChatMessageInput({ disabled, conversationId, onSend }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [message, setMessage] = useState('');
 
   const handleAttach = () => {
@@ -80,9 +81,11 @@ export default function ChatMessageInput({ disabled, conversationId, onSend }: P
             <IconButton disabled={disabled} size="small" onClick={handleAttach}>
               <Iconify icon="ic:round-add-photo-alternate" width={22} height={22} />
             </IconButton>
+
             <IconButton disabled={disabled} size="small" onClick={handleAttach}>
               <Iconify icon="eva:attach-2-fill" width={22} height={22} />
             </IconButton>
+
             <IconButton disabled={disabled} size="small">
               <Iconify icon="eva:mic-fill" width={22} height={22} />
             </IconButton>

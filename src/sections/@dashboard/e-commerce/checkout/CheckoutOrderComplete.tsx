@@ -30,6 +30,7 @@ const DialogStyle = styled(DialogAnimate)(({ theme }) => ({
 
 export default function CheckoutOrderComplete({ open }: DialogProps) {
   const { push } = useRouter();
+
   const dispatch = useDispatch();
 
   const handleResetStep = () => {

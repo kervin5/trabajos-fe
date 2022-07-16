@@ -15,160 +15,179 @@ import {
   TableRow,
   TableBody,
   TableCell,
-  IconButton,
-  TableHead,
+  CardProps,
   CardHeader,
   Typography,
   TableContainer,
 } from '@mui/material';
-// _mock_
-import { _bookings } from '../../../../_mock';
-//
+// components
 import Label from '../../../../components/Label';
 import Iconify from '../../../../components/Iconify';
 import Scrollbar from '../../../../components/Scrollbar';
-import MenuPopover from '../../../../components/MenuPopover';
+import { TableMoreMenu, TableHeadCustom } from '../../../../components/table';
 
 // ----------------------------------------------------------------------
 
-export default function BookingDetails() {
-  const theme = useTheme();
+type RowProps = {
+  id: string;
+  name: string;
+  avatar: string;
+  checkIn: Date | string | number;
+  checkOut: Date | string | number;
+  phoneNumber: string;
+  status: string;
+  roomType: string;
+};
 
-  const isLight = theme.palette.mode === 'light';
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  tableLabels: any;
+  tableData: RowProps[];
+}
 
+export default function BookingDetails({
+  title,
+  subheader,
+  tableLabels,
+  tableData,
+  ...other
+}: Props) {
   return (
-    <>
-      <Card>
-        <CardHeader title="Booking Details" sx={{ mb: 3 }} />
-        <Scrollbar>
-          <TableContainer sx={{ minWidth: 720 }}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ minWidth: 240 }}>Booker</TableCell>
-                  <TableCell sx={{ minWidth: 160 }}>Check In</TableCell>
-                  <TableCell sx={{ minWidth: 160 }}>Check Out</TableCell>
-                  <TableCell sx={{ minWidth: 120 }}>Status</TableCell>
-                  <TableCell sx={{ minWidth: 200 }}>Phone</TableCell>
-                  <TableCell sx={{ minWidth: 120 }}>Room Type</TableCell>
-                  <TableCell />
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {_bookings.map((row) => (
-                  <TableRow key={row.id}>
-                    <TableCell>
-                      <Stack direction="row" alignItems="center" spacing={2}>
-                        <Avatar alt={row.name} src={row.avatar} />
-                        <Typography variant="subtitle2">{row.name}</Typography>
-                      </Stack>
-                    </TableCell>
+    <Card {...other}>
+      <CardHeader title={title} subheader={subheader} sx={{ mb: 3 }} />
+      <Scrollbar>
+        <TableContainer sx={{ minWidth: 720 }}>
+          <Table>
+            <TableHeadCustom headLabel={tableLabels} />
 
-                    <TableCell>{format(new Date(row.checkIn), 'dd MMM yyyy')}</TableCell>
-                    <TableCell>{format(new Date(row.checkOut), 'dd MMM yyyy')}</TableCell>
+            <TableBody>
+              {tableData.map((row) => (
+                <BookingDetailsRow key={row.id} row={row} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Scrollbar>
 
-                    <TableCell>
-                      <Label
-                        variant={isLight ? 'ghost' : 'filled'}
-                        color={
-                          (row.status === 'paid' && 'success') ||
-                          (row.status === 'pending' && 'warning') ||
-                          'error'
-                        }
-                      >
-                        {sentenceCase(row.status)}
-                      </Label>
-                    </TableCell>
+      <Divider />
 
-                    <TableCell>{row.phoneNumber}</TableCell>
-                    <TableCell sx={{ textTransform: 'capitalize' }}>{row.roomType}</TableCell>
-
-                    <TableCell align="right">
-                      <MoreMenuButton />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Scrollbar>
-
-        <Divider />
-
-        <Box sx={{ p: 2, textAlign: 'right' }}>
-          <Button
-            size="small"
-            color="inherit"
-            endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}
-          >
-            View All
-          </Button>
-        </Box>
-      </Card>
-    </>
+      <Box sx={{ p: 2, textAlign: 'right' }}>
+        <Button
+          size="small"
+          color="inherit"
+          endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}
+        >
+          View All
+        </Button>
+      </Box>
+    </Card>
   );
 }
 
 // ----------------------------------------------------------------------
 
-function MoreMenuButton() {
-  const [open, setOpen] = useState<HTMLElement | null>(null);
+type BookingDetailsRowProps = {
+  row: RowProps;
+};
 
-  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setOpen(event.currentTarget);
+function BookingDetailsRow({ row }: BookingDetailsRowProps) {
+  const theme = useTheme();
+
+  const isLight = theme.palette.mode === 'light';
+
+  const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null);
+
+  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setOpenMenuActions(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setOpen(null);
+  const handleCloseMenu = () => {
+    setOpenMenuActions(null);
   };
 
-  const ICON = {
-    mr: 2,
-    width: 20,
-    height: 20,
+  const handleDownload = () => {
+    handleCloseMenu();
+    console.log('DOWNLOAD', row.id);
+  };
+
+  const handlePrint = () => {
+    handleCloseMenu();
+    console.log('PRINT', row.id);
+  };
+
+  const handleShare = () => {
+    handleCloseMenu();
+    console.log('SHARE', row.id);
+  };
+
+  const handleDelete = () => {
+    handleCloseMenu();
+    console.log('DELETE', row.id);
   };
 
   return (
-    <>
-      <IconButton size="large" onClick={handleOpen}>
-        <Iconify icon={'eva:more-vertical-fill'} width={20} height={20} />
-      </IconButton>
+    <TableRow>
+      <TableCell>
+        <Stack direction="row" alignItems="center" spacing={2}>
+          <Avatar alt={row.name} src={row.avatar} />
+          <Typography variant="subtitle2">{row.name}</Typography>
+        </Stack>
+      </TableCell>
 
-      <MenuPopover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        arrow="right-top"
-        sx={{
-          mt: -0.5,
-          width: 160,
-          '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
-        }}
-      >
-        <MenuItem>
-          <Iconify icon={'eva:download-fill'} sx={{ ...ICON }} />
-          Download
-        </MenuItem>
+      <TableCell>{format(new Date(row.checkIn), 'dd MMM yyyy')}</TableCell>
 
-        <MenuItem>
-          <Iconify icon={'eva:printer-fill'} sx={{ ...ICON }} />
-          Print
-        </MenuItem>
+      <TableCell>{format(new Date(row.checkOut), 'dd MMM yyyy')}</TableCell>
 
-        <MenuItem>
-          <Iconify icon={'eva:share-fill'} sx={{ ...ICON }} />
-          Share
-        </MenuItem>
+      <TableCell>
+        <Label
+          variant={isLight ? 'ghost' : 'filled'}
+          color={
+            (row.status === 'paid' && 'success') ||
+            (row.status === 'pending' && 'warning') ||
+            'error'
+          }
+        >
+          {sentenceCase(row.status)}
+        </Label>
+      </TableCell>
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
+      <TableCell>{row.phoneNumber}</TableCell>
 
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
-          Delete
-        </MenuItem>
-      </MenuPopover>
-    </>
+      <TableCell sx={{ textTransform: 'capitalize' }}>{row.roomType}</TableCell>
+
+      <TableCell align="right">
+        <TableMoreMenu
+          open={openMenu}
+          onOpen={handleOpenMenu}
+          onClose={handleCloseMenu}
+          actions={
+            <>
+              <MenuItem onClick={handleDownload}>
+                <Iconify icon={'eva:download-fill'} />
+                Download
+              </MenuItem>
+
+              <MenuItem onClick={handlePrint}>
+                <Iconify icon={'eva:printer-fill'} />
+                Print
+              </MenuItem>
+
+              <MenuItem onClick={handleShare}>
+                <Iconify icon={'eva:share-fill'} />
+                Share
+              </MenuItem>
+
+              <Divider sx={{ borderStyle: 'dashed' }} />
+
+              <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
+                <Iconify icon={'eva:trash-2-outline'} />
+                Delete
+              </MenuItem>
+            </>
+          }
+        />
+      </TableCell>
+    </TableRow>
   );
 }

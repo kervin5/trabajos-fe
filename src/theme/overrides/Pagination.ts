@@ -13,10 +13,13 @@ export default function Pagination(theme: Theme) {
         },
         textPrimary: {
           '&.Mui-selected': {
-            color: theme.palette.primary.main,
-            backgroundColor: alpha(theme.palette.primary.main, 0.08),
+            color: theme.palette.primary?.main,
+            backgroundColor:
+              theme.palette.primary?.main && alpha(theme.palette.primary?.main, 0.08),
             '&:hover, &.Mui-focusVisible': {
-              backgroundColor: `${alpha(theme.palette.primary.main, 0.24)} !important`,
+              backgroundColor: `${
+                theme.palette.primary?.main ? alpha(theme.palette.primary?.main, 0.24) : '#fff'
+              } !important`,
             },
           },
         },
@@ -25,8 +28,11 @@ export default function Pagination(theme: Theme) {
         },
         outlinedPrimary: {
           '&.Mui-selected': {
-            backgroundColor: alpha(theme.palette.primary.main, 0.08),
-            border: `1px solid ${alpha(theme.palette.primary.main, 0.24)}`,
+            backgroundColor:
+              theme.palette.primary?.main && alpha(theme.palette.primary?.main, 0.08),
+            border:
+              theme.palette.primary?.main &&
+              `1px solid ${alpha(theme.palette.primary?.main, 0.24)}`,
           },
         },
       },

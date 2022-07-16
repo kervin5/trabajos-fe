@@ -85,7 +85,7 @@ export type ProductState = {
     gender: string[];
     category: string;
     colors: string[];
-    priceRange: string;
+    priceRange: [number, number];
     rating: string;
   };
   checkout: {
@@ -103,7 +103,7 @@ export type ProductFilter = {
   gender: string[];
   category: string;
   colors: string[];
-  priceRange: string;
+  priceRange: [number, number];
   rating: string;
 };
 

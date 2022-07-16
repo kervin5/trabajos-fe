@@ -36,6 +36,7 @@ export default function MegaMenuDesktopHorizon({ navConfig, ...other }: Props) {
 
 function MegaMenuItem({ parent }: { parent: MegaMenuItemProps }) {
   const { title, path, more, products, tags, children } = parent;
+
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -79,6 +80,7 @@ function MegaMenuItem({ parent }: { parent: MegaMenuItemProps }) {
                   <Typography variant="subtitle1" sx={{ fontWeight: 'fontWeightBold' }} noWrap>
                     {list.subheader}
                   </Typography>
+
                   {list.items.map((link) => (
                     <NextLink key={link.title} href={link.path} passHref>
                       <Link
@@ -109,7 +111,9 @@ function MegaMenuItem({ parent }: { parent: MegaMenuItemProps }) {
                 </NextLink>
 
                 <Divider />
+
                 <MegaMenuCarousel products={products} numberShow={8} />
+
                 <Divider />
 
                 <MenuHotProducts tags={tags} />
@@ -151,6 +155,7 @@ function ParentItem({ title, path = '', open, hasSub, ...other }: ParentItemProp
         {...other}
       >
         {title}
+
         {hasSub && <Iconify icon={'eva:chevron-down-fill'} sx={{ ml: 1, width: 20, height: 20 }} />}
       </Link>
     </NextLink>

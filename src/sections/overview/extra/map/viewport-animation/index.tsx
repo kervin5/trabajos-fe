@@ -1,53 +1,49 @@
-import { useState, useCallback } from 'react';
-import MapGL, { FlyToInterpolator } from 'react-map-gl';
-import { InteractiveMapProps } from 'react-map-gl/src/components/interactive-map';
-// @types
-import { CityData } from '../../../../../components/map/type';
+import { useRef, useState, useCallback, memo } from 'react';
+import Map, { MapRef } from 'react-map-gl';
 // components
-import {
-  MapControlScale,
-  MapControlGeolocate,
-  MapControlNavigation,
-  MapControlFullscreen,
-} from '../../../../../components/map';
+import { MapControl, MapBoxProps } from '../../../../../components/map';
 //
-import ControlPanel from './ControlPanel';
+import ControlPanel, { CityProps } from './ControlPanel';
 
 // ----------------------------------------------------------------------
 
-interface MapViewportAnimationProps extends InteractiveMapProps {
-  data: CityData[];
+interface Props extends MapBoxProps {
+  data: CityProps[];
 }
 
-export default function MapViewportAnimation({ data, ...other }: MapViewportAnimationProps) {
-  const [selectedCity, setSelectedCity] = useState(data[2].city);
-  const [viewport, setViewport] = useState<Record<string, any>>({
-    latitude: 37.7751,
-    longitude: -122.4193,
-    zoom: 10,
-    bearing: 0,
-    pitch: 0,
-  });
+function MapViewportAnimation({ data, ...other }: Props) {
+  const mapRef = useRef<MapRef>(null);
 
-  const handleChangeCity = useCallback((event, { longitude, latitude }) => {
-    setSelectedCity(event.target.value);
-    setViewport({
-      longitude,
-      latitude,
-      zoom: 10,
-      transitionInterpolator: new FlyToInterpolator({ speed: 1.2 }),
-      transitionDuration: 'auto',
-    });
-  }, []);
+  const [selectedCity, setSelectedCity] = useState(data[2].city);
+
+  const onSelectCity = useCallback(
+    (
+      event: React.ChangeEvent<HTMLInputElement>,
+      { longitude, latitude }: { longitude: number; latitude: number }
+    ) => {
+      setSelectedCity(event.target.value);
+      mapRef.current?.flyTo({ center: [longitude, latitude], duration: 2000 });
+    },
+    []
+  );
 
   return (
-    <MapGL {...viewport} onViewportChange={setViewport} dragRotate={false} {...other}>
-      <MapControlScale />
-      <MapControlNavigation />
-      <MapControlFullscreen />
-      <MapControlGeolocate />
+    <Map
+      initialViewState={{
+        latitude: 37.7751,
+        longitude: -122.4193,
+        zoom: 11,
+        bearing: 0,
+        pitch: 0,
+      }}
+      ref={mapRef}
+      {...other}
+    >
+      <MapControl />
 
-      <ControlPanel data={data} selectedCity={selectedCity} handleChange={handleChangeCity} />
-    </MapGL>
+      <ControlPanel data={data} selectedCity={selectedCity} onSelectCity={onSelectCity} />
+    </Map>
   );
 }
+
+export default memo(MapViewportAnimation);

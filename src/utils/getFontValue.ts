@@ -8,6 +8,7 @@ import useResponsive from '../hooks/useResponsive';
 
 export default function GetFontValue(variant: Variant) {
   const theme = useTheme();
+
   const breakpoints = useWidth();
 
   const key = theme.breakpoints.up(breakpoints === 'xl' ? 'lg' : breakpoints);
@@ -26,7 +27,9 @@ export default function GetFontValue(variant: Variant) {
       : theme.typography[variant];
 
   const fontSize = remToPx(getFont.fontSize);
+
   const lineHeight = Number(theme.typography[variant].lineHeight) * fontSize;
+
   const { fontWeight, letterSpacing } = theme.typography[variant];
 
   return { fontSize, lineHeight, fontWeight, letterSpacing };
@@ -60,12 +63,15 @@ export function responsiveFontSizes({ sm, md, lg }: { sm: number; md: number; lg
 
 function useWidth() {
   const theme = useTheme();
+
   const keys = [...theme.breakpoints.keys].reverse();
+
   return (
     // @ts-ignore not sure what is this
     keys.reduce((output, key) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const matches = useResponsive('up', key);
+
       return !output && matches ? key : output;
     }, null) || 'xs'
   );

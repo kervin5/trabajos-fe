@@ -12,9 +12,22 @@ interface Props extends BoxProps {
 
 const Logo = forwardRef<any, Props>(({ disabledLink = false, sx }, ref) => {
   const theme = useTheme();
+
   const PRIMARY_LIGHT = theme.palette.primary.light;
+
   const PRIMARY_MAIN = theme.palette.primary.main;
+
   const PRIMARY_DARK = theme.palette.primary.dark;
+
+  // OR
+  // -------------------------------------------------------
+  // const logo = (
+  //   <Box
+  //     component="img"
+  //     src="/logo/logo_single.svg" => your path
+  //     sx={{ width: 40, height: 40, cursor: 'pointer', ...sx }}
+  //   />
+  // );
 
   const logo = (
     <Box ref={ref} sx={{ width: 40, height: 40, cursor: 'pointer', ...sx }}>
@@ -33,6 +46,7 @@ const Logo = forwardRef<any, Props>(({ disabledLink = false, sx }, ref) => {
             <stop offset="100%" stopColor={PRIMARY_MAIN} />
           </linearGradient>
         </defs>
+
         <g fill={PRIMARY_MAIN} fillRule="evenodd" stroke="none" strokeWidth="1">
           <path
             fill="url(#BG1)"

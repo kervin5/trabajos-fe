@@ -1,6 +1,6 @@
-export { default as MapControlPopup } from './MapControlPopup';
-export { default as MapControlScale } from './MapControlScale';
-export { default as MapControlMarker } from './MapControlMarker';
-export { default as MapControlGeolocate } from './MapControlGeolocate';
-export { default as MapControlFullscreen } from './MapControlFullscreen';
-export { default as MapControlNavigation } from './MapControlNavigation';
+export * from './type';
+export * from './style';
+
+export { default as MapPopup } from './MapPopup';
+export { default as MapMarker } from './MapMarker';
+export { default as MapControl } from './MapControl';

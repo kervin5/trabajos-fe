@@ -1,130 +1,93 @@
-import { ReactElement, forwardRef } from 'react';
-// next
-import NextLink from 'next/link';
+import { forwardRef } from 'react';
 // @mui
-import { Box, Link } from '@mui/material';
+import { Box, Tooltip, ListItemButtonProps, ListItemText, ListItemIcon } from '@mui/material';
+// hooks
+import useLocales from '../../../hooks/useLocales';
+// guards
+import RoleBasedGuard from '../../../guards/RoleBasedGuard';
 // config
 import { ICON } from '../../../config';
-// type
-import { NavItemProps } from '../type';
 //
+import { NavItemProps } from '../type';
 import Iconify from '../../Iconify';
 import { ListItemStyle } from './style';
-import { isExternalLink } from '..';
 
 // ----------------------------------------------------------------------
 
-export const NavItemRoot = forwardRef<HTMLButtonElement & HTMLAnchorElement, NavItemProps>(
-  ({ item, active, open, onMouseEnter, onMouseLeave }, ref) => {
-    const { title, path, icon, children } = item;
+type Props = NavItemProps & ListItemButtonProps;
 
-    if (children) {
-      return (
-        <ListItemStyle
-          ref={ref}
-          open={open}
-          activeRoot={active}
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-        >
-          <NavItemContent icon={icon} title={title} children={children} />
-        </ListItemStyle>
-      );
-    }
+const NavItem = forwardRef<HTMLDivElement & HTMLAnchorElement, Props>(
+  ({ item, depth, active, open, ...other }, ref) => {
+    const { translate } = useLocales();
 
-    return isExternalLink(path) ? (
-      <ListItemStyle component={Link} href={path} target="_blank" rel="noopener">
-        <NavItemContent icon={icon} title={title} children={children} />
-      </ListItemStyle>
-    ) : (
-      <NextLink href={path} passHref>
-        <ListItemStyle activeRoot={active}>
-          <NavItemContent icon={icon} title={title} children={children} />
-        </ListItemStyle>
-      </NextLink>
-    );
-  }
-);
+    const { title, icon, info, children, disabled, caption, roles } = item;
 
-// ----------------------------------------------------------------------
-
-export const NavItemSub = forwardRef<HTMLButtonElement & HTMLAnchorElement, NavItemProps>(
-  ({ item, active, open, onMouseEnter, onMouseLeave }, ref) => {
-    const { title, path, icon, children } = item;
-
-    if (children) {
-      return (
-        <ListItemStyle
-          ref={ref}
-          subItem
-          disableRipple
-          open={open}
-          activeSub={active}
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-        >
-          <NavItemContent icon={icon} title={title} children={children} subItem />
-        </ListItemStyle>
-      );
-    }
-
-    return isExternalLink(path) ? (
+    const renderContent = (
       <ListItemStyle
-        subItem
-        href={path}
-        disableRipple
-        rel="noopener"
-        target="_blank"
-        component={Link}
+        ref={ref}
+        open={open}
+        depth={depth}
+        active={active}
+        disabled={disabled}
+        {...other}
       >
-        <NavItemContent icon={icon} title={title} children={children} subItem />
-      </ListItemStyle>
-    ) : (
-      <NextLink href={path} passHref>
-        <ListItemStyle disableRipple activeSub={active} subItem>
-          <NavItemContent icon={icon} title={title} children={children} subItem />
-        </ListItemStyle>
-      </NextLink>
-    );
-  }
-);
+        {icon && (
+          <ListItemIcon
+            sx={{
+              mr: 1,
+              flexShrink: 0,
+              width: ICON.NAVBAR_ITEM_HORIZONTAL,
+              height: ICON.NAVBAR_ITEM_HORIZONTAL,
+            }}
+          >
+            {icon}
+          </ListItemIcon>
+        )}
 
-// ----------------------------------------------------------------------
-
-type NavItemContentProps = {
-  title: string;
-  icon?: ReactElement;
-  children?: { title: string; path: string }[];
-  subItem?: boolean;
-};
-
-function NavItemContent({ icon, title, children, subItem }: NavItemContentProps) {
-  return (
-    <>
-      {icon && (
-        <Box
-          component="span"
-          sx={{
-            mr: 1,
-            width: ICON.NAVBAR_ITEM_HORIZONTAL,
-            height: ICON.NAVBAR_ITEM_HORIZONTAL,
-            '& svg': { width: '100%', height: '100%' },
-          }}
-        >
-          {icon}
-        </Box>
-      )}
-      {title}
-      {children && (
-        <Iconify
-          icon={subItem ? 'eva:chevron-right-fill' : 'eva:chevron-down-fill'}
-          sx={{
-            ml: 0.5,
-            width: ICON.NAVBAR_ITEM_HORIZONTAL,
-            height: ICON.NAVBAR_ITEM_HORIZONTAL,
+        <ListItemText
+          primary={translate(title)}
+          primaryTypographyProps={{
+            noWrap: true,
+            variant: active ? 'subtitle2' : 'body2',
           }}
         />
-      )}
-    </>
-  );
-}
+
+        {caption && (
+          <Tooltip title={translate(caption)} arrow>
+            <Box component="span" sx={{ ml: 0.5, lineHeight: 0 }}>
+              <Iconify
+                icon="eva:info-outline"
+                sx={{
+                  width: ICON.NAVBAR_ITEM_HORIZONTAL / -4,
+                  height: ICON.NAVBAR_ITEM_HORIZONTAL / -4,
+                }}
+              />
+            </Box>
+          </Tooltip>
+        )}
+
+        {info && (
+          <Box component="span" sx={{ ml: 1, lineHeight: 0 }}>
+            {info}
+          </Box>
+        )}
+
+        {!!children && (
+          <Iconify
+            icon={depth > 1 ? 'eva:chevron-right-fill' : 'eva:chevron-down-fill'}
+            sx={{
+              ml: 0.5,
+              flexShrink: 0,
+              width: ICON.NAVBAR_ITEM_HORIZONTAL,
+              height: ICON.NAVBAR_ITEM_HORIZONTAL,
+            }}
+          />
+        )}
+      </ListItemStyle>
+    );
+
+    return <RoleBasedGuard roles={roles}>{renderContent}</RoleBasedGuard>;
+  }
+);
+
+export default NavItem;

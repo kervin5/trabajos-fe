@@ -1,42 +1,32 @@
-import { useState, useCallback } from 'react';
-import MapGL from 'react-map-gl';
+import { useState, useCallback, memo } from 'react';
+import Map from 'react-map-gl';
 // components
-import {
-  MapControlScale,
-  MapControlGeolocate,
-  MapControlNavigation,
-  MapControlFullscreen,
-} from '../../../../../components/map';
+import { MapControl, MapBoxProps } from '../../../../../components/map';
 //
 import ControlPanel from './ControlPanel';
 
 // ----------------------------------------------------------------------
 
-export default function MapInteraction({ ...other }) {
-  const [interactionState, setInteractionState] = useState({});
-  const [viewport, setViewport] = useState({
-    latitude: 37.729,
-    longitude: -122.36,
-    zoom: 11,
-    bearing: 0,
-    pitch: 50,
-  });
+function MapInteraction({ ...other }: MapBoxProps) {
   const [settings, setSettings] = useState({
-    dragPan: true,
-    dragRotate: true,
-    scrollZoom: true,
-    touchZoom: true,
-    touchRotate: true,
-    keyboard: true,
-    doubleClickZoom: true,
     minZoom: 0,
     maxZoom: 20,
     minPitch: 0,
     maxPitch: 85,
+    dragPan: true,
+    boxZoom: true,
+    keyboard: true,
+    touchZoom: true,
+    dragRotate: true,
+    scrollZoom: true,
+    touchPitch: true,
+    touchRotate: true,
+    doubleClickZoom: true,
+    touchZoomRotate: true,
   });
 
-  const handleChangeSetting = useCallback(
-    (name: string, value: any) =>
+  const updateSettings = useCallback(
+    (name: string, value: boolean | number) =>
       setSettings((settings) => ({
         ...settings,
         [name]: value,
@@ -46,24 +36,23 @@ export default function MapInteraction({ ...other }) {
 
   return (
     <>
-      <MapGL
-        {...viewport}
+      <Map
         {...settings}
-        onViewportChange={setViewport}
-        onInteractionStateChange={(interactionState: any) => setInteractionState(interactionState)}
+        initialViewState={{
+          latitude: 37.729,
+          longitude: -122.36,
+          zoom: 11,
+          bearing: 0,
+          pitch: 50,
+        }}
         {...other}
       >
-        <MapControlScale />
-        <MapControlNavigation />
-        <MapControlFullscreen />
-        <MapControlGeolocate />
+        <MapControl />
 
-        <ControlPanel
-          settings={settings}
-          interactionState={interactionState}
-          onChange={handleChangeSetting}
-        />
-      </MapGL>
+        <ControlPanel settings={settings} onChange={updateSettings} />
+      </Map>
     </>
   );
 }
+
+export default memo(MapInteraction);

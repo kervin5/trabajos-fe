@@ -12,63 +12,53 @@ import {
   TableRow,
   TableBody,
   TableCell,
-  TableHead,
+  CardProps,
   CardHeader,
-  IconButton,
   TableContainer,
 } from '@mui/material';
 // utils
 import { fCurrency } from '../../../../utils/formatNumber';
-// _mock_
-import { _appInvoices } from '../../../../_mock';
 // components
 import Label from '../../../../components/Label';
 import Iconify from '../../../../components/Iconify';
 import Scrollbar from '../../../../components/Scrollbar';
-import MenuPopover from '../../../../components/MenuPopover';
+import { TableMoreMenu, TableHeadCustom } from '../../../../components/table';
 
 // ----------------------------------------------------------------------
 
-export default function AppNewInvoice() {
-  const theme = useTheme();
+type RowProps = {
+  id: string;
+  category: string;
+  price: number;
+  status: string;
+};
 
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  tableData: RowProps[];
+  tableLabels: any;
+}
+
+export default function AppNewInvoice({
+  title,
+  subheader,
+  tableData,
+  tableLabels,
+  ...other
+}: Props) {
   return (
-    <Card>
-      <CardHeader title="New Invoice" sx={{ mb: 3 }} />
+    <Card {...other}>
+      <CardHeader title={title} subheader={subheader} sx={{ mb: 3 }} />
+
       <Scrollbar>
         <TableContainer sx={{ minWidth: 720 }}>
           <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Invoice ID</TableCell>
-                <TableCell>Category</TableCell>
-                <TableCell>Price</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell />
-              </TableRow>
-            </TableHead>
+            <TableHeadCustom headLabel={tableLabels} />
+
             <TableBody>
-              {_appInvoices.map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell>{`INV-${row.id}`}</TableCell>
-                  <TableCell>{row.category}</TableCell>
-                  <TableCell>{fCurrency(row.price)}</TableCell>
-                  <TableCell>
-                    <Label
-                      variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                      color={
-                        (row.status === 'in_progress' && 'warning') ||
-                        (row.status === 'out_of_date' && 'error') ||
-                        'success'
-                      }
-                    >
-                      {sentenceCase(row.status)}
-                    </Label>
-                  </TableCell>
-                  <TableCell align="right">
-                    <MoreMenuButton />
-                  </TableCell>
-                </TableRow>
+              {tableData.map((row) => (
+                <AppNewInvoiceRow key={row.id} row={row} />
               ))}
             </TableBody>
           </Table>
@@ -92,64 +82,96 @@ export default function AppNewInvoice() {
 
 // ----------------------------------------------------------------------
 
-function MoreMenuButton() {
-  const [open, setOpen] = useState<HTMLElement | null>(null);
+type AppNewInvoiceRowProps = {
+  row: RowProps;
+};
 
-  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setOpen(event.currentTarget);
+function AppNewInvoiceRow({ row }: AppNewInvoiceRowProps) {
+  const theme = useTheme();
+
+  const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null);
+
+  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setOpenMenuActions(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setOpen(null);
+  const handleCloseMenu = () => {
+    setOpenMenuActions(null);
   };
 
-  const ICON = {
-    mr: 2,
-    width: 20,
-    height: 20,
+  const handleDownload = () => {
+    handleCloseMenu();
+    console.log('DOWNLOAD', row.id);
+  };
+
+  const handlePrint = () => {
+    handleCloseMenu();
+    console.log('PRINT', row.id);
+  };
+
+  const handleShare = () => {
+    handleCloseMenu();
+    console.log('SHARE', row.id);
+  };
+
+  const handleDelete = () => {
+    handleCloseMenu();
+    console.log('DELETE', row.id);
   };
 
   return (
-    <>
-      <IconButton size="large" onClick={handleOpen}>
-        <Iconify icon={'eva:more-vertical-fill'} width={20} height={20} />
-      </IconButton>
+    <TableRow>
+      <TableCell>{`INV-${row.id}`}</TableCell>
 
-      <MenuPopover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        arrow="right-top"
-        sx={{
-          mt: -0.5,
-          width: 160,
-          '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
-        }}
-      >
-        <MenuItem>
-          <Iconify icon={'eva:download-fill'} sx={{ ...ICON }} />
-          Download
-        </MenuItem>
+      <TableCell>{row.category}</TableCell>
 
-        <MenuItem>
-          <Iconify icon={'eva:printer-fill'} sx={{ ...ICON }} />
-          Print
-        </MenuItem>
+      <TableCell>{fCurrency(row.price)}</TableCell>
 
-        <MenuItem>
-          <Iconify icon={'eva:share-fill'} sx={{ ...ICON }} />
-          Share
-        </MenuItem>
+      <TableCell>
+        <Label
+          variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+          color={
+            (row.status === 'in_progress' && 'warning') ||
+            (row.status === 'out_of_date' && 'error') ||
+            'success'
+          }
+        >
+          {sentenceCase(row.status)}
+        </Label>
+      </TableCell>
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
+      <TableCell align="right">
+        <TableMoreMenu
+          open={openMenu}
+          onOpen={handleOpenMenu}
+          onClose={handleCloseMenu}
+          actions={
+            <>
+              <MenuItem onClick={handleDownload}>
+                <Iconify icon={'eva:download-fill'} />
+                Download
+              </MenuItem>
 
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
-          Delete
-        </MenuItem>
-      </MenuPopover>
-    </>
+              <MenuItem onClick={handlePrint}>
+                <Iconify icon={'eva:printer-fill'} />
+                Print
+              </MenuItem>
+
+              <MenuItem onClick={handleShare}>
+                <Iconify icon={'eva:share-fill'} />
+                Share
+              </MenuItem>
+
+              <Divider sx={{ borderStyle: 'dashed' }} />
+
+              <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
+                <Iconify icon={'eva:trash-2-outline'} />
+                Delete
+              </MenuItem>
+            </>
+          }
+        />
+      </TableCell>
+    </TableRow>
   );
 }

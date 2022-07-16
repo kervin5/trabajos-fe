@@ -1,49 +1,46 @@
 // @mui
-import { Box, Grid, Card, Paper, Typography, CardHeader, CardContent } from '@mui/material';
+import { Box, Card, Paper, Typography, CardHeader, CardContent, CardProps } from '@mui/material';
 // utils
 import { fShortenNumber } from '../../../../utils/formatNumber';
-// _mock_
-import { _analyticTraffic } from '../../../../_mock';
 
 // ----------------------------------------------------------------------
 
-export default function AnalyticsTrafficBySite() {
-  return (
-    <Card>
-      <CardHeader title="Traffic by Site" />
-      <CardContent>
-        <Grid container spacing={2}>
-          {_analyticTraffic.map((site) => (
-            <SiteItem key={site.name} site={site} />
-          ))}
-        </Grid>
-      </CardContent>
-    </Card>
-  );
-}
-
-// ----------------------------------------------------------------------
-
-type SiteItemProps = {
-  site: {
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  list: {
     name: string;
     value: number;
     icon: React.ReactElement;
-  };
-};
+  }[];
+}
 
-function SiteItem({ site }: SiteItemProps) {
-  const { icon, value, name } = site;
-
+export default function AnalyticsTrafficBySite({ title, subheader, list, ...other }: Props) {
   return (
-    <Grid item xs={6}>
-      <Paper variant="outlined" sx={{ py: 2.5, textAlign: 'center' }}>
-        <Box sx={{ mb: 0.5 }}>{icon}</Box>
-        <Typography variant="h6">{fShortenNumber(value)}</Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {name}
-        </Typography>
-      </Paper>
-    </Grid>
+    <Card {...other}>
+      <CardHeader title={title} subheader={subheader} />
+
+      <CardContent>
+        <Box
+          sx={{
+            display: 'grid',
+            gap: 2,
+            gridTemplateColumns: 'repeat(2, 1fr)',
+          }}
+        >
+          {list.map((site) => (
+            <Paper key={site.name} variant="outlined" sx={{ py: 2.5, textAlign: 'center' }}>
+              <Box sx={{ mb: 0.5 }}>{site.icon}</Box>
+
+              <Typography variant="h6">{fShortenNumber(site.value)}</Typography>
+
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                {site.name}
+              </Typography>
+            </Paper>
+          ))}
+        </Box>
+      </CardContent>
+    </Card>
   );
 }

@@ -1,43 +1,19 @@
-import { useState, useCallback, useMemo } from 'react';
-import MapGL, { Layer, LayerProps, MapEvent, Source } from 'react-map-gl';
-import { InteractiveMapProps } from 'react-map-gl/src/components/interactive-map';
+import { useState, useCallback, useMemo, memo } from 'react';
+import Map, { Layer, Source, FillLayer, MapLayerMouseEvent } from 'react-map-gl';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Typography } from '@mui/material';
 // components
-import {
-  MapControlPopup,
-  MapControlScale,
-  MapControlGeolocate,
-  MapControlNavigation,
-  MapControlFullscreen,
-} from '../../../../components/map';
+import { MapPopup, MapControl, MapBoxProps } from '../../../../components/map';
 
 // ----------------------------------------------------------------------
 
-export default function MapHighlightByFilter({ ...other }: InteractiveMapProps) {
+function MapHighlightByFilter({ ...other }: MapBoxProps) {
   const theme = useTheme();
-  const [hoverInfo, setHoverInfo] = useState<{
-    countyName: string;
-    longitude: number;
-    latitude: number;
-  } | null>(null);
-  const [viewport, setViewport] = useState({
-    latitude: 38.88,
-    longitude: -98,
-    zoom: 3,
-    minZoom: 2,
-    bearing: 0,
-    pitch: 0,
-  });
 
-  const selectedCounty = (hoverInfo && hoverInfo.countyName) || '';
-  const filter = useMemo(() => ['in', 'COUNTY', selectedCounty], [selectedCounty]);
-
-  const countiesLayer: LayerProps = {
+  const countiesLayer: FillLayer = {
     id: 'counties',
     type: 'fill',
-    source: 'counties',
     'source-layer': 'original',
     paint: {
       'fill-outline-color': theme.palette.grey[900],
@@ -46,7 +22,7 @@ export default function MapHighlightByFilter({ ...other }: InteractiveMapProps) 
     },
   };
 
-  const highlightLayer: LayerProps = {
+  const highlightLayer: FillLayer = {
     id: 'counties-highlighted',
     type: 'fill',
     source: 'counties',
@@ -58,46 +34,54 @@ export default function MapHighlightByFilter({ ...other }: InteractiveMapProps) 
     },
   };
 
-  const onHover = useCallback((event: MapEvent) => {
+  const [hoverInfo, setHoverInfo] = useState<{
+    countyName: string;
+    longitude: number;
+    latitude: number;
+  } | null>(null);
+
+  const onHover = useCallback((event: MapLayerMouseEvent) => {
     const county = event.features && event.features[0];
+
     setHoverInfo({
-      longitude: event.lngLat[0],
-      latitude: event.lngLat[1],
-      countyName: county && county.properties.COUNTY,
+      longitude: event.lngLat.lng,
+      latitude: event.lngLat.lat,
+      countyName: county && county.properties?.COUNTY,
     });
   }, []);
 
+  const selectedCounty = (hoverInfo && hoverInfo.countyName) || '';
+
+  const filter = useMemo(() => ['in', 'COUNTY', selectedCounty], [selectedCounty]);
+
   return (
-    <>
-      <MapGL
-        {...viewport}
-        onViewportChange={setViewport}
-        onHover={onHover}
-        interactiveLayerIds={['counties']}
-        {...other}
-      >
-        <MapControlScale />
-        <MapControlNavigation />
-        <MapControlFullscreen />
-        <MapControlGeolocate />
+    <Map
+      initialViewState={{
+        latitude: 38.88,
+        longitude: -98,
+        zoom: 3,
+      }}
+      minZoom={2}
+      onMouseMove={onHover}
+      interactiveLayerIds={['counties']}
+      {...other}
+    >
+      <MapControl />
 
-        <Source type="vector" url="mapbox://mapbox.82pkq93d">
-          <Layer beforeId="waterway-label" {...countiesLayer} />
-          <Layer beforeId="waterway-label" {...highlightLayer} filter={filter} />
-        </Source>
+      <Source type="vector" url="mapbox://mapbox.82pkq93d">
+        <Layer beforeId="waterway-label" {...countiesLayer} />
+        <Layer beforeId="waterway-label" {...highlightLayer} filter={filter} />
+      </Source>
 
-        {selectedCounty && hoverInfo && (
-          <MapControlPopup
-            longitude={hoverInfo.longitude}
-            latitude={hoverInfo.latitude}
-            closeButton={false}
-          >
-            <Typography variant="body2" sx={{ color: 'common.white' }}>
-              {selectedCounty}
-            </Typography>
-          </MapControlPopup>
-        )}
-      </MapGL>
-    </>
+      {selectedCounty && hoverInfo && (
+        <MapPopup longitude={hoverInfo.longitude} latitude={hoverInfo.latitude} closeButton={false}>
+          <Typography variant="body2" sx={{ color: 'common.white' }}>
+            {selectedCounty}
+          </Typography>
+        </MapPopup>
+      )}
+    </Map>
   );
 }
+
+export default memo(MapHighlightByFilter);

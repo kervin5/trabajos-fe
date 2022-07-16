@@ -14,6 +14,7 @@ import { fData } from '../../../../utils/formatNumber';
 // _mock
 import { countries } from '../../../../_mock';
 // components
+import { CustomFile } from '../../../../components/upload';
 import {
   FormProvider,
   RHFSwitch,
@@ -27,7 +28,7 @@ import {
 type FormValuesProps = {
   displayName: string;
   email: string;
-  photoURL: File | any;
+  photoURL: CustomFile | string | null;
   phoneNumber: string | null;
   country: string | null;
   address: string | null;
@@ -82,7 +83,7 @@ export default function AccountGeneral() {
   };
 
   const handleDrop = useCallback(
-    (acceptedFiles) => {
+    (acceptedFiles: File[]) => {
       const file = acceptedFiles[0];
 
       if (file) {
@@ -104,7 +105,6 @@ export default function AccountGeneral() {
           <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
             <RHFUploadAvatar
               name="photoURL"
-              accept="image/*"
               maxSize={3145728}
               onDrop={handleDrop}
               helperText={

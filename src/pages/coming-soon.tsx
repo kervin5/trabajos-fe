@@ -1,6 +1,6 @@
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Button, Stack, Container, Typography, InputAdornment } from '@mui/material';
+import { Button, Stack, Container, Typography, InputAdornment } from '@mui/material';
 // hooks
 import useCountdown from '../hooks/useCountdown';
 // layouts
@@ -14,12 +14,14 @@ import { ComingSoonIllustration } from '../assets';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('div')(({ theme }) => ({
-  height: '100%',
+const ContentStyle = styled('div')(({ theme }) => ({
+  maxWidth: 480,
+  margin: 'auto',
+  minHeight: '100vh',
   display: 'flex',
-  alignItems: 'center',
-  paddingTop: theme.spacing(15),
-  paddingBottom: theme.spacing(10),
+  justifyContent: 'center',
+  flexDirection: 'column',
+  padding: theme.spacing(12, 0),
 }));
 
 const CountdownStyle = styled('div')({
@@ -43,71 +45,69 @@ ComingSoon.getLayout = function getLayout(page: React.ReactElement) {
 // ----------------------------------------------------------------------
 
 export default function ComingSoon() {
-  const countdown = useCountdown(new Date('07/07/2022 21:30'));
+  const countdown = useCountdown(new Date('07/07/2024 21:30'));
 
   return (
-    <Page title="Coming Soon" sx={{ height: 1 }}>
-      <RootStyle>
-        <Container>
-          <Box sx={{ maxWidth: 480, margin: 'auto', textAlign: 'center' }}>
-            <Typography variant="h3" paragraph>
-              Coming Soon!
-            </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>
-              We are currently working hard on this page!
-            </Typography>
+    <Page title="Coming Soon">
+      <Container>
+        <ContentStyle sx={{ textAlign: 'center' }}>
+          <Typography variant="h3" paragraph>
+            Coming Soon!
+          </Typography>
+          <Typography sx={{ color: 'text.secondary' }}>
+            We are currently working hard on this page!
+          </Typography>
 
-            <ComingSoonIllustration sx={{ my: 10, height: 240 }} />
+          <ComingSoonIllustration sx={{ my: 10, height: 240 }} />
 
-            <CountdownStyle>
-              <div>
-                <Typography variant="h2">{countdown.days}</Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Days</Typography>
-              </div>
+          <CountdownStyle>
+            <div>
+              <Typography variant="h2">{countdown.days}</Typography>
+              <Typography sx={{ color: 'text.secondary' }}>Days</Typography>
+            </div>
 
-              <SeparatorStyle variant="h2">:</SeparatorStyle>
+            <SeparatorStyle variant="h2">:</SeparatorStyle>
 
-              <div>
-                <Typography variant="h2">{countdown.hours}</Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Hours</Typography>
-              </div>
+            <div>
+              <Typography variant="h2">{countdown.hours}</Typography>
+              <Typography sx={{ color: 'text.secondary' }}>Hours</Typography>
+            </div>
 
-              <SeparatorStyle variant="h2">:</SeparatorStyle>
+            <SeparatorStyle variant="h2">:</SeparatorStyle>
 
-              <div>
-                <Typography variant="h2">{countdown.minutes}</Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Minutes</Typography>
-              </div>
+            <div>
+              <Typography variant="h2">{countdown.minutes}</Typography>
+              <Typography sx={{ color: 'text.secondary' }}>Minutes</Typography>
+            </div>
 
-              <SeparatorStyle variant="h2">:</SeparatorStyle>
+            <SeparatorStyle variant="h2">:</SeparatorStyle>
 
-              <div>
-                <Typography variant="h2">{countdown.seconds}</Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Seconds</Typography>
-              </div>
-            </CountdownStyle>
+            <div>
+              <Typography variant="h2">{countdown.seconds}</Typography>
+              <Typography sx={{ color: 'text.secondary' }}>Seconds</Typography>
+            </div>
+          </CountdownStyle>
 
-            <InputStyle
-              fullWidth
-              placeholder="Enter your email"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Button variant="contained" size="large">
-                      Notify Me
-                    </Button>
-                  </InputAdornment>
-                ),
-              }}
-              sx={{ my: 5, '& .MuiOutlinedInput-root': { pr: 0.5 } }}
-            />
+          <InputStyle
+            fullWidth
+            placeholder="Enter your email"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Button variant="contained" size="large">
+                    Notify Me
+                  </Button>
+                </InputAdornment>
+              ),
+            }}
+            sx={{ my: 5, '& .MuiOutlinedInput-root': { pr: 0.5 } }}
+          />
 
-            <Stack alignItems="center">
-              <SocialsButton size="large" initialColor />
-            </Stack>
-          </Box>
-        </Container>
-      </RootStyle>
+          <Stack alignItems="center">
+            <SocialsButton size="large" initialColor />
+          </Stack>
+        </ContentStyle>
+      </Container>
     </Page>
   );
 }

@@ -17,7 +17,6 @@ import Logo from '../../components/Logo';
 import Image from '../../components/Image';
 // sections
 import { RegisterForm } from '../../sections/auth/register';
-import RoleToggleButtons from 'src/sections/auth/register/RoleToggleButtons';
 
 // ----------------------------------------------------------------------
 
@@ -55,10 +54,10 @@ const SectionStyle = styled(Card)(({ theme }) => ({
 const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 480,
   margin: 'auto',
-  display: 'flex',
   minHeight: '100vh',
-  flexDirection: 'column',
+  display: 'flex',
   justifyContent: 'center',
+  flexDirection: 'column',
   padding: theme.spacing(12, 0),
 }));
 
@@ -79,9 +78,9 @@ export default function Register() {
             <Logo />
             {smUp && (
               <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-                ¿Ya tienes una cuenta? {''}
+                Already have an account? {''}
                 <NextLink href={PATH_AUTH.login} passHref>
-                  <Link variant="subtitle2">Inicia Sesión</Link>
+                  <Link variant="subtitle2">Login</Link>
                 </NextLink>
               </Typography>
             )}
@@ -90,26 +89,26 @@ export default function Register() {
           {mdUp && (
             <SectionStyle>
               <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-                Administrar los puestos más efectivamente con Jobe
+                Manage the job more effectively with Minimal
               </Typography>
               <Image
                 visibleByDefault
                 disabledEffect
                 alt="register"
-                src="https://minimals.cc/assets/illustrations/illustration_register.png"
+                src="/assets/illustrations/illustration_register.png"
               />
             </SectionStyle>
           )}
 
           <Container>
             <ContentStyle>
-              <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
+              <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
                 <Box sx={{ flexGrow: 1 }}>
                   <Typography variant="h4" gutterBottom>
-                    Crea una cuenta gratis.
+                    Get started absolutely free.
                   </Typography>
                   <Typography sx={{ color: 'text.secondary' }}>
-                    Gratis por siempre. Sin necesidad de tarjeta.
+                    Free forever. No credit card needed.
                   </Typography>
                 </Box>
                 <Tooltip title={capitalCase(method)}>
@@ -124,26 +123,25 @@ export default function Register() {
                 </Tooltip>
               </Box>
 
-              <RoleToggleButtons />
               <RegisterForm />
 
               <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
-                Al registrarme, acepto las&nbsp;
+                By registering, I agree to Minimal&nbsp;
                 <Link underline="always" color="text.primary" href="#">
-                  Condiciones de Servicio
-                </Link>{' '}
-                y la{' '}
+                  Terms of Service
+                </Link>
+                {''}and{''}
                 <Link underline="always" color="text.primary" href="#">
-                  Política de Privacidad
-                </Link>{' '}
-                de Jobe .
+                  Privacy Policy
+                </Link>
+                .
               </Typography>
 
               {!smUp && (
                 <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
-                  ¿Ya tienes una cuenta?{' '}
+                  Already have an account?{' '}
                   <NextLink href={PATH_AUTH.login} passHref>
-                    <Link variant="subtitle2">Inicia Sesión</Link>
+                    <Link variant="subtitle2">Login</Link>
                   </NextLink>
                 </Typography>
               )}

@@ -1,9 +1,7 @@
 // @mui
-import { Box, Link, Card, CardHeader, Typography, Stack } from '@mui/material';
+import { Box, Link, Card, CardHeader, Typography, Stack, CardProps } from '@mui/material';
 // utils
 import { fCurrency } from '../../../../utils/formatNumber';
-// _mock_
-import { _ecommerceLatestProducts } from '../../../../_mock';
 //
 import Image from '../../../../components/Image';
 import Scrollbar from '../../../../components/Scrollbar';
@@ -11,13 +9,29 @@ import { ColorPreview } from '../../../../components/color-utils';
 
 // ----------------------------------------------------------------------
 
-export default function EcommerceLatestProducts() {
+type ItemProps = {
+  id: string;
+  name: string;
+  image: string;
+  price: number;
+  priceSale: number;
+  colors: string[];
+};
+
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  list: ItemProps[];
+}
+
+export default function EcommerceLatestProducts({ title, subheader, list, ...other }: Props) {
   return (
-    <Card>
-      <CardHeader title="Latest Products" />
+    <Card {...other}>
+      <CardHeader title={title} subheader={subheader} />
+
       <Scrollbar>
         <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
-          {_ecommerceLatestProducts.map((product) => (
+          {list.map((product) => (
             <ProductItem key={product.id} product={product} />
           ))}
         </Stack>
@@ -29,18 +43,12 @@ export default function EcommerceLatestProducts() {
 // ----------------------------------------------------------------------
 
 type ProductItemProps = {
-  product: {
-    id: string;
-    name: string;
-    image: string;
-    price: number;
-    priceSale: number;
-    colors: string[];
-  };
+  product: ItemProps;
 };
 
 function ProductItem({ product }: ProductItemProps) {
   const { name, image, price, priceSale } = product;
+
   const hasSale = priceSale > 0;
 
   return (

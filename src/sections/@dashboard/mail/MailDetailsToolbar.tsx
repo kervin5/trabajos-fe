@@ -35,6 +35,7 @@ type Props = {
 
 export default function MailDetailsToolbar({ mail, ...other }: Props) {
   const { query, push } = useRouter();
+
   const { systemLabel, customLabel } = query;
 
   const isDesktop = useResponsive('up', 'sm');

@@ -1,7 +1,7 @@
 import merge from 'lodash/merge';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
-import { Card, Typography, Stack } from '@mui/material';
+import { Card, Typography, Stack, CardProps } from '@mui/material';
 // utils
 import { fCurrency, fPercent } from '../../../../utils/formatNumber';
 // theme
@@ -11,12 +11,6 @@ import Iconify from '../../../../components/Iconify';
 import ReactApexChart, { BaseOptionChart } from '../../../../components/chart';
 
 // ----------------------------------------------------------------------
-
-const RootStyle = styled(Card)(() => ({
-  width: '100%',
-  boxShadow: 'none',
-  position: 'relative',
-}));
 
 const IconWrapperStyle = styled('div')(({ theme }) => ({
   width: 48,
@@ -32,14 +26,14 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props extends CardProps {
   title: string;
   total: number;
   percent: number;
   chartData: number[];
   color?: ColorSchema;
   icon: string;
-};
+}
 
 export default function BankingWidgetSummary({
   title,
@@ -48,6 +42,8 @@ export default function BankingWidgetSummary({
   percent,
   color = 'primary',
   chartData,
+  sx,
+  ...other
 }: Props) {
   const theme = useTheme();
 
@@ -72,11 +68,15 @@ export default function BankingWidgetSummary({
   });
 
   return (
-    <RootStyle
+    <Card
       sx={{
+        width: 1,
+        boxShadow: 0,
         color: (theme) => theme.palette[color].darker,
         bgcolor: (theme) => theme.palette[color].lighter,
+        ...sx,
       }}
+      {...other}
     >
       <IconWrapperStyle
         sx={{
@@ -89,6 +89,7 @@ export default function BankingWidgetSummary({
 
       <Stack spacing={1} sx={{ p: 3 }}>
         <Typography sx={{ typography: 'subtitle2' }}>{title}</Typography>
+
         <Typography sx={{ typography: 'h3' }}>{fCurrency(total)}</Typography>
         <Stack direction="row" alignItems="center" flexWrap="wrap">
           <Iconify
@@ -96,10 +97,12 @@ export default function BankingWidgetSummary({
             height={20}
             icon={percent >= 0 ? 'eva:trending-up-fill' : 'eva:trending-down-fill'}
           />
+
           <Typography variant="subtitle2" component="span" sx={{ ml: 0.5 }}>
             {percent > 0 && '+'}
             {fPercent(percent)}
           </Typography>
+
           <Typography variant="body2" component="span" sx={{ opacity: 0.72 }}>
             &nbsp;than last month
           </Typography>
@@ -112,6 +115,6 @@ export default function BankingWidgetSummary({
         options={chartOptions}
         height={120}
       />
-    </RootStyle>
+    </Card>
   );
 }

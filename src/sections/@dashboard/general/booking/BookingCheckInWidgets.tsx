@@ -1,7 +1,7 @@
 import merge from 'lodash/merge';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Card, Typography, Stack, Divider } from '@mui/material';
+import { Card, Typography, Stack, Divider, CardProps } from '@mui/material';
 // hooks
 import useResponsive from '../../../../hooks/useResponsive';
 // utils
@@ -13,12 +13,15 @@ import ReactApexChart, { BaseOptionChart } from '../../../../components/chart';
 
 const CHART_SIZE = { width: 106, height: 106 };
 
-const TOTAL_CHECK_IN = 38566;
-const TOTAL_CHECK_OUT = 18472;
-const CHART_DATA_CHECK_IN = [72];
-const CHART_DATA_CHECK_OUT = [64];
+interface Props extends CardProps {
+  chartData: {
+    label: string;
+    percent: number;
+    total: number;
+  }[];
+}
 
-export default function BookingCheckInWidgets() {
+export default function BookingCheckInWidgets({ chartData, ...other }: Props) {
   const theme = useTheme();
 
   const isDesktop = useResponsive('up', 'sm');
@@ -53,7 +56,7 @@ export default function BookingCheckInWidgets() {
   };
 
   return (
-    <Card>
+    <Card {...other}>
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
         divider={
@@ -64,51 +67,33 @@ export default function BookingCheckInWidgets() {
           />
         }
       >
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="center"
-          spacing={3}
-          sx={{ width: 1, py: 5 }}
-        >
-          <ReactApexChart
-            type="radialBar"
-            series={CHART_DATA_CHECK_IN}
-            options={chartOptionsCheckIn}
-            {...CHART_SIZE}
-          />
-          <div>
-            <Typography variant="h4" sx={{ mb: 0.5 }}>
-              {fNumber(TOTAL_CHECK_IN)}
-            </Typography>
-            <Typography variant="body2" sx={{ opacity: 0.72 }}>
-              Check In
-            </Typography>
-          </div>
-        </Stack>
+        {chartData.map((item, index) => (
+          <Stack
+            key={item.label}
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            spacing={3}
+            sx={{ width: 1, py: 5 }}
+          >
+            <ReactApexChart
+              type="radialBar"
+              series={[item.percent]}
+              options={index === 1 ? chartOptionsCheckOut : chartOptionsCheckIn}
+              {...CHART_SIZE}
+            />
 
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="center"
-          spacing={3}
-          sx={{ width: 1, py: 5 }}
-        >
-          <ReactApexChart
-            type="radialBar"
-            series={CHART_DATA_CHECK_OUT}
-            options={chartOptionsCheckOut}
-            {...CHART_SIZE}
-          />
-          <div>
-            <Typography variant="h4" sx={{ mb: 0.5 }}>
-              {fNumber(TOTAL_CHECK_OUT)}
-            </Typography>
-            <Typography variant="body2" sx={{ opacity: 0.72 }}>
-              Check Out
-            </Typography>
-          </div>
-        </Stack>
+            <div>
+              <Typography variant="h4" sx={{ mb: 0.5 }}>
+                {fNumber(item.total)}
+              </Typography>
+
+              <Typography variant="body2" sx={{ opacity: 0.72 }}>
+                {item.label}
+              </Typography>
+            </div>
+          </Stack>
+        ))}
       </Stack>
     </Card>
   );

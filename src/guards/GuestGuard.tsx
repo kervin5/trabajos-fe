@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import useAuth from '../hooks/useAuth';
 // routes
 import { PATH_DASHBOARD } from '../routes/paths';
+// components
+import LoadingScreen from '../components/LoadingScreen';
 
 // ----------------------------------------------------------------------
 
@@ -15,7 +17,7 @@ type Props = {
 export default function GuestGuard({ children }: Props) {
   const { push } = useRouter();
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isInitialized } = useAuth();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -23,6 +25,10 @@ export default function GuestGuard({ children }: Props) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
+
+  if (isInitialized === isAuthenticated) {
+    return <LoadingScreen />;
+  }
 
   return <>{children}</>;
 }

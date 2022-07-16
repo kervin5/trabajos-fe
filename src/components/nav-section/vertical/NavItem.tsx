@@ -1,86 +1,70 @@
-// next
-import NextLink from 'next/link';
 // @mui
-import { Box, Link, ListItemText } from '@mui/material';
-// type
-import { NavItemProps } from '../type';
+import { Box, Tooltip, ListItemButtonProps } from '@mui/material';
+// hooks
+import useLocales from '../../../hooks/useLocales';
+// guards
+import RoleBasedGuard from '../../../guards/RoleBasedGuard';
 //
 import Iconify from '../../Iconify';
+//
+import { NavItemProps } from '../type';
 import { ListItemStyle, ListItemTextStyle, ListItemIconStyle } from './style';
-import { isExternalLink } from '..';
 
 // ----------------------------------------------------------------------
 
-export function NavItemRoot({ item, isCollapse, open = false, active, onOpen }: NavItemProps) {
-  const { title, path, icon, info, children } = item;
+type Props = NavItemProps & ListItemButtonProps;
+
+export default function NavItem({ item, depth, active, open, isCollapse, ...other }: Props) {
+  const { translate } = useLocales();
+
+  const { title, icon, info, children, disabled, caption, roles } = item;
 
   const renderContent = (
-    <>
+    <ListItemStyle depth={depth} active={active} disabled={disabled} {...other}>
       {icon && <ListItemIconStyle>{icon}</ListItemIconStyle>}
-      <ListItemTextStyle disableTypography primary={title} isCollapse={isCollapse} />
+
+      {depth !== 1 && <DotIcon active={active && depth !== 1} />}
+
+      <ListItemTextStyle
+        isCollapse={isCollapse}
+        primary={translate(title)}
+        secondary={
+          caption && (
+            <Tooltip title={translate(caption)} placement="top-start">
+              <span>{translate(caption)}</span>
+            </Tooltip>
+          )
+        }
+        primaryTypographyProps={{
+          noWrap: true,
+          variant: active ? 'subtitle2' : 'body2',
+        }}
+        secondaryTypographyProps={{
+          noWrap: true,
+          variant: 'caption',
+        }}
+      />
+
       {!isCollapse && (
         <>
-          {info && info}
-          {children && <ArrowIcon open={open} />}
+          {info && (
+            <Box component="span" sx={{ lineHeight: 0 }}>
+              {info}
+            </Box>
+          )}
+
+          {!!children && (
+            <Iconify
+              icon={open ? 'eva:arrow-ios-downward-fill' : 'eva:arrow-ios-forward-fill'}
+              sx={{ width: 16, height: 16, ml: 1, flexShrink: 0 }}
+            />
+          )}
         </>
       )}
-    </>
-  );
-
-  if (children) {
-    return (
-      <ListItemStyle onClick={onOpen} activeRoot={active}>
-        {renderContent}
-      </ListItemStyle>
-    );
-  }
-
-  return isExternalLink(path) ? (
-    <ListItemStyle component={Link} href={path} target="_blank" rel="noopener">
-      {renderContent}
     </ListItemStyle>
-  ) : (
-    <NextLink href={path} passHref>
-      <ListItemStyle activeRoot={active}>{renderContent}</ListItemStyle>
-    </NextLink>
-  );
-}
-
-// ----------------------------------------------------------------------
-
-type NavItemSubProps = Omit<NavItemProps, 'isCollapse'>;
-
-export function NavItemSub({ item, open = false, active = false, onOpen }: NavItemSubProps) {
-  const { title, path, info, children } = item;
-
-  const renderContent = (
-    <>
-      <DotIcon active={active} />
-      <ListItemText disableTypography primary={title} />
-      {info && info}
-      {children && <ArrowIcon open={open} />}
-    </>
   );
 
-  if (children) {
-    return (
-      <ListItemStyle onClick={onOpen} activeSub={active} subItem>
-        {renderContent}
-      </ListItemStyle>
-    );
-  }
-
-  return isExternalLink(path) ? (
-    <ListItemStyle component={Link} href={path} target="_blank" rel="noopener" subItem>
-      {renderContent}
-    </ListItemStyle>
-  ) : (
-    <NextLink href={path} passHref>
-      <ListItemStyle activeSub={active} subItem>
-        {renderContent}
-      </ListItemStyle>
-    </NextLink>
-  );
+  return <RoleBasedGuard roles={roles}>{renderContent}</RoleBasedGuard>;
 }
 
 // ----------------------------------------------------------------------
@@ -110,20 +94,5 @@ export function DotIcon({ active }: DotIconProps) {
         }}
       />
     </ListItemIconStyle>
-  );
-}
-
-// ----------------------------------------------------------------------
-
-type ArrowIconProps = {
-  open: boolean;
-};
-
-export function ArrowIcon({ open }: ArrowIconProps) {
-  return (
-    <Iconify
-      icon={open ? 'eva:arrow-ios-downward-fill' : 'eva:arrow-ios-forward-fill'}
-      sx={{ width: 16, height: 16, ml: 1 }}
-    />
   );
 }

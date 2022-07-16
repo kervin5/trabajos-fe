@@ -186,7 +186,7 @@ export default function MUIList() {
                       <Iconify icon="ic:round-expand-more" width={24} height={24} />
                     )}
                   </ListItemButton>
-                  <Collapse in={open} timeout="auto" unmountOnExit>
+                  <Collapse in={open} unmountOnExit>
                     <List component="div" disablePadding>
                       <ListItemButton>
                         <ListItemIcon>

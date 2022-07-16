@@ -4,6 +4,14 @@ import { Theme } from '@mui/material/styles';
 
 export default function Tabs(theme: Theme) {
   return {
+    MuiTabs: {
+      styleOverrides: {
+        scrollButtons: {
+          width: 48,
+          borderRadius: '50%',
+        },
+      },
+    },
     MuiTab: {
       styleOverrides: {
         root: {
@@ -12,47 +20,39 @@ export default function Tabs(theme: Theme) {
           borderTopLeftRadius: theme.shape.borderRadius,
           borderTopRightRadius: theme.shape.borderRadius,
           '&.Mui-selected': {
-            color: theme.palette.text.primary
+            color: theme.palette.text.primary,
           },
           '&:not(:last-of-type)': {
-            marginRight: theme.spacing(5)
+            marginRight: theme.spacing(5),
           },
           '@media (min-width: 600px)': {
-            minWidth: 48
-          }
+            minWidth: 48,
+          },
         },
         labelIcon: {
           minHeight: 48,
           flexDirection: 'row',
           '& > *:first-of-type': {
             marginBottom: 0,
-            marginRight: theme.spacing(1)
-          }
+            marginRight: theme.spacing(1),
+          },
         },
-        wrapper: {
+        wrapped: {
           flexDirection: 'row',
-          whiteSpace: 'nowrap'
+          whiteSpace: 'nowrap',
         },
         textColorInherit: {
           opacity: 1,
-          color: theme.palette.text.secondary
-        }
-      }
+          color: theme.palette.text.secondary,
+        },
+      },
     },
     MuiTabPanel: {
       styleOverrides: {
         root: {
-          padding: 0
-        }
-      }
+          padding: 0,
+        },
+      },
     },
-    MuiTabScrollButton: {
-      styleOverrides: {
-        root: {
-          width: 48,
-          borderRadius: '50%'
-        }
-      }
-    }
   };
 }

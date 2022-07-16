@@ -39,7 +39,9 @@ export default function Overview() {
 
         <Container sx={{ mt: 10 }}>
           <ComponentFoundation />
+
           <ComponentMUI />
+
           <ComponentExtra />
         </Container>
       </RootStyle>

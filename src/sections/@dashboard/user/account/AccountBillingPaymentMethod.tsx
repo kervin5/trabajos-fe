@@ -48,8 +48,8 @@ export default function AccountBillingPaymentMethod({ cards, isOpen, onOpen, onC
               alt="icon"
               src={
                 card.cardType === 'master_card'
-                  ? 'https://minimals.cc/assets/icons/ic_mastercard.svg'
-                  : 'https://minimals.cc/assets/icons/ic_visa.svg'
+                  ? 'https://minimal-assets-api-dev.vercel.app/assets/icons/ic_mastercard.svg'
+                  : 'https://minimal-assets-api-dev.vercel.app/assets/icons/ic_visa.svg'
               }
               sx={{ mb: 1, maxWidth: 36 }}
             />

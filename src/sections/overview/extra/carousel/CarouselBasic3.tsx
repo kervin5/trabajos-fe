@@ -23,6 +23,7 @@ const RootStyle = styled(Box)(({ theme }) => ({
 
 export default function CarouselBasic3() {
   const theme = useTheme();
+
   const carouselRef = useRef<Slider | null>(null);
 
   const settings = {

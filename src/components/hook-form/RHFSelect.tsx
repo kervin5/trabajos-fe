@@ -5,12 +5,14 @@ import { TextField, TextFieldProps } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
-interface IProps {
+type IProps = {
   name: string;
-  children: any;
-}
+  children: React.ReactNode;
+};
 
-export default function RHFSelect({ name, children, ...other }: IProps & TextFieldProps) {
+type Props = IProps & TextFieldProps;
+
+export default function RHFSelect({ name, children, ...other }: Props) {
   const { control } = useFormContext();
 
   return (

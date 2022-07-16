@@ -55,13 +55,14 @@ const ArrowStyle = styled('span')<ArrowStyleProps>(({ arrow, theme }) => {
   };
 
   return {
+    display: 'none',
     [theme.breakpoints.up('sm')]: {
       zIndex: 1,
       width: SIZE,
       height: SIZE,
       content: "''",
+      display: 'block',
       position: 'absolute',
-
       transform: 'rotate(-135deg)',
       background: theme.palette.background.paper,
     },

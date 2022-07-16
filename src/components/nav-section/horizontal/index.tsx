@@ -1,10 +1,9 @@
 import { memo } from 'react';
 // @mui
 import { Stack } from '@mui/material';
-// type
-import { NavSectionProps } from '../type';
 //
-import { NavListRoot } from './NavList';
+import { NavSectionProps } from '../type';
+import NavList from './NavList';
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +27,12 @@ function NavSectionHorizontal({ navConfig }: NavSectionProps) {
         {navConfig.map((group) => (
           <Stack key={group.subheader} direction="row" flexShrink={0}>
             {group.items.map((list) => (
-              <NavListRoot key={list.title} list={list} />
+              <NavList
+                key={list.title + list.path}
+                data={list}
+                depth={1}
+                hasChildren={!!list.children}
+              />
             ))}
           </Stack>
         ))}

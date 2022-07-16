@@ -8,9 +8,11 @@ import { Typography, GlobalStyles } from '@mui/material';
 
 function LightboxModalStyles() {
   const theme = useTheme();
+
   const isRTL = theme.direction === 'rtl';
 
   const ICON_SIZE = 32;
+
   const ICON_COLOR = theme.palette.grey[600].replace('#', '');
 
   const getIcon = (icon: string) =>
@@ -119,7 +121,7 @@ export default function LightboxModal({
     if (isOpen) {
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
     }
   }, [isOpen]);
 

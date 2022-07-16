@@ -28,6 +28,7 @@ export default function PaymentSummary() {
           <Typography variant="subtitle2" component="p" sx={{ color: 'text.secondary' }}>
             Subscription
           </Typography>
+
           <Label color="error" variant="filled">
             PREMIUM
           </Label>
@@ -42,9 +43,11 @@ export default function PaymentSummary() {
 
         <Stack direction="row" justifyContent="flex-end">
           <Typography sx={{ color: 'text.secondary' }}>$</Typography>
+
           <Typography variant="h2" sx={{ mx: 1 }}>
             9.99
           </Typography>
+
           <Typography
             component="span"
             variant="body2"
@@ -60,6 +63,7 @@ export default function PaymentSummary() {
           <Typography variant="h6" component="p">
             Total Billed
           </Typography>
+
           <Typography variant="h6" component="p">
             $9.99*
           </Typography>
@@ -81,6 +85,7 @@ export default function PaymentSummary() {
           <Iconify icon={'eva:shield-fill'} sx={{ width: 20, height: 20, color: 'primary.main' }} />
           <Typography variant="subtitle2">Secure credit card payment</Typography>
         </Stack>
+
         <Typography variant="caption" sx={{ color: 'text.secondary', textAlign: 'center' }}>
           This is a secure 128-bit SSL encrypted payment
         </Typography>

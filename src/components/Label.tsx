@@ -1,6 +1,6 @@
 // @mui
 import { alpha, Theme, useTheme, styled } from '@mui/material/styles';
-import { BoxProps } from '@mui/material';
+import { BoxProps, Box } from '@mui/material';
 // theme
 import { ColorSchema } from '../theme/palette';
 
@@ -81,16 +81,43 @@ const RootStyle = styled('span')(
 // ----------------------------------------------------------------------
 
 interface Props extends BoxProps {
+  startIcon?: React.ReactElement | null;
+  endIcon?: React.ReactElement | null;
   color?: LabelColor;
   variant?: LabelVariant;
 }
 
-export default function Label({ color = 'default', variant = 'ghost', children, sx }: Props) {
+export default function Label({
+  children,
+  color = 'default',
+  variant = 'ghost',
+  startIcon,
+  endIcon,
+  sx,
+}: Props) {
   const theme = useTheme();
 
+  const style = {
+    width: 16,
+    height: 16,
+    '& svg, img': { width: 1, height: 1, objectFit: 'cover' },
+  };
+
   return (
-    <RootStyle ownerState={{ color, variant }} sx={sx} theme={theme}>
+    <RootStyle
+      ownerState={{ color, variant }}
+      sx={{
+        ...(startIcon && { pl: 0.75 }),
+        ...(endIcon && { pr: 0.75 }),
+        ...sx,
+      }}
+      theme={theme}
+    >
+      {startIcon && <Box sx={{ mr: 0.75, ...style }}>{startIcon}</Box>}
+
       {children}
+
+      {endIcon && <Box sx={{ ml: 0.75, ...style }}>{endIcon}</Box>}
     </RootStyle>
   );
 }

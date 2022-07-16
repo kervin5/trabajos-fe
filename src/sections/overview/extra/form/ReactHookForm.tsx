@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 // form
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
@@ -14,7 +14,7 @@ import {
   FormHelperText,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import DatePicker from '@mui/lab/DatePicker';
+import { DatePicker } from '@mui/x-date-pickers';
 // utils
 import { fData } from '../../../../utils/formatNumber';
 import { fTimestamp } from '../../../../utils/formatTime';
@@ -48,11 +48,18 @@ export default function ReactHookForm() {
     control,
     register,
     setValue,
+    resetField,
     handleSubmit,
-    formState: { errors, isSubmitting, isDirty },
+    formState: { errors, isSubmitting },
   } = methods;
 
   const values = watch();
+
+  useEffect(() => {
+    if (values.editor === '<p><br></p>') {
+      resetField('editor');
+    }
+  }, [resetField, values.editor]);
 
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
@@ -64,11 +71,11 @@ export default function ReactHookForm() {
 
   const onSubmit = async (data: FormValuesProps) => {
     await new Promise((resolve) => setTimeout(resolve, 500));
-    console.log(
+    alert(
       JSON.stringify(
         {
           ...data,
-          photo: data.photo?.name,
+          photo: data.photo,
           startDate: data.startDate && fTimestamp(data.startDate),
           endDate: data.endDate && fTimestamp(data.endDate),
         },
@@ -76,6 +83,7 @@ export default function ReactHookForm() {
         2
       )
     );
+
     reset();
   };
 
@@ -85,7 +93,9 @@ export default function ReactHookForm() {
         <Grid item xs={12} md={6}>
           <Stack spacing={3}>
             <RHFTextField name="fullName" label="Full Name" />
+
             <RHFTextField name="email" label="Email address" />
+
             <RHFTextField name="age" label="Age" />
 
             <Stack spacing={{ xs: 2, sm: 3 }} direction={{ xs: 'column', sm: 'row' }}>
@@ -200,9 +210,9 @@ export default function ReactHookForm() {
                 />
               </Stack>
 
-              {errors.photo && (
+              {!!values.photo ? null : (
                 <FormHelperText sx={{ px: 2, display: 'block' }} error>
-                  {errors.photo.message}
+                  {errors?.photo?.message}
                 </FormHelperText>
               )}
             </div>
@@ -224,7 +234,6 @@ export default function ReactHookForm() {
               type="submit"
               variant="contained"
               loading={isSubmitting}
-              disabled={!isDirty}
             >
               Submit
             </LoadingButton>

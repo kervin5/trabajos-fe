@@ -38,10 +38,13 @@ export default function MailToolbar({
   ...other
 }: Props) {
   const smUp = useResponsive('up', 'sm');
+
   const mdUp = useResponsive('up', 'md');
 
   const handleSelectChange = (checked: boolean) => (checked ? onSelectAll() : onDeselectAll());
+
   const selectedAllMails = selectedMails === mails && mails > 0;
+
   const selectedSomeMails = selectedMails > 0 && selectedMails < mails;
 
   return (
@@ -66,11 +69,13 @@ export default function MailToolbar({
               <Iconify icon={'eva:refresh-fill'} width={20} height={20} />
             </IconButton>
           </Tooltip>
+
           <Tooltip title="Dense">
             <IconButton onClick={onToggleDense}>
               <Iconify icon={'eva:collapse-fill'} width={20} height={20} />
             </IconButton>
           </Tooltip>
+
           <Tooltip title="More">
             <IconButton>
               <Iconify icon={'eva:more-vertical-fill'} width={20} height={20} />
@@ -102,11 +107,13 @@ export default function MailToolbar({
           <Typography variant="body2" sx={{ mx: 2, color: 'text.secondary' }}>
             1 - {mails} of {mails}
           </Typography>
+
           <Tooltip title="Next page">
             <IconButton>
               <Iconify icon={'eva:arrow-ios-back-fill'} width={20} height={20} />
             </IconButton>
           </Tooltip>
+
           <Tooltip title="Previous page">
             <IconButton>
               <Iconify icon={'eva:arrow-ios-forward-fill'} width={20} height={20} />

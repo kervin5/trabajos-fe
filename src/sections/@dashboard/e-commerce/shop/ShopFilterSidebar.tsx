@@ -5,6 +5,8 @@ import {
   Box,
   Radio,
   Stack,
+  Input,
+  Badge,
   Button,
   Drawer,
   Rating,
@@ -14,13 +16,13 @@ import {
   RadioGroup,
   FormControlLabel,
 } from '@mui/material';
-// @types
+// config
 import { NAVBAR } from '../../../../config';
 // components
 import Iconify from '../../../../components/Iconify';
 import Scrollbar from '../../../../components/Scrollbar';
 import { ColorManyPicker } from '../../../../components/color-utils';
-import { RHFMultiCheckbox, RHFRadioGroup } from '../../../../components/hook-form';
+import { RHFMultiCheckbox, RHFRadioGroup, RHFSlider } from '../../../../components/hook-form';
 
 // ----------------------------------------------------------------------
 
@@ -31,17 +33,20 @@ export const SORT_BY_OPTIONS = [
   { value: 'priceAsc', label: 'Price: Low-High' },
 ];
 
-export const FILTER_GENDER_OPTIONS = ['Men', 'Women', 'Kids'];
+export const FILTER_GENDER_OPTIONS = [
+  { label: 'Men', value: 'Men' },
+  { label: 'Women', value: 'Women' },
+  { label: 'Kids', value: 'Kids' },
+];
 
-export const FILTER_CATEGORY_OPTIONS = ['All', 'Shose', 'Apparel', 'Accessories'];
+export const FILTER_CATEGORY_OPTIONS = [
+  { label: 'All', value: 'All' },
+  { label: 'Shose', value: 'Shose' },
+  { label: 'Apparel', value: 'Apparel' },
+  { label: 'Accessories', value: 'Accessories' },
+];
 
 export const FILTER_RATING_OPTIONS = ['up4Star', 'up3Star', 'up2Star', 'up1Star'];
-
-export const FILTER_PRICE_OPTIONS = [
-  { value: 'below', label: 'Below $25' },
-  { value: 'between', label: 'Between $25 - $75' },
-  { value: 'above', label: 'Above $75' },
-];
 
 export const FILTER_COLOR_OPTIONS = [
   '#00AB55',
@@ -60,14 +65,32 @@ const onSelected = (selected: string[], item: string) =>
   selected.includes(item) ? selected.filter((value) => value !== item) : [...selected, item];
 
 type Props = {
+  isDefault: boolean;
   isOpen: boolean;
   onOpen: VoidFunction;
   onResetAll: VoidFunction;
   onClose: VoidFunction;
 };
 
-export default function ShopFilterSidebar({ isOpen, onResetAll, onOpen, onClose }: Props) {
+export default function ShopFilterSidebar({
+  isDefault,
+  isOpen,
+  onResetAll,
+  onOpen,
+  onClose,
+}: Props) {
   const { control } = useFormContext();
+
+  const marksLabel = [...Array(21)].map((_, index) => {
+    const value = index * 10;
+
+    const firstValue = index === 0 ? `$${value}` : `${value}`;
+
+    return {
+      value,
+      label: index % 4 ? '' : firstValue,
+    };
+  });
 
   return (
     <>
@@ -97,6 +120,7 @@ export default function ShopFilterSidebar({ isOpen, onResetAll, onOpen, onClose 
           <Typography variant="subtitle1" sx={{ ml: 1 }}>
             Filters
           </Typography>
+
           <IconButton onClick={onClose}>
             <Iconify icon={'eva:close-fill'} width={20} height={20} />
           </IconButton>
@@ -105,19 +129,19 @@ export default function ShopFilterSidebar({ isOpen, onResetAll, onOpen, onClose 
         <Divider />
 
         <Scrollbar>
-          <Stack spacing={3} sx={{ p: 3 }}>
+          <Stack spacing={3} sx={{ p: 2.5 }}>
             <Stack spacing={1}>
-              <Typography variant="subtitle1">Gender</Typography>
+              <Typography variant="subtitle1"> Gender </Typography>
               <RHFMultiCheckbox name="gender" options={FILTER_GENDER_OPTIONS} sx={{ width: 1 }} />
             </Stack>
 
             <Stack spacing={1}>
-              <Typography variant="subtitle1">Category</Typography>
+              <Typography variant="subtitle1"> Category </Typography>
               <RHFRadioGroup name="category" options={FILTER_CATEGORY_OPTIONS} row={false} />
             </Stack>
 
             <Stack spacing={1}>
-              <Typography variant="subtitle1">Colour</Typography>
+              <Typography variant="subtitle1"> Color </Typography>
 
               <Controller
                 name="colors"
@@ -132,12 +156,25 @@ export default function ShopFilterSidebar({ isOpen, onResetAll, onOpen, onClose 
               />
             </Stack>
 
-            <Stack spacing={1}>
-              <Typography variant="subtitle1">Price</Typography>
-              <RHFRadioGroup
+            <Stack spacing={1} sx={{ pb: 2 }}>
+              <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
+                Price
+              </Typography>
+
+              <Stack direction="row" spacing={2}>
+                <InputRange type="min" />
+                <InputRange type="max" />
+              </Stack>
+
+              <RHFSlider
                 name="priceRange"
-                options={FILTER_PRICE_OPTIONS.map((item) => item.value)}
-                getOptionLabel={FILTER_PRICE_OPTIONS.map((item) => item.label)}
+                step={10}
+                min={0}
+                max={200}
+                marks={marksLabel}
+                getAriaValueText={(value) => `$${value}`}
+                valueLabelFormat={(value) => `$${value}`}
+                sx={{ alignSelf: 'center', width: `calc(100% - 20px)` }}
               />
             </Stack>
 
@@ -182,20 +219,115 @@ export default function ShopFilterSidebar({ isOpen, onResetAll, onOpen, onClose 
           </Stack>
         </Scrollbar>
 
-        <Box sx={{ p: 3 }}>
-          <Button
-            fullWidth
-            size="large"
-            type="submit"
-            color="inherit"
-            variant="outlined"
-            onClick={onResetAll}
-            startIcon={<Iconify icon={'ic:round-clear-all'} />}
+        <Box sx={{ p: 2.5 }}>
+          <Badge
+            color="error"
+            variant="dot"
+            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+            invisible={isDefault}
+            sx={{ width: 1 }}
           >
-            Clear All
-          </Button>
+            <Button
+              fullWidth
+              size="large"
+              type="submit"
+              color="inherit"
+              variant="outlined"
+              onClick={onResetAll}
+              startIcon={<Iconify icon="ic:round-clear-all" />}
+            >
+              Clear All
+            </Button>
+          </Badge>
         </Box>
       </Drawer>
     </>
+  );
+}
+
+// ----------------------------------------------------------------------
+
+type InputRangeProps = {
+  type: 'min' | 'max';
+};
+
+function InputRange({ type }: InputRangeProps) {
+  const { control, setValue } = useFormContext();
+
+  const handleBlurInputRange = (value: [number, number]) => {
+    const min = value[0];
+
+    const max = value[1];
+
+    if (min < 0) {
+      setValue('priceRange', [0, max]);
+    }
+    if (min > 200) {
+      setValue('priceRange', [200, max]);
+    }
+    if (max < 0) {
+      setValue('priceRange', [min, 0]);
+    }
+    if (max > 200) {
+      setValue('priceRange', [min, 200]);
+    }
+  };
+
+  return (
+    <Controller
+      name="priceRange"
+      control={control}
+      render={({ field }) => {
+        const isMin = type === 'min';
+
+        const min = field.value[0];
+
+        const max = field.value[1];
+
+        return (
+          <Stack direction="row" spacing={0.5} alignItems="center" sx={{ width: 1 }}>
+            <Typography
+              variant="caption"
+              sx={{
+                flexShrink: 0,
+                color: 'text.disabled',
+                textTransform: 'capitalize',
+                fontWeight: 'fontWeightBold',
+              }}
+            >
+              {`${type} ($)`}
+            </Typography>
+
+            <Input
+              disableUnderline
+              fullWidth
+              size="small"
+              value={isMin ? min : max}
+              onChange={(event) =>
+                isMin
+                  ? field.onChange([Number(event.target.value), max])
+                  : field.onChange([min, Number(event.target.value)])
+              }
+              onBlur={() => handleBlurInputRange(field.value)}
+              inputProps={{
+                step: 10,
+                min: 0,
+                max: 200,
+                type: 'number',
+                'aria-labelledby': 'input-slider',
+              }}
+              sx={{
+                pr: 1,
+                py: 0.5,
+                borderRadius: 0.75,
+                typography: 'body2',
+                bgcolor: 'grey.50012',
+                '& .MuiInput-input': { p: 0, textAlign: 'right' },
+              }}
+            />
+          </Stack>
+        );
+      }}
+    />
   );
 }

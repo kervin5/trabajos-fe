@@ -1,37 +1,26 @@
 import { memo } from 'react';
 // @mui
-import { styled } from '@mui/material/styles';
 import { Radio, Typography, RadioGroup, FormControlLabel } from '@mui/material';
-// utils
-import cssStyles from '../../../../../utils/cssStyles';
+// components
+import { ControlPanelStyle } from '../../../../../components/map';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('div')(({ theme }) => ({
-  ...cssStyles().bgBlur({ color: theme.palette.grey[900] }),
-  zIndex: 9,
-  minWidth: 200,
-  position: 'absolute',
-  top: theme.spacing(1),
-  right: theme.spacing(1),
-  padding: theme.spacing(2),
-  borderRadius: theme.shape.borderRadius,
-}));
-
-// ----------------------------------------------------------------------
-
-type ControlPanelProps = {
-  themes: Record<string, string>;
+type Props = {
+  themes: {
+    [key: string]: string;
+  };
   selectTheme: string;
   onChangeTheme: (theme: string) => void;
 };
 
-function ControlPanel({ themes, selectTheme, onChangeTheme }: ControlPanelProps) {
+function ControlPanel({ themes, selectTheme, onChangeTheme }: Props) {
   return (
-    <RootStyle>
+    <ControlPanelStyle>
       <Typography gutterBottom variant="subtitle2" sx={{ color: 'common.white' }}>
         Select Theme:
       </Typography>
+
       <RadioGroup value={selectTheme} onChange={(e, value) => onChangeTheme(value)}>
         {Object.keys(themes).map((item) => (
           <FormControlLabel
@@ -43,7 +32,7 @@ function ControlPanel({ themes, selectTheme, onChangeTheme }: ControlPanelProps)
           />
         ))}
       </RadioGroup>
-    </RootStyle>
+    </ControlPanelStyle>
   );
 }
 

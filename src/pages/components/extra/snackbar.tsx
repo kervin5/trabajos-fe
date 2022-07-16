@@ -91,25 +91,21 @@ export default function DemoSnackbar() {
               <Button
                 variant="contained"
                 color="inherit"
-                onClick={() =>
-                  enqueueSnackbar('This is an default', { variant: 'default', action: () => {} })
-                }
+                onClick={() => enqueueSnackbar('This is an default', { variant: 'default' })}
               >
                 Default
               </Button>
               <Button
                 variant="contained"
                 color="info"
-                onClick={() =>
-                  enqueueSnackbar('This is an info', { variant: 'info', action: () => {} })
-                }
+                onClick={() => enqueueSnackbar('This is an info', { variant: 'info' })}
               >
                 Info
               </Button>
               <Button
                 variant="contained"
                 color="success"
-                onClick={() => enqueueSnackbar('This is an success', { action: () => {} })}
+                onClick={() => enqueueSnackbar('This is an success', {})}
               >
                 Success
               </Button>
@@ -119,7 +115,6 @@ export default function DemoSnackbar() {
                 onClick={() =>
                   enqueueSnackbar('This is an warning', {
                     variant: 'warning',
-                    action: () => {},
                   })
                 }
               >
@@ -128,9 +123,7 @@ export default function DemoSnackbar() {
               <Button
                 variant="contained"
                 color="error"
-                onClick={() =>
-                  enqueueSnackbar('This is an error', { variant: 'error', action: () => {} })
-                }
+                onClick={() => enqueueSnackbar('This is an error', { variant: 'error' })}
               >
                 Error
               </Button>

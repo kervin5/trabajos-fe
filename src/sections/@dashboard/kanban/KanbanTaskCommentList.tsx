@@ -17,6 +17,7 @@ type Props = {
 
 export default function KanbanTaskCommentList({ comments }: Props) {
   const [openLightbox, setOpenLightbox] = useState(false);
+
   const [selectedImage, setSelectedImage] = useState<number>(0);
 
   const imagesLightbox = comments

@@ -6,6 +6,7 @@ import { Box, Grid, Link, Paper, Rating, Container, Typography } from '@mui/mate
 import useResponsive from '../../hooks/useResponsive';
 // utils
 import cssStyles from '../../utils/cssStyles';
+import { fDate } from '../../utils/formatTime';
 // components
 import Iconify from '../../components/Iconify';
 import { MotionViewport, varFade } from '../../components/animate';
@@ -16,37 +17,37 @@ const TESTIMONIALS = [
   {
     name: 'Jenny Wilson',
     rating: 5,
-    dateCreate: 'April 19, 2021',
+    dateCreate: new Date(),
     content: `Excellent Work! Thanks a lot!`,
   },
   {
     name: 'Cody Fisher',
     rating: 5,
-    dateCreate: 'April 19, 2021',
+    dateCreate: new Date(),
     content: `It's a very good dashboard and we are really liking the product . We've done some things, like migrate to TS and implementing a react useContext api, to fit our job methodology but the product is one of the best in terms of design and application architecture. The team did a really good job.`,
   },
   {
     name: 'Marvin McKinney',
     rating: 5,
-    dateCreate: 'April 19, 2021',
+    dateCreate: new Date(),
     content: `Customer support is realy fast and helpful the desgin of this theme is looks amazing also the code is very clean and readble realy good job !`,
   },
   {
     name: 'Darrell Steward',
     rating: 5,
-    dateCreate: 'April 19, 2021',
+    dateCreate: new Date(),
     content: `Amazing, really good code quality and gives you a lot of examples for implementations.`,
   },
   {
     name: 'Jacob Jones',
     rating: 5,
-    dateCreate: 'April 19, 2021',
+    dateCreate: new Date(),
     content: `Got a few questions after purchasing the product. The owner responded very fast and very helpfull. Overall the code is excellent and works very good. 5/5 stars!`,
   },
   {
     name: 'Bessie Cooper',
     rating: 5,
-    dateCreate: 'April 19, 2021',
+    dateCreate: new Date(),
     content: `CEO of Codealy.io here. We’ve built a developer assessment platform that makes sense - tasks are based on git repositories and run in virtual machines. We automate the pain points - storing candidates code, running it and sharing test results with the whole team, remotely. Bought this template as we need to provide an awesome dashboard for our early customers. I am super happy with purchase. The code is just as good as the design. Thanks!`,
   },
 ];
@@ -58,7 +59,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   backgroundImage: `linear-gradient(to right, ${alpha(theme.palette.grey[900], 0.8)} , ${alpha(
     theme.palette.grey[900],
     0.8
-  )}), url(https://minimals.cc/assets/images/about/testimonials.jpg)`,
+  )}), url(https://minimal-assets-api-dev.vercel.app/assets/images/about/testimonials.jpg)`,
   [theme.breakpoints.up('md')]: {
     textAlign: 'left',
     padding: 0,
@@ -163,21 +164,12 @@ export default function AboutTestimonials() {
 
 // ----------------------------------------------------------------------
 
-function TestimonialLink() {
-  return (
-    <Link href="#" variant="subtitle2" sx={{ display: 'flex', alignItems: 'center' }}>
-      Read more testimonials
-      <Iconify icon={'ic:round-arrow-right-alt'} sx={{ ml: 1, width: 20, height: 20 }} />
-    </Link>
-  );
-}
-
 type TestimonialCardProps = {
   testimonial: {
     name: string;
     rating: number;
     content: string;
-    dateCreate: Date | string;
+    dateCreate: Date;
   };
 };
 
@@ -201,13 +193,27 @@ function TestimonialCard({ testimonial }: TestimonialCardProps) {
       <Typography variant="subtitle1" gutterBottom>
         {name}
       </Typography>
-      <Typography gutterBottom component="p" variant="caption" sx={{ color: 'grey.500' }}>
-        {dateCreate}
+
+      <Typography gutterBottom component="div" variant="caption" sx={{ color: 'grey.500' }}>
+        {fDate(dateCreate)}
       </Typography>
+
       <Rating value={rating} readOnly size="small" />
+
       <Typography variant="body2" sx={{ mt: 1.5 }}>
         {content}
       </Typography>
     </Paper>
+  );
+}
+
+// ----------------------------------------------------------------------
+
+function TestimonialLink() {
+  return (
+    <Link href="#" variant="subtitle2" sx={{ display: 'flex', alignItems: 'center' }}>
+      Read more testimonials
+      <Iconify icon={'ic:round-arrow-right-alt'} sx={{ ml: 1, width: 20, height: 20 }} />
+    </Link>
   );
 }

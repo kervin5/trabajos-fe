@@ -56,7 +56,7 @@ export default function ComponentHero() {
 
           <m.div variants={varFade().inUp}>
             <Link
-              href="https://www.figma.com/file/x7earqGD0VGFjFdk5v2DgZ/%5BPreview%5D-Minimal-Web?node-id=866%3A55474"
+              href="https://www.figma.com/file/sI9fbKHIqlikUtfYCPb9lj/%5BPreview%5D-Minimal-Web.03.07.22?node-id=0%3A10803"
               target="_blank"
             >
               <Stack
@@ -78,7 +78,7 @@ export default function ComponentHero() {
               visibleByDefault
               disabledEffect
               alt="hero"
-              src="https://minimals.cc/assets/illustrations/illustration_components.png"
+              src="/assets/illustrations/illustration_components.png"
               sx={{ maxWidth: 320 }}
             />
           </m.div>

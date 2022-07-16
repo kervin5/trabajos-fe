@@ -1,7 +1,7 @@
 import { useDropzone } from 'react-dropzone';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { Box, Stack, Button } from '@mui/material';
 // type
 import { UploadMultiFileProps } from './type';
 //
@@ -26,6 +26,7 @@ export default function UploadMultiFile({
   error,
   showPreview = false,
   files,
+  onUpload,
   onRemove,
   onRemoveAll,
   helperText,
@@ -56,12 +57,18 @@ export default function UploadMultiFile({
 
       {fileRejections.length > 0 && <RejectionFiles fileRejections={fileRejections} />}
 
-      <MultiFilePreview
-        files={files}
-        showPreview={showPreview}
-        onRemove={onRemove}
-        onRemoveAll={onRemoveAll}
-      />
+      <MultiFilePreview files={files} showPreview={showPreview} onRemove={onRemove} />
+
+      {files.length > 0 && (
+        <Stack direction="row" justifyContent="flex-end" spacing={1.5}>
+          <Button color="inherit" size="small" onClick={onRemoveAll}>
+            Remove all
+          </Button>
+          <Button size="small" variant="contained" onClick={onUpload}>
+            Upload files
+          </Button>
+        </Stack>
+      )}
 
       {helperText && helperText}
     </Box>

@@ -1,10 +1,10 @@
 // form
 import { useFormContext, Controller } from 'react-hook-form';
 // @mui
-import DatePicker from '@mui/lab/DatePicker';
+import { DatePicker } from '@mui/x-date-pickers';
 import { Stack, TextField, MenuItem } from '@mui/material';
 // components
-import { RHFSelect } from '../../../../components/hook-form';
+import { RHFSelect, RHFTextField } from '../../../../components/hook-form';
 
 // ----------------------------------------------------------------------
 
@@ -13,7 +13,9 @@ const STATUS_OPTIONS = ['paid', 'unpaid', 'overdue', 'draft'];
 // ----------------------------------------------------------------------
 
 export default function InvoiceNewEditStatusDate() {
-  const { control } = useFormContext();
+  const { control, watch } = useFormContext();
+
+  const values = watch();
 
   return (
     <Stack
@@ -21,6 +23,13 @@ export default function InvoiceNewEditStatusDate() {
       direction={{ xs: 'column', sm: 'row' }}
       sx={{ p: 3, bgcolor: 'background.neutral' }}
     >
+      <RHFTextField
+        disabled
+        name="invoiceNumber"
+        label="Invoice number"
+        value={`INV-${values.invoiceNumber}`}
+      />
+
       <RHFSelect
         fullWidth
         name="status"

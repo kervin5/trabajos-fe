@@ -1,9 +1,13 @@
 import { useRef, useState, useEffect, ChangeEvent, KeyboardEvent } from 'react';
 // @mui
-import { Stack, OutlinedInput, MenuItem, IconButton } from '@mui/material';
+import { Stack, OutlinedInput, MenuItem, IconButton, Typography, Button } from '@mui/material';
+// hooks
+import useToggle from '../../../hooks/useToggle';
 // components
 import Iconify from '../../../components/Iconify';
 import MenuPopover from '../../../components/MenuPopover';
+//
+import KanbanConfirmDialog from './KanbanConfirmDialog';
 
 // ----------------------------------------------------------------------
 
@@ -15,6 +19,8 @@ type Props = {
 
 export default function KanbanColumnToolBar({ columnName, onDelete, onUpdate }: Props) {
   const renameRef = useRef<HTMLInputElement>(null);
+
+  const { toggle: openConfirm, onOpen: onOpenConfirm, onClose: onCloseConfirm } = useToggle();
 
   const [value, setValue] = useState(columnName);
 
@@ -90,7 +96,7 @@ export default function KanbanColumnToolBar({ columnName, onDelete, onUpdate }: 
           '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
         }}
       >
-        <MenuItem onClick={onDelete} sx={{ color: 'error.main' }}>
+        <MenuItem onClick={onOpenConfirm} sx={{ color: 'error.main' }}>
           <Iconify
             icon={'eva:trash-2-outline'}
             sx={{ width: 20, height: 20, flexShrink: 0, mr: 1 }}
@@ -103,6 +109,31 @@ export default function KanbanColumnToolBar({ columnName, onDelete, onUpdate }: 
           Rename section
         </MenuItem>
       </MenuPopover>
+
+      <KanbanConfirmDialog
+        open={openConfirm}
+        onClose={onCloseConfirm}
+        title={
+          <Typography gutterBottom>
+            Are you sure you want to delete column <strong>{columnName}</strong>?
+          </Typography>
+        }
+        subheader={
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            <strong>NOTE:</strong> All tasks related to this category will also be deleted.
+          </Typography>
+        }
+        actions={
+          <>
+            <Button variant="outlined" color="inherit" onClick={onCloseConfirm}>
+              Cancel
+            </Button>
+            <Button variant="contained" color="error" onClick={onDelete}>
+              Delete
+            </Button>
+          </>
+        }
+      />
     </>
   );
 }

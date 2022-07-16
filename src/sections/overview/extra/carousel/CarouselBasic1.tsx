@@ -13,7 +13,9 @@ import { CarouselArrowIndex } from '../../../../components/carousel';
 
 export default function CarouselBasic1() {
   const theme = useTheme();
+
   const carouselRef = useRef<Slider | null>(null);
+
   const [currentIndex, setCurrentIndex] = useState(
     theme.direction === 'rtl' ? _carouselsExample.length - 1 : 0
   );

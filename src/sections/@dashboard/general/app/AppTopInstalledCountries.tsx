@@ -1,10 +1,8 @@
 // @mui
 import { styled } from '@mui/material/styles';
-import { Card, CardHeader, Typography, Stack, StackProps } from '@mui/material';
+import { Card, CardHeader, Typography, Stack, StackProps, CardProps } from '@mui/material';
 // utils
 import { fShortenNumber } from '../../../../utils/formatNumber';
-// _mock_
-import { _appInstalled } from '../../../../_mock';
 // components
 import Image from '../../../../components/Image';
 import Iconify from '../../../../components/Iconify';
@@ -28,13 +26,29 @@ const ItemIconStyle = styled(Iconify)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function AppTopInstalledCountries() {
+type ItemProps = {
+  id: string;
+  name: string;
+  android: number;
+  windows: number;
+  apple: number;
+  flag: string;
+};
+
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  list: ItemProps[];
+}
+
+export default function AppTopInstalledCountries({ title, subheader, list, ...other }: Props) {
   return (
-    <Card>
-      <CardHeader title="Top Installed Countries" />
+    <Card {...other}>
+      <CardHeader title={title} subheader={subheader} />
+
       <Scrollbar>
         <Stack spacing={3} sx={{ p: 3 }}>
-          {_appInstalled.map((country) => (
+          {list.map((country) => (
             <CountryItem key={country.id} country={country} />
           ))}
         </Stack>
@@ -46,29 +60,27 @@ export default function AppTopInstalledCountries() {
 // ----------------------------------------------------------------------
 
 type CountryItemProps = {
-  id: string;
-  name: string;
-  android: number;
-  windows: number;
-  apple: number;
-  flag: string;
+  country: ItemProps;
 };
 
-function CountryItem({ country }: { country: CountryItemProps }) {
+function CountryItem({ country }: CountryItemProps) {
   return (
     <Stack direction="row" alignItems="center" spacing={2}>
       <ItemBlockStyle sx={{ minWidth: 120 }}>
         <Image disabledEffect alt={country.name} src={country.flag} sx={{ width: 28, mr: 1 }} />
         <Typography variant="subtitle2">{country.name}</Typography>
       </ItemBlockStyle>
+
       <ItemBlockStyle>
         <ItemIconStyle icon={'ant-design:android-filled'} />
         <Typography variant="body2">{fShortenNumber(country.android)}</Typography>
       </ItemBlockStyle>
+
       <ItemBlockStyle>
         <ItemIconStyle icon={'ant-design:windows-filled'} />
         <Typography variant="body2">{fShortenNumber(country.windows)}</Typography>
       </ItemBlockStyle>
+
       <ItemBlockStyle sx={{ minWidth: 88 }}>
         <ItemIconStyle icon={'ant-design:apple-filled'} />
         <Typography variant="body2">{fShortenNumber(country.windows)}</Typography>

@@ -22,10 +22,12 @@ export default function AuthGuard({ children }: Props) {
 
   useEffect(() => {
     if (requestedLocation && pathname !== requestedLocation) {
-      setRequestedLocation(null);
       push(requestedLocation);
     }
-  }, [pathname, push, requestedLocation]);
+    if (isAuthenticated) {
+      setRequestedLocation(null);
+    }
+  }, [isAuthenticated, pathname, push, requestedLocation]);
 
   if (!isInitialized) {
     return <LoadingScreen />;

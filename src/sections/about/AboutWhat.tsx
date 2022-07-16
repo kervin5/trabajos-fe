@@ -49,7 +49,7 @@ export default function AboutWhat() {
                   <m.div variants={varFade().inUp}>
                     <Image
                       alt="our office 1"
-                      src="https://minimals.cc/assets/images/about/what-1.jpg"
+                      src="https://minimal-assets-api-dev.vercel.app/assets/images/about/what-1.jpg"
                       ratio="3/4"
                       sx={{
                         borderRadius: 2,
@@ -62,7 +62,7 @@ export default function AboutWhat() {
                   <m.div variants={varFade().inUp}>
                     <Image
                       alt="our office 2"
-                      src="https://minimals.cc/assets/images/about/what-2.jpg"
+                      src="https://minimal-assets-api-dev.vercel.app/assets/images/about/what-2.jpg"
                       ratio="1/1"
                       sx={{ borderRadius: 2 }}
                     />

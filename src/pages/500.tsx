@@ -1,9 +1,9 @@
 import { m } from 'framer-motion';
 // next
 import NextLink from 'next/link';
-// @mui
 import { styled } from '@mui/material/styles';
-import { Box, Button, Typography, Container } from '@mui/material';
+// @mui
+import { Button, Typography, Container } from '@mui/material';
 // layouts
 import Layout from '../layouts';
 // components
@@ -14,12 +14,14 @@ import { SeverErrorIllustration } from '../assets';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('div')(({ theme }) => ({
+const ContentStyle = styled('div')(({ theme }) => ({
+  maxWidth: 480,
+  margin: 'auto',
+  minHeight: '100vh',
   display: 'flex',
-  height: '100%',
-  alignItems: 'center',
-  paddingTop: theme.spacing(15),
-  paddingBottom: theme.spacing(10),
+  justifyContent: 'center',
+  flexDirection: 'column',
+  padding: theme.spacing(12, 0),
 }));
 
 // ----------------------------------------------------------------------
@@ -32,29 +34,32 @@ Page500.getLayout = function getLayout(page: React.ReactElement) {
 
 export default function Page500() {
   return (
-    <Page title="500 Internal Server Error" sx={{ height: 1 }}>
-      <RootStyle>
-        <Container component={MotionContainer}>
-          <Box sx={{ maxWidth: 480, margin: 'auto', textAlign: 'center' }}>
-            <m.div variants={varBounce().in}>
-              <Typography variant="h3" paragraph>
-                500 Internal Server Error
-              </Typography>
-            </m.div>
+    <Page title="500 Internal Server Error">
+      <Container component={MotionContainer}>
+        <ContentStyle sx={{ textAlign: 'center', alignItems: 'center' }}>
+          <m.div variants={varBounce().in}>
+            <Typography variant="h3" paragraph>
+              500 Internal Server Error
+            </Typography>
+          </m.div>
+
+          <m.div variants={varBounce().in}>
             <Typography sx={{ color: 'text.secondary' }}>
               There was an error, please try again later.
             </Typography>
-            <m.div variants={varBounce().in}>
-              <SeverErrorIllustration sx={{ height: 260, my: { xs: 5, sm: 10 } }} />
-            </m.div>
-            <NextLink href="/" passHref>
-              <Button size="large" variant="contained">
-                Go to Home
-              </Button>
-            </NextLink>
-          </Box>
-        </Container>
-      </RootStyle>
+          </m.div>
+
+          <m.div variants={varBounce().in}>
+            <SeverErrorIllustration sx={{ height: 260, my: { xs: 5, sm: 10 } }} />
+          </m.div>
+
+          <NextLink href="/" passHref>
+            <Button size="large" variant="contained">
+              Go to Home
+            </Button>
+          </NextLink>
+        </ContentStyle>
+      </Container>
     </Page>
   );
 }

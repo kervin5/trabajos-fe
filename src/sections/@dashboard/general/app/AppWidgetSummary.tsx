@@ -1,6 +1,6 @@
 // @mui
 import { alpha, useTheme, styled } from '@mui/material/styles';
-import { Box, Card, Typography, Stack } from '@mui/material';
+import { Box, Card, Typography, Stack, CardProps } from '@mui/material';
 // utils
 import { fNumber, fPercent } from '../../../../utils/formatNumber';
 // components
@@ -22,15 +22,23 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props extends CardProps {
   title: string;
   total: number;
   percent: number;
   chartColor: string;
   chartData: number[];
-};
+}
 
-export default function AppWidgetSummary({ title, percent, total, chartColor, chartData }: Props) {
+export default function AppWidgetSummary({
+  title,
+  percent,
+  total,
+  chartColor,
+  chartData,
+  sx,
+  ...other
+}: Props) {
   const theme = useTheme();
 
   const chartOptions = {
@@ -42,7 +50,7 @@ export default function AppWidgetSummary({ title, percent, total, chartColor, ch
       y: {
         formatter: (seriesName: number | string) => fNumber(seriesName),
         title: {
-          formatter: () => '',
+          formatter: (seriesName: number | string) => '',
         },
       },
       marker: { show: false },
@@ -50,7 +58,7 @@ export default function AppWidgetSummary({ title, percent, total, chartColor, ch
   };
 
   return (
-    <Card sx={{ display: 'flex', alignItems: 'center', p: 3 }}>
+    <Card sx={{ display: 'flex', alignItems: 'center', p: 3, ...sx }} {...other}>
       <Box sx={{ flexGrow: 1 }}>
         <Typography variant="subtitle2">{title}</Typography>
 

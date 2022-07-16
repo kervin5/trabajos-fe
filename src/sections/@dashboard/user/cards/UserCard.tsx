@@ -36,7 +36,7 @@ export default function UserCard({ user }: Props) {
     <Card sx={{ textAlign: 'center' }}>
       <Box sx={{ position: 'relative' }}>
         <SvgIconStyle
-          src="https://minimals.cc/assets/icons/shape-avatar.svg"
+          src="https://minimal-assets-api-dev.vercel.app/assets/icons/shape-avatar.svg"
           sx={{
             width: 144,
             height: 62,
@@ -49,6 +49,7 @@ export default function UserCard({ user }: Props) {
             color: 'background.paper',
           }}
         />
+
         <Avatar
           alt={name}
           src={avatarUrl}

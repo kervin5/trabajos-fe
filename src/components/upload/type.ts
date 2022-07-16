@@ -9,6 +9,7 @@ import { Theme } from '@mui/material/styles';
 export interface CustomFile extends File {
   path?: string;
   preview?: string;
+  lastModifiedDate?: Date;
 }
 
 export interface UploadProps extends DropzoneOptions {
@@ -19,11 +20,12 @@ export interface UploadProps extends DropzoneOptions {
 }
 
 export interface UploadMultiFileProps extends DropzoneOptions {
-  error?: boolean;
   files: (File | string)[];
-  showPreview: boolean;
-  onRemove: (file: File | string) => void;
-  onRemoveAll: VoidFunction;
+  error?: boolean;
+  showPreview?: boolean;
   sx?: SxProps<Theme>;
   helperText?: ReactNode;
+  onUpload?: VoidFunction;
+  onRemove?: (file: File | string) => void;
+  onRemoveAll?: VoidFunction;
 }

@@ -7,17 +7,19 @@ import { Button, Typography, Container } from '@mui/material';
 import Layout from '../layouts';
 // components
 import Page from '../components/Page';
-//
+// assets
 import { MaintenanceIllustration } from '../assets';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('div')(({ theme }) => ({
-  height: '100%',
+const ContentStyle = styled('div')(({ theme }) => ({
+  maxWidth: 480,
+  margin: 'auto',
+  minHeight: '100vh',
   display: 'flex',
-  alignItems: 'center',
-  paddingTop: theme.spacing(15),
-  paddingBottom: theme.spacing(10),
+  justifyContent: 'center',
+  flexDirection: 'column',
+  padding: theme.spacing(12, 0),
 }));
 
 // ----------------------------------------------------------------------
@@ -30,12 +32,13 @@ Maintenance.getLayout = function getLayout(page: React.ReactElement) {
 
 export default function Maintenance() {
   return (
-    <Page title="Maintenance" sx={{ height: 1 }}>
-      <RootStyle>
-        <Container sx={{ textAlign: 'center' }}>
+    <Page title="Maintenance">
+      <Container>
+        <ContentStyle sx={{ textAlign: 'center', alignItems: 'center' }}>
           <Typography variant="h3" paragraph>
             Website currently under maintenance
           </Typography>
+
           <Typography sx={{ color: 'text.secondary' }}>
             We are currently working hard on this page!
           </Typography>
@@ -47,8 +50,8 @@ export default function Maintenance() {
               Go to Home
             </Button>
           </NextLink>
-        </Container>
-      </RootStyle>
+        </ContentStyle>
+      </Container>
     </Page>
   );
 }

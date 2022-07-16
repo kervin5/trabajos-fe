@@ -9,6 +9,7 @@ import {
   Avatar,
   Tooltip,
   Divider,
+  IconButton,
   Typography,
   ListItemText,
   ListSubheader,
@@ -79,9 +80,9 @@ export default function NotificationsPopover() {
 
           {totalUnRead > 0 && (
             <Tooltip title=" Mark all as read">
-              <IconButtonAnimate color="primary" onClick={handleMarkAllAsRead}>
+              <IconButton color="primary" onClick={handleMarkAllAsRead}>
                 <Iconify icon="eva:done-all-fill" width={20} height={20} />
-              </IconButtonAnimate>
+              </IconButton>
             </Tooltip>
           )}
         </Box>
@@ -195,7 +196,7 @@ function renderContent(notification: NotificationItemProps) {
       avatar: (
         <img
           alt={notification.title}
-          src="https://minimals.cc/assets/icons/ic_notification_package.svg"
+          src="https://minimal-assets-api-dev.vercel.app/assets/icons/ic_notification_package.svg"
         />
       ),
       title,
@@ -206,7 +207,7 @@ function renderContent(notification: NotificationItemProps) {
       avatar: (
         <img
           alt={notification.title}
-          src="https://minimals.cc/assets/icons/ic_notification_shipping.svg"
+          src="https://minimal-assets-api-dev.vercel.app/assets/icons/ic_notification_shipping.svg"
         />
       ),
       title,
@@ -217,7 +218,7 @@ function renderContent(notification: NotificationItemProps) {
       avatar: (
         <img
           alt={notification.title}
-          src="https://minimals.cc/assets/icons/ic_notification_mail.svg"
+          src="https://minimal-assets-api-dev.vercel.app/assets/icons/ic_notification_mail.svg"
         />
       ),
       title,
@@ -228,7 +229,7 @@ function renderContent(notification: NotificationItemProps) {
       avatar: (
         <img
           alt={notification.title}
-          src="https://minimals.cc/assets/icons/ic_notification_chat.svg"
+          src="https://minimal-assets-api-dev.vercel.app/assets/icons/ic_notification_chat.svg"
         />
       ),
       title,

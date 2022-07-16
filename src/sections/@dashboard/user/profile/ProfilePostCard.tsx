@@ -27,7 +27,7 @@ import { fShortenNumber } from '../../../../utils/formatNumber';
 import Image from '../../../../components/Image';
 import Iconify from '../../../../components/Iconify';
 import MyAvatar from '../../../../components/MyAvatar';
-import EmojiPicker from '../../../../components/EmojiPicker';
+import EmojiPicker from '../../../../components/emoji-picker';
 
 // ----------------------------------------------------------------------
 
@@ -37,11 +37,17 @@ interface Props {
 
 export default function ProfilePostCard({ post }: Props) {
   const { user } = useAuth();
+
   const commentInputRef = useRef<HTMLInputElement>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [isLiked, setLiked] = useState(post.isLiked);
+
   const [likes, setLikes] = useState(post.personLikes.length);
+
   const [message, setMessage] = useState('');
+
   const hasComments = post.comments.length > 0;
 
   const handleLike = () => {
@@ -113,10 +119,13 @@ export default function ProfilePostCard({ post }: Props) {
               <Avatar key={person.name} alt={person.name} src={person.avatarUrl} />
             ))}
           </AvatarGroup>
+
           <Box sx={{ flexGrow: 1 }} />
+
           <IconButton onClick={handleClickComment}>
             <Iconify icon={'eva:message-square-fill'} width={20} height={20} />
           </IconButton>
+
           <IconButton>
             <Iconify icon={'eva:share-fill'} width={20} height={20} />
           </IconButton>
@@ -127,6 +136,7 @@ export default function ProfilePostCard({ post }: Props) {
             {post.comments.map((comment) => (
               <Stack key={comment.id} direction="row" spacing={2}>
                 <Avatar alt={comment.author.name} src={comment.author.avatarUrl} />
+
                 <Paper sx={{ p: 1.5, flexGrow: 1, bgcolor: 'background.neutral' }}>
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -135,10 +145,12 @@ export default function ProfilePostCard({ post }: Props) {
                     sx={{ mb: 0.5 }}
                   >
                     <Typography variant="subtitle2">{comment.author.name}</Typography>
+
                     <Typography variant="caption" sx={{ color: 'text.disabled' }}>
                       {fDate(comment.createdAt)}
                     </Typography>
                   </Stack>
+
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     {comment.message}
                   </Typography>
@@ -150,6 +162,7 @@ export default function ProfilePostCard({ post }: Props) {
 
         <Stack direction="row" alignItems="center">
           <MyAvatar />
+
           <TextField
             fullWidth
             size="small"
@@ -163,7 +176,12 @@ export default function ProfilePostCard({ post }: Props) {
                   <IconButton size="small" onClick={handleClickAttach}>
                     <Iconify icon={'ic:round-add-photo-alternate'} width={24} height={24} />
                   </IconButton>
-                  <EmojiPicker alignRight value={message} setValue={setMessage} />
+
+                  <EmojiPicker
+                    value={message}
+                    setValue={setMessage}
+                    sx={{ right: { xs: -80, sm: 0 } }}
+                  />
                 </InputAdornment>
               ),
             }}
@@ -176,9 +194,11 @@ export default function ProfilePostCard({ post }: Props) {
               },
             }}
           />
+
           <IconButton>
             <Iconify icon={'ic:round-send'} width={24} height={24} />
           </IconButton>
+
           <input type="file" ref={fileInputRef} style={{ display: 'none' }} />
         </Stack>
       </Stack>

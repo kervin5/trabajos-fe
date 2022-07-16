@@ -22,6 +22,7 @@ const RootStyle = styled(Box)(() => ({
 
 export default function CarouselCenterMode() {
   const carouselRef = useRef<Slider | null>(null);
+
   const theme = useTheme();
 
   const settings = {

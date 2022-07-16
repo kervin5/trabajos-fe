@@ -11,7 +11,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundImage:
-    'url(https://minimals.cc/assets/overlay.svg), url(https://minimals.cc/assets/images/about/hero.jpg)',
+    'url(/assets/overlay.svg), url(https://minimal-assets-api-dev.vercel.app/assets/images/about/hero.jpg)',
   padding: theme.spacing(10, 0),
   [theme.breakpoints.up('md')]: {
     height: 560,

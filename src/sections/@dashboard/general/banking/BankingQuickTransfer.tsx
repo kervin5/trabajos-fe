@@ -1,7 +1,7 @@
 import Slider from 'react-slick';
 import { useState, useEffect, useRef } from 'react';
 // @mui
-import { styled, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import {
   Box,
   Card,
@@ -13,6 +13,7 @@ import {
   Dialog,
   Tooltip,
   TextField,
+  CardProps,
   Typography,
   CardHeader,
   InputProps,
@@ -23,34 +24,44 @@ import {
 } from '@mui/material';
 // utils
 import { fCurrency } from '../../../../utils/formatNumber';
-// _mock_
-import { _bankingQuickTransfer } from '../../../../_mock';
 // components
 import { CarouselArrows } from '../../../../components/carousel';
 
 // ----------------------------------------------------------------------
 
 const MIN_AMOUNT = 0;
-const MAX_AMOUNT = 1000;
-const STEP = 50;
 
-const RootStyle = styled(Card)(({ theme }) => ({
-  boxShadow: 'none',
-  backgroundColor: theme.palette.background.neutral,
-}));
+const MAX_AMOUNT = 1000;
+
+const STEP = 50;
 
 // ----------------------------------------------------------------------
 
-export default function BankingQuickTransfer() {
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  list: {
+    id: string;
+    name: string;
+    email: string;
+    avatar: string;
+  }[];
+}
+
+export default function BankingQuickTransfer({ title, subheader, list, sx, ...other }: Props) {
   const theme = useTheme();
+
   const carouselRef = useRef<Slider | null>(null);
 
   const [autoWidth, setAutoWidth] = useState(24);
+
   const [openConfirm, setOpenConfirm] = useState(false);
+
   const [selectContact, setSelectContact] = useState(0);
+
   const [amount, setAmount] = useState<AmountProps>(0);
 
-  const getContactInfo = _bankingQuickTransfer.find((_, index) => index === selectContact);
+  const getContactInfo = list.find((_, index) => index === selectContact);
 
   const sliderSettings = {
     dots: false,
@@ -118,8 +129,16 @@ export default function BankingQuickTransfer() {
 
   return (
     <>
-      <RootStyle>
-        <CardHeader title="Quick Transfer" />
+      <Card
+        sx={{
+          boxShadow: 0,
+          bgcolor: 'background.neutral',
+          ...sx,
+        }}
+        {...other}
+      >
+        <CardHeader title={title} subheader={subheader} />
+
         <Box sx={{ p: 3 }}>
           <Stack direction="row" alignItems="center" justifyContent="space-between">
             <Typography variant="overline" sx={{ color: 'text.secondary' }}>
@@ -144,7 +163,7 @@ export default function BankingQuickTransfer() {
               }}
             >
               <Slider ref={carouselRef} {...sliderSettings}>
-                {_bankingQuickTransfer.map((contact, index) => (
+                {list.map((contact, index) => (
                   <Box key={contact.id} sx={{ py: 5 }}>
                     <Box sx={{ width: 40, height: 40 }}>
                       <Tooltip key={contact.id} title={contact.name} arrow placement="top">
@@ -208,7 +227,7 @@ export default function BankingQuickTransfer() {
             </Button>
           </Stack>
         </Box>
-      </RootStyle>
+      </Card>
 
       <ConfirmTransferDialog
         open={openConfirm}
@@ -257,6 +276,8 @@ function InputAmount({ autoWidth, amount, onBlur, onChange, sx, ...other }: Inpu
   );
 }
 
+// ----------------------------------------------------------------------
+
 type TConfirmTransferDialogProps = InputAmountProps & DialogProps;
 
 interface ConfirmTransferDialogProps extends TConfirmTransferDialogProps {
@@ -285,6 +306,7 @@ function ConfirmTransferDialog({
       <Stack spacing={3} sx={{ p: 3, pb: 0 }}>
         <Stack direction="row" alignItems="center" spacing={2}>
           <Avatar src={contactInfo?.avatar} sx={{ width: 48, height: 48 }} />
+
           <div>
             <Typography variant="subtitle2">{contactInfo?.name}</Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -304,10 +326,12 @@ function ConfirmTransferDialog({
 
         <TextField fullWidth multiline rows={2} placeholder="Write a message..." />
       </Stack>
+
       <DialogActions>
         <Button variant="contained" disabled={amount === 0} onClick={onClose}>
           Confirm & Transfer
         </Button>
+
         <Button onClick={onClose}>Cancel</Button>
       </DialogActions>
     </Dialog>

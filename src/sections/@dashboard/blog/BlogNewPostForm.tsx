@@ -21,9 +21,8 @@ import {
 } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
-// @types
-import { NewPostFormValues } from '../../../@types/blog';
 //components
+import { CustomFile } from '../../../components/upload';
 import {
   RHFSwitch,
   RHFEditor,
@@ -60,6 +59,19 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
+export type FormValuesProps = {
+  title: string;
+  description: string;
+  content: string;
+  cover: CustomFile | string | null;
+  tags: string[];
+  publish: boolean;
+  comments: boolean;
+  metaTitle: string;
+  metaDescription: string;
+  metaKeywords: string[];
+};
+
 export default function BlogNewPostForm() {
   const { push } = useRouter();
 
@@ -95,7 +107,7 @@ export default function BlogNewPostForm() {
     metaKeywords: ['Logan'],
   };
 
-  const methods = useForm<NewPostFormValues>({
+  const methods = useForm<FormValuesProps>({
     resolver: yupResolver(NewBlogSchema),
     defaultValues,
   });
@@ -111,7 +123,7 @@ export default function BlogNewPostForm() {
 
   const values = watch();
 
-  const onSubmit = async (data: NewPostFormValues) => {
+  const onSubmit = async (data: FormValuesProps) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
@@ -124,7 +136,7 @@ export default function BlogNewPostForm() {
   };
 
   const handleDrop = useCallback(
-    (acceptedFiles) => {
+    (acceptedFiles: File[]) => {
       const file = acceptedFiles[0];
 
       if (file) {
@@ -152,17 +164,12 @@ export default function BlogNewPostForm() {
 
                 <div>
                   <LabelStyle>Content</LabelStyle>
-                  <RHFEditor name="content" />
+                  <RHFEditor simple name="content" />
                 </div>
 
                 <div>
                   <LabelStyle>Cover</LabelStyle>
-                  <RHFUploadSingleFile
-                    name="cover"
-                    accept="image/*"
-                    maxSize={3145728}
-                    onDrop={handleDrop}
-                  />
+                  <RHFUploadSingleFile name="cover" maxSize={3145728} onDrop={handleDrop} />
                 </div>
               </Stack>
             </Card>

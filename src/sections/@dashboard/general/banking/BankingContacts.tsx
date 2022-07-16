@@ -6,23 +6,33 @@ import {
   Button,
   Avatar,
   Tooltip,
+  CardProps,
   Typography,
   CardHeader,
   IconButton,
 } from '@mui/material';
-// _mock_
-import { _bankingContacts } from '../../../../_mock';
 // components
 import Iconify from '../../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
-export default function BankingContacts() {
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  list: {
+    id: string;
+    name: string;
+    email: string;
+    avatar: string;
+  }[];
+}
+
+export default function BankingContacts({ title, subheader, list, ...other }: Props) {
   return (
-    <Card>
+    <Card {...other}>
       <CardHeader
-        title="Contacts"
-        subheader="You have 122 contacts"
+        title={title}
+        subheader={subheader}
         action={
           <Tooltip title="Add Contact">
             <IconButton color="primary" size="large">
@@ -33,13 +43,15 @@ export default function BankingContacts() {
       />
 
       <Stack spacing={3} sx={{ p: 3 }}>
-        {_bankingContacts.map((contact) => (
+        {list.map((contact) => (
           <Stack direction="row" alignItems="center" key={contact.id}>
             <Avatar src={contact.avatar} sx={{ width: 48, height: 48 }} />
+
             <Box sx={{ flexGrow: 1, ml: 2, minWidth: 100 }}>
               <Typography variant="subtitle2" sx={{ mb: 0.5 }} noWrap>
                 {contact.name}
               </Typography>
+
               <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
                 {contact.email}
               </Typography>

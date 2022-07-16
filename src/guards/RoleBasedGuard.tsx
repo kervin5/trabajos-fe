@@ -1,31 +1,48 @@
-import { ReactNode } from 'react';
-import { Container, Alert, AlertTitle } from '@mui/material';
+import { m } from 'framer-motion';
+// @mui
+import { Container, Typography } from '@mui/material';
+// hooks
+import useAuth from '../hooks/useAuth';
+// components
+import { MotionContainer, varBounce } from '../components/animate';
+// assets
+import { ForbiddenIllustration } from '../assets';
 
 // ----------------------------------------------------------------------
 
 type RoleBasedGuardProp = {
-  accessibleRoles: string[];
-  children: ReactNode | string;
+  hasContent?: boolean;
+  roles?: string[];
+  children: React.ReactNode;
 };
 
-const useCurrentRole = () => {
+export default function RoleBasedGuard({ hasContent, roles, children }: RoleBasedGuardProp) {
   // Logic here to get current user role
-  const role = 'admin';
-  return role;
-};
+  const { user } = useAuth();
 
-export default function RoleBasedGuard({ accessibleRoles, children }: RoleBasedGuardProp) {
-  const currentRole = useCurrentRole();
+  // const currentRole = 'user';
+  const currentRole = user?.role; // admin;
 
-  if (!accessibleRoles.includes(currentRole)) {
-    return (
-      <Container>
-        <Alert severity="error">
-          <AlertTitle>Permission Denied</AlertTitle>
-          You do not have permission to access this page
-        </Alert>
+  if (typeof roles !== 'undefined' && !roles.includes(currentRole)) {
+    return hasContent ? (
+      <Container component={MotionContainer} sx={{ textAlign: 'center' }}>
+        <m.div variants={varBounce().in}>
+          <Typography variant="h3" paragraph>
+            Permission Denied
+          </Typography>
+        </m.div>
+
+        <m.div variants={varBounce().in}>
+          <Typography sx={{ color: 'text.secondary' }}>
+            You do not have permission to access this page
+          </Typography>
+        </m.div>
+
+        <m.div variants={varBounce().in}>
+          <ForbiddenIllustration sx={{ height: 260, my: { xs: 5, sm: 10 } }} />
+        </m.div>
       </Container>
-    );
+    ) : null;
   }
 
   return <>{children}</>;

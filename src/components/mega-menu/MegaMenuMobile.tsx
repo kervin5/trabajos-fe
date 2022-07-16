@@ -33,6 +33,7 @@ type Props = {
 
 export default function MegaMenuMobile({ navConfig }: Props) {
   const { pathname } = useRouter();
+
   const [openDrawer, setOpenDrawer] = useState(false);
 
   useEffect(() => {
@@ -102,6 +103,7 @@ type SubMenuProps = {
 
 function SubMenu({ parent, pathname }: SubMenuProps) {
   const [open, setOpen] = useState(false);
+
   const { title, icon, path, children } = parent;
 
   useEffect(() => {
@@ -134,6 +136,7 @@ function SubMenu({ parent, pathname }: SubMenuProps) {
             <IconButton onClick={handleClose}>
               <Iconify icon={'eva:arrow-ios-back-fill'} width={20} height={20} />
             </IconButton>
+
             <Typography noWrap variant="subtitle1" sx={{ ml: 1, textTransform: 'capitalize' }}>
               {title}
             </Typography>
@@ -177,6 +180,7 @@ function SubMenu({ parent, pathname }: SubMenuProps) {
                               }}
                             />
                           </ListItemIcon>
+
                           <ListItemText
                             primary={link.title}
                             primaryTypographyProps={{ typography: 'body2', noWrap: true }}

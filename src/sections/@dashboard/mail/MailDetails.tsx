@@ -35,9 +35,13 @@ const MarkdownWrapperStyle = styled('div')(({ theme }) => ({
 
 export default function MailDetails() {
   const { query } = useRouter();
+
   const { mailId = '' } = query;
+
   const dispatch = useDispatch();
+
   const mail = useSelector((state: RootState) => state.mail.mails.byId[`${mailId}`]);
+
   const isAttached = mail && mail.files.length > 0;
 
   useEffect(() => {

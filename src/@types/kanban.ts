@@ -30,7 +30,7 @@ export type KanbanCard = {
   name: string;
   description?: string;
   assignee: Assignee[];
-  due: [number | null, number | null];
+  due: [Date | null, Date | null];
   attachments: string[];
   comments: CardComment[];
   completed: boolean;

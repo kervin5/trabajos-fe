@@ -1,24 +1,13 @@
-// mapboxgl
-// Fix map on production
-import '../../utils/mapboxgl';
-
-import MapGL from 'react-map-gl';
+import Map from 'react-map-gl';
 import { useState } from 'react';
 // @mui
 import { useTheme, styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
-// _mock
-import { _mapContact } from '../../_mock';
 // config
 import { MAPBOX_API } from '../../config';
 // components
 import Iconify from '../../components/Iconify';
-import {
-  MapControlPopup,
-  MapControlMarker,
-  MapControlScale,
-  MapControlNavigation,
-} from '../../components/map';
+import { MapControl, MapMarker, MapPopup } from '../../components/map';
 
 // ----------------------------------------------------------------------
 
@@ -41,43 +30,47 @@ type CountryData = {
   phoneNumber: string;
 };
 
-export default function ContactMap() {
+type Props = {
+  contacts: CountryData[];
+};
+
+export default function ContactMap({ contacts }: Props) {
   const theme = useTheme();
+
   const isLight = theme.palette.mode === 'light';
-  const [tooltip, setTooltip] = useState<CountryData | null>(null);
-  const [viewport, setViewport] = useState({
-    latitude: 12,
-    longitude: 42,
-    zoom: 2,
-  });
+
+  const [popupInfo, setPopupInfo] = useState<CountryData | null>(null);
 
   return (
     <RootStyle>
-      <MapGL
-        {...viewport}
-        onViewportChange={setViewport}
+      <Map
+        initialViewState={{
+          latitude: 12,
+          longitude: 42,
+          zoom: 2,
+        }}
         mapStyle={`mapbox://styles/mapbox/${isLight ? 'light' : 'dark'}-v10`}
-        mapboxApiAccessToken={MAPBOX_API}
-        width="100%"
-        height="100%"
+        mapboxAccessToken={MAPBOX_API}
       >
-        <MapControlScale />
-        <MapControlNavigation />
+        <MapControl hideGeolocateControl />
 
-        {_mapContact.map((country) => (
-          <MapControlMarker
-            key={country.phoneNumber}
+        {contacts.map((country, index) => (
+          <MapMarker
+            key={`marker-${index}`}
             latitude={country.latlng[0]}
             longitude={country.latlng[1]}
-            onClick={() => setTooltip(country)}
+            onClick={(event) => {
+              event.originalEvent.stopPropagation();
+              setPopupInfo(country);
+            }}
           />
         ))}
 
-        {tooltip && (
-          <MapControlPopup
-            longitude={tooltip.latlng[1]}
-            latitude={tooltip.latlng[0]}
-            onClose={() => setTooltip(null)}
+        {popupInfo && (
+          <MapPopup
+            longitude={popupInfo.latlng[1]}
+            latitude={popupInfo.latlng[0]}
+            onClose={() => setPopupInfo(null)}
             sx={{
               '& .mapboxgl-popup-content': { bgcolor: 'common.white' },
               '&.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip': { borderTopColor: '#FFF' },
@@ -87,8 +80,9 @@ export default function ContactMap() {
             <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
               Address
             </Typography>
+
             <Typography component="p" variant="caption">
-              {tooltip.address}
+              {popupInfo.address}
             </Typography>
 
             <Typography
@@ -97,11 +91,11 @@ export default function ContactMap() {
               sx={{ mt: 1, display: 'flex', alignItems: 'center' }}
             >
               <Iconify icon={'eva:phone-fill'} sx={{ mr: 0.5, width: 14, height: 14 }} />
-              {tooltip.phoneNumber}
+              {popupInfo.phoneNumber}
             </Typography>
-          </MapControlPopup>
+          </MapPopup>
         )}
-      </MapGL>
+      </Map>
     </RootStyle>
   );
 }

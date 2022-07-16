@@ -44,14 +44,7 @@ export default function PricingPlanCard({ card, index }: Props) {
   return (
     <RootStyle>
       {index === 1 && (
-        <Label
-          color="info"
-          sx={{
-            top: 16,
-            right: 16,
-            position: 'absolute',
-          }}
-        >
+        <Label color="info" sx={{ top: 16, right: 16, position: 'absolute' }}>
           POPULAR
         </Label>
       )}

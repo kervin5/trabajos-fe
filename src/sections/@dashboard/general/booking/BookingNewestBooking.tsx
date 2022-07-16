@@ -2,11 +2,9 @@ import Slider from 'react-slick';
 import { useRef } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Box, Stack, Avatar, Typography, Paper, CardHeader } from '@mui/material';
+import { Box, Stack, Paper, Avatar, BoxProps, Typography, CardHeader } from '@mui/material';
 // utils
 import { fDateTime } from '../../../../utils/formatTime';
-// _mock_
-import { _bookingNew } from '../../../../_mock';
 // components
 import Label from '../../../../components/Label';
 import Image from '../../../../components/Image';
@@ -15,8 +13,26 @@ import { CarouselArrows } from '../../../../components/carousel';
 
 // ----------------------------------------------------------------------
 
-export default function BookingNewestBooking() {
+type ItemProps = {
+  id: string;
+  name: string;
+  avatar: string;
+  bookdAt: Date | string | number;
+  roomNumber: string;
+  person: string;
+  roomType: string;
+  cover: string;
+};
+
+interface Props extends BoxProps {
+  title?: string;
+  subheader?: string;
+  list: ItemProps[];
+}
+
+export default function BookingNewestBooking({ title, subheader, list, sx, ...other }: Props) {
   const theme = useTheme();
+
   const carouselRef = useRef<Slider | null>(null);
 
   const settings = {
@@ -56,10 +72,10 @@ export default function BookingNewestBooking() {
   };
 
   return (
-    <Box sx={{ py: 2 }}>
+    <Box sx={{ py: 2, ...sx }} {...other}>
       <CardHeader
-        title="Newest Booking"
-        subheader="12 Booking"
+        title={title}
+        subheader={subheader}
         action={
           <CarouselArrows
             customIcon={'ic:round-keyboard-arrow-right'}
@@ -76,7 +92,7 @@ export default function BookingNewestBooking() {
       />
 
       <Slider ref={carouselRef} {...settings}>
-        {_bookingNew.map((item) => (
+        {list.map((item) => (
           <BookingItem key={item.id} item={item} />
         ))}
       </Slider>
@@ -87,17 +103,10 @@ export default function BookingNewestBooking() {
 // ----------------------------------------------------------------------
 
 type BookingItemProps = {
-  id: string;
-  name: string;
-  avatar: string;
-  bookdAt: Date | string | number;
-  roomNumber: string;
-  person: string;
-  roomType: string;
-  cover: string;
+  item: ItemProps;
 };
 
-function BookingItem({ item }: { item: BookingItemProps }) {
+function BookingItem({ item }: BookingItemProps) {
   const { avatar, name, roomNumber, bookdAt, person, cover, roomType } = item;
 
   return (
@@ -105,8 +114,10 @@ function BookingItem({ item }: { item: BookingItemProps }) {
       <Stack spacing={2.5} sx={{ p: 3, pb: 2.5 }}>
         <Stack direction="row" alignItems="center" spacing={2}>
           <Avatar alt={name} src={avatar} />
+
           <div>
             <Typography variant="subtitle2">{name}</Typography>
+
             <Typography
               variant="caption"
               sx={{ color: 'text.disabled', mt: 0.5, display: 'block' }}
@@ -143,7 +154,8 @@ function BookingItem({ item }: { item: BookingItemProps }) {
         >
           {roomType}
         </Label>
-        <Image alt={cover} src={cover} ratio="1/1" sx={{ borderRadius: 1.5 }} />
+
+        <Image alt="cover" src={cover} ratio="1/1" sx={{ borderRadius: 1.5 }} />
       </Box>
     </Paper>
   );

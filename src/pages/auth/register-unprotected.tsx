@@ -52,10 +52,10 @@ const SectionStyle = styled(Card)(({ theme }) => ({
 const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 480,
   margin: 'auto',
-  display: 'flex',
   minHeight: '100vh',
-  flexDirection: 'column',
+  display: 'flex',
   justifyContent: 'center',
+  flexDirection: 'column',
   padding: theme.spacing(12, 0),
 }));
 
@@ -92,7 +92,7 @@ export default function Register() {
               visibleByDefault
               disabledEffect
               alt="register"
-              src="https://minimals.cc/assets/illustrations/illustration_register.png"
+              src="/assets/illustrations/illustration_register.png"
             />
           </SectionStyle>
         )}

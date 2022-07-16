@@ -33,6 +33,7 @@ const ContentItemStyle = styled('div')(({ theme }) => ({
 
 export default function CarouselBasic4() {
   const theme = useTheme();
+
   const carouselRef = useRef<Slider | null>(null);
 
   const settings = {

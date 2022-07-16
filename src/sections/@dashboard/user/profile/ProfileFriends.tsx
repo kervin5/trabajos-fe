@@ -1,3 +1,4 @@
+import { useState } from 'react';
 // @mui
 import {
   Box,
@@ -5,6 +6,7 @@ import {
   Card,
   Link,
   Avatar,
+  MenuItem,
   IconButton,
   Typography,
   InputAdornment,
@@ -14,6 +16,7 @@ import { Friend } from '../../../../@types/user';
 // components
 import Iconify from '../../../../components/Iconify';
 import InputStyle from '../../../../components/InputStyle';
+import MenuPopover from '../../../../components/MenuPopover';
 import SocialsButton from '../../../../components/SocialsButton';
 import SearchNotFound from '../../../../components/SearchNotFound';
 
@@ -27,6 +30,7 @@ type Props = {
 
 export default function ProfileFriends({ friends, findFriends, onFindFriends }: Props) {
   const friendFiltered = applyFilter(friends, findFriends);
+
   const isNotFound = friendFiltered.length === 0;
 
   return (
@@ -72,8 +76,32 @@ export default function ProfileFriends({ friends, findFriends, onFindFriends }: 
 
 // ----------------------------------------------------------------------
 
-function FriendCard({ friend }: { friend: Friend }) {
+type FriendCardProps = {
+  friend: Friend;
+};
+
+function FriendCard({ friend }: FriendCardProps) {
   const { name, role, avatarUrl } = friend;
+
+  const [open, setOpen] = useState<HTMLElement | null>(null);
+
+  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setOpen(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setOpen(null);
+  };
+
+  const handleDelete = () => {
+    handleCloseMenu();
+    console.log('DELETE', name);
+  };
+
+  const handleEdit = () => {
+    handleCloseMenu();
+    console.log('EDIT', name);
+  };
 
   return (
     <Card
@@ -86,6 +114,7 @@ function FriendCard({ friend }: { friend: Friend }) {
       }}
     >
       <Avatar alt={name} src={avatarUrl} sx={{ width: 64, height: 64, mb: 3 }} />
+
       <Link variant="subtitle1" color="text.primary">
         {name}
       </Link>
@@ -96,12 +125,70 @@ function FriendCard({ friend }: { friend: Friend }) {
 
       <SocialsButton initialColor />
 
-      <IconButton sx={{ top: 8, right: 8, position: 'absolute' }}>
-        <Iconify icon={'eva:more-vertical-fill'} width={20} height={20} />
-      </IconButton>
+      <MoreMenuButton
+        open={open}
+        onOpen={handleOpenMenu}
+        onClose={handleCloseMenu}
+        actions={
+          <>
+            <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
+              <Iconify icon={'eva:trash-2-outline'} />
+              Delete
+            </MenuItem>
+
+            <MenuItem onClick={handleEdit}>
+              <Iconify icon={'eva:edit-fill'} />
+              Edit
+            </MenuItem>
+          </>
+        }
+      />
     </Card>
   );
 }
+
+// ----------------------------------------------------------------------
+
+type MoreMenuButtonProps = {
+  actions: React.ReactNode;
+  open: HTMLElement | null;
+  onClose: VoidFunction;
+  onOpen: (event: React.MouseEvent<HTMLElement>) => void;
+};
+
+function MoreMenuButton({ actions, open, onOpen, onClose }: MoreMenuButtonProps) {
+  return (
+    <>
+      <IconButton
+        size="large"
+        color="inherit"
+        onClick={onOpen}
+        sx={{ top: 8, right: 8, position: 'absolute' }}
+      >
+        <Iconify icon={'eva:more-vertical-fill'} width={20} height={20} />
+      </IconButton>
+
+      <MenuPopover
+        open={Boolean(open)}
+        anchorEl={open}
+        onClose={onClose}
+        sx={{
+          ml: 0.5,
+          width: 'auto',
+          '& .MuiMenuItem-root': {
+            px: 1,
+            typography: 'body2',
+            borderRadius: 0.75,
+            '& svg': { mr: 2, width: 20, height: 20 },
+          },
+        }}
+      >
+        {actions}
+      </MenuPopover>
+    </>
+  );
+}
+
 // ----------------------------------------------------------------------
 
 function applyFilter(array: Friend[], query: string) {

@@ -55,10 +55,12 @@ const variantScreenLeft = {
   initial: COMMON,
   animate: { ...COMMON, translateX: '-50%', translateY: 40, opacity: 1 },
 };
+
 const variantScreenCenter = {
   initial: COMMON,
   animate: { ...COMMON, opacity: 1 },
 };
+
 const variantScreenRight = {
   initial: COMMON,
   animate: { ...COMMON, translateX: '50%', translateY: -40, opacity: 1 },
@@ -80,103 +82,105 @@ export default function HomeHugePackElements() {
   const screenRightAnimate = variantScreenRight;
 
   return (
-    <RootStyle>
-      <Container component={MotionViewport}>
-        <Grid container spacing={5} justifyContent="center">
-          <Grid item xs={12} md={4} sx={{ display: 'flex', alignItems: 'center' }}>
-            <ContentStyle>
-              <m.div variants={varFade().inUp}>
-                <Typography
-                  component="div"
-                  variant="overline"
-                  sx={{ mb: 2, color: 'text.disabled' }}
-                >
-                  Interface Starter Kit
-                </Typography>
-              </m.div>
+    <MotionViewport disableAnimatedMobile={false}>
+      <RootStyle>
+        <Container>
+          <Grid container spacing={5} justifyContent="center">
+            <Grid item xs={12} md={4} sx={{ display: 'flex', alignItems: 'center' }}>
+              <ContentStyle>
+                <m.div variants={varFade().inUp}>
+                  <Typography
+                    component="div"
+                    variant="overline"
+                    sx={{ mb: 2, color: 'text.disabled' }}
+                  >
+                    Interface Starter Kit
+                  </Typography>
+                </m.div>
 
-              <m.div variants={varFade().inUp}>
-                <Typography variant="h2" sx={{ mb: 3 }}>
-                  Huge pack <br />
-                  of elements
-                </Typography>
-              </m.div>
+                <m.div variants={varFade().inUp}>
+                  <Typography variant="h2" sx={{ mb: 3 }}>
+                    Huge pack <br />
+                    of elements
+                  </Typography>
+                </m.div>
 
-              <m.div variants={varFade().inUp}>
-                <Typography
-                  sx={{
-                    mb: 5,
-                    color: isLight ? 'text.secondary' : 'common.white',
-                  }}
-                >
-                  We collected most popular elements. Menu, sliders, buttons, inputs etc. are all
-                  here. Just dive in!
-                </Typography>
-              </m.div>
+                <m.div variants={varFade().inUp}>
+                  <Typography
+                    sx={{
+                      mb: 5,
+                      color: isLight ? 'text.secondary' : 'common.white',
+                    }}
+                  >
+                    We collected most popular elements. Menu, sliders, buttons, inputs etc. are all
+                    here. Just dive in!
+                  </Typography>
+                </m.div>
 
-              <m.div variants={varFade().inUp}>
-                <Button
-                  size="large"
-                  color="inherit"
-                  variant="outlined"
-                  target="_blank"
-                  rel="noopener"
-                  href="https://www.minimals.cc/components/"
-                >
-                  View All Components
-                </Button>
-              </m.div>
-            </ContentStyle>
+                <m.div variants={varFade().inUp}>
+                  <Button
+                    size="large"
+                    color="inherit"
+                    variant="outlined"
+                    target="_blank"
+                    rel="noopener"
+                    href="https://www.minimals.cc/components/"
+                  >
+                    View All Components
+                  </Button>
+                </m.div>
+              </ContentStyle>
+            </Grid>
+
+            <Grid item xs={12} md={8} dir="ltr">
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  position: 'relative',
+                  justifyContent: 'center',
+                }}
+              >
+                {[...Array(3)].map((_, index) => (
+                  <ScreenStyle
+                    key={index}
+                    variants={{
+                      ...(index === 0 && screenLeftAnimate),
+                      ...(index === 1 && screenCenterAnimate),
+                      ...(index === 2 && screenRightAnimate),
+                    }}
+                    transition={{ duration: 0.72, ease: 'easeOut' }}
+                    sx={{
+                      boxShadow: `${isRTL ? -80 : 80}px -40px 80px ${alpha(
+                        isLight ? theme.palette.grey[600] : theme.palette.common.black,
+                        0.48
+                      )}`,
+                      ...(index === 0 && {
+                        zIndex: 3,
+                        position: 'absolute',
+                      }),
+                      ...(index === 1 && { zIndex: 2 }),
+                      ...(index === 2 && {
+                        zIndex: 1,
+                        position: 'absolute',
+                        boxShadow: 'none',
+                      }),
+                    }}
+                  >
+                    <Image
+                      disabledEffect
+                      alt={`screen ${index + 1}`}
+                      src={`https://minimal-assets-api-dev.vercel.app/assets/images/home/screen_${
+                        isLight ? 'light' : 'dark'
+                      }_${index + 1}.png`}
+                    />
+                  </ScreenStyle>
+                ))}
+              </Box>
+            </Grid>
           </Grid>
-
-          <Grid item xs={12} md={8} dir="ltr">
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                position: 'relative',
-                justifyContent: 'center',
-              }}
-            >
-              {[...Array(3)].map((_, index) => (
-                <ScreenStyle
-                  key={index}
-                  variants={{
-                    ...(index === 0 && screenLeftAnimate),
-                    ...(index === 1 && screenCenterAnimate),
-                    ...(index === 2 && screenRightAnimate),
-                  }}
-                  transition={{ duration: 0.72, ease: 'easeOut' }}
-                  sx={{
-                    boxShadow: `${isRTL ? -80 : 80}px -40px 80px ${alpha(
-                      isLight ? theme.palette.grey[600] : theme.palette.common.black,
-                      0.48
-                    )}`,
-                    ...(index === 0 && {
-                      zIndex: 3,
-                      position: 'absolute',
-                    }),
-                    ...(index === 1 && { zIndex: 2 }),
-                    ...(index === 2 && {
-                      zIndex: 1,
-                      position: 'absolute',
-                      boxShadow: 'none',
-                    }),
-                  }}
-                >
-                  <Image
-                    disabledEffect
-                    alt={`screen ${index + 1}`}
-                    src={`https://minimals.cc/assets/images/home/screen_${
-                      isLight ? 'light' : 'dark'
-                    }_${index + 1}.png`}
-                  />
-                </ScreenStyle>
-              ))}
-            </Box>
-          </Grid>
-        </Grid>
-      </Container>
-    </RootStyle>
+        </Container>
+      </RootStyle>
+    </MotionViewport>
   );
 }

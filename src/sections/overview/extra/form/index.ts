@@ -36,8 +36,8 @@ const FILE_FORMATS = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
 export const FormSchema = Yup.object().shape({
   fullName: Yup.string()
     .required('Full name is required')
-    .min(6, 'Mininum 6 characters')
-    .max(15, 'Maximum 15 characters'),
+    .min(8, 'Mininum 6 characters')
+    .max(24, 'Maximum 15 characters'),
   email: Yup.string().required('Email is required').email('That is not an email'),
   age: Yup.number()
     .required('Age is required')
@@ -56,7 +56,7 @@ export const FormSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .required('Confirm password is required')
     .oneOf([Yup.ref('password')], "Password's not match"),
-  editor: Yup.string().required('Editor is required').min(200),
+  editor: Yup.string().required('Editor is required'),
   terms: Yup.boolean().oneOf([true], 'Must Accept Terms and Conditions'),
   photo: Yup.mixed()
     .required('Photo is is required')

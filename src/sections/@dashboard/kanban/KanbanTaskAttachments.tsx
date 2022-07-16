@@ -1,13 +1,13 @@
-import isString from 'lodash/isString';
-import { useDropzone } from 'react-dropzone';
+import { useDropzone, DropzoneOptions } from 'react-dropzone';
 import { useState, useCallback } from 'react';
 // @mui
 import { alpha, styled } from '@mui/material/styles';
 import { Box, IconButton } from '@mui/material';
+// utils
+import getFileData from '../../../utils/getFileData';
 // components
 import Image from '../../../components/Image';
 import Iconify from '../../../components/Iconify';
-import LightboxModal from '../../../components/LightboxModal';
 import { varFade } from '../../../components/animate';
 
 // ----------------------------------------------------------------------
@@ -33,135 +33,116 @@ type Props = {
 };
 
 export default function KanbanTaskAttachments({ attachments }: Props) {
-  const [openLightbox, setOpenLightbox] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<number>(0);
+  const [files, setFiles] = useState<(File | string)[]>(attachments);
 
-  const imagesLightbox = attachments;
+  const handleRemove = (file: File | string) => {
+    const filteredItems = files.filter((_file) => _file !== file);
 
-  const handleOpenLightbox = (url: string) => {
-    const selectedImage = imagesLightbox.findIndex((index) => index === url);
-    setOpenLightbox(true);
-    setSelectedImage(selectedImage);
+    if (typeof file === 'string') {
+      console.log('REMOVE file typeof === string');
+      setFiles(filteredItems);
+    }
+    setFiles(filteredItems);
   };
+
+  const handleDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const newFiles = acceptedFiles.map((file: File) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
+      );
+
+      setFiles([...files, ...newFiles]);
+    },
+    [files]
+  );
 
   return (
     <>
-      {attachments.map((attachment) => (
-        <Image
-          key={attachment}
-          alt={attachment}
-          src={attachment}
-          onClick={() => handleOpenLightbox(attachment)}
-          sx={{
-            m: 0.5,
-            width: 64,
-            height: 64,
-            borderRadius: 1,
-            cursor: 'pointer',
-          }}
-        />
-      ))}
+      {files.map((file, index) => {
+        const { key } = getFileData(file, index);
 
-      <UploadFile />
+        return <UploadFilePreview key={key} file={file} onRemove={() => handleRemove(file)} />;
+      })}
 
-      <LightboxModal
-        images={imagesLightbox}
-        mainSrc={imagesLightbox[selectedImage]}
-        photoIndex={selectedImage}
-        setPhotoIndex={setSelectedImage}
-        isOpen={openLightbox}
-        onCloseRequest={() => setOpenLightbox(false)}
-      />
+      <UploadFile onDrop={handleDrop} />
     </>
   );
 }
 
 // ----------------------------------------------------------------------
 
-function UploadFile() {
-  const [files, setFiles] = useState([]);
+type UploadFilePreviewProps = {
+  file: File | string;
+  onRemove: VoidFunction;
+};
 
-  const handleRemove = (file: File) => {
-    const filteredItems = files.filter((_file) => _file !== file);
-    setFiles(filteredItems);
-  };
+function UploadFilePreview({ file, onRemove }: UploadFilePreviewProps) {
+  const { preview } = getFileData(file);
 
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      setFiles(
-        acceptedFiles.map((file: File) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        )
-      );
-    },
-    [setFiles]
+  return (
+    <Box
+      {...varFade().inRight}
+      sx={{
+        p: 0,
+        m: 0.5,
+        width: 64,
+        height: 64,
+        borderRadius: 1.25,
+        overflow: 'hidden',
+        position: 'relative',
+      }}
+    >
+      <Image
+        alt="preview"
+        src={preview}
+        sx={{
+          height: 1,
+          position: 'absolute',
+          border: (theme) => `solid 1px ${theme.palette.divider}`,
+        }}
+      />
+
+      <Box sx={{ top: 6, right: 6, position: 'absolute' }}>
+        <IconButton
+          size="small"
+          onClick={onRemove}
+          sx={{
+            p: '2px',
+            color: 'common.white',
+            bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72),
+            '&:hover': {
+              bgcolor: (theme) => alpha(theme.palette.grey[900], 0.48),
+            },
+          }}
+        >
+          <Iconify icon={'eva:close-fill'} />
+        </IconButton>
+      </Box>
+    </Box>
   );
+}
 
+// ----------------------------------------------------------------------
+
+type UploadFileProps = DropzoneOptions;
+
+function UploadFile({ ...other }: UploadFileProps) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: handleDrop,
+    ...other,
   });
 
   return (
-    <>
-      {files.map((file) => {
-        const { name, preview } = file;
-        const key = isString(file) ? file : name;
+    <DropZoneStyle
+      {...getRootProps()}
+      sx={{
+        ...(isDragActive && { opacity: 0.72 }),
+      }}
+    >
+      <input {...getInputProps()} />
 
-        return (
-          <Box
-            key={key}
-            {...varFade().inRight}
-            sx={{
-              p: 0,
-              m: 0.5,
-              width: 64,
-              height: 64,
-              borderRadius: 1,
-              overflow: 'hidden',
-              position: 'relative',
-            }}
-          >
-            <Image
-              alt="preview"
-              src={isString(file) ? file : preview}
-              sx={{
-                height: 1,
-                position: 'absolute',
-                border: (theme) => `solid 1px ${theme.palette.divider}`,
-              }}
-            />
-            <Box sx={{ top: 6, right: 6, position: 'absolute' }}>
-              <IconButton
-                size="small"
-                onClick={() => handleRemove(file)}
-                sx={{
-                  p: '2px',
-                  color: 'common.white',
-                  bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72),
-                  '&:hover': {
-                    bgcolor: (theme) => alpha(theme.palette.grey[900], 0.48),
-                  },
-                }}
-              >
-                <Iconify icon={'eva:close-fill'} />
-              </IconButton>
-            </Box>
-          </Box>
-        );
-      })}
-
-      <DropZoneStyle
-        {...getRootProps()}
-        sx={{
-          ...(isDragActive && { opacity: 0.72 }),
-        }}
-      >
-        <input {...getInputProps()} />
-
-        <Iconify icon={'eva:plus-fill'} sx={{ color: 'text.secondary' }} />
-      </DropZoneStyle>
-    </>
+      <Iconify icon="eva:plus-fill" sx={{ color: 'text.disabled' }} />
+    </DropZoneStyle>
   );
 }

@@ -92,7 +92,7 @@ export default function InvoiceDetails({ invoice }: Props) {
                 {status}
               </Label>
 
-              <Typography variant="h6">{invoiceNumber}</Typography>
+              <Typography variant="h6">{`INV-${invoiceNumber}`}</Typography>
             </Box>
           </Grid>
 

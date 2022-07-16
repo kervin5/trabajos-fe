@@ -13,7 +13,9 @@ import { CarouselArrowIndex } from '../../../../components/carousel';
 
 export default function CarouselBasic2() {
   const theme = useTheme();
+
   const carouselRef = useRef<Slider | null>(null);
+
   const [currentIndex, setCurrentIndex] = useState(2);
 
   const settings = {

@@ -49,7 +49,7 @@ export default function Image({
           component={LazyLoadImage}
           wrapperClassName="wrapper"
           effect={disabledEffect ? undefined : effect}
-          placeholderSrc="https://zone-assets-api.vercel.app/assets/img_placeholder.svg"
+          placeholderSrc="/assets/placeholder.svg"
           sx={{ width: 1, height: 1, objectFit: 'cover' }}
           {...other}
         />
@@ -61,7 +61,7 @@ export default function Image({
     <Box
       component="span"
       sx={{
-        lineHeight: 0,
+        lineHeight: 1,
         display: 'block',
         overflow: 'hidden',
         '& .wrapper': { width: 1, height: 1, backgroundSize: 'cover !important' },
@@ -72,7 +72,7 @@ export default function Image({
         component={LazyLoadImage}
         wrapperClassName="wrapper"
         effect={disabledEffect ? undefined : effect}
-        placeholderSrc="https://zone-assets-api.vercel.app/assets/img_placeholder.svg"
+        placeholderSrc="/assets/placeholder.svg"
         sx={{ width: 1, height: 1, objectFit: 'cover' }}
         {...other}
       />

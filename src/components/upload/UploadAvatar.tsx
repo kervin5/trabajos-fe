@@ -1,4 +1,3 @@
-import isString from 'lodash/isString';
 import { useDropzone } from 'react-dropzone';
 // @mui
 import { Typography } from '@mui/material';
@@ -83,7 +82,11 @@ export default function UploadAvatar({ error, file, helperText, sx, ...other }: 
           <input {...getInputProps()} />
 
           {file && (
-            <Image alt="avatar" src={isString(file) ? file : file.preview} sx={{ zIndex: 8 }} />
+            <Image
+              alt="avatar"
+              src={typeof file === 'string' ? file : file.preview}
+              sx={{ zIndex: 8 }}
+            />
           )}
 
           <PlaceholderStyle

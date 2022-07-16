@@ -1,7 +1,7 @@
 import merge from 'lodash/merge';
 // @mui
 import { useTheme, styled } from '@mui/material/styles';
-import { Card, CardHeader } from '@mui/material';
+import { Card, CardHeader, CardProps } from '@mui/material';
 // utils
 import { fNumber } from '../../../../utils/formatNumber';
 // components
@@ -30,19 +30,32 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [4344, 5435, 1443, 4443];
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  chartColors: string[];
+  chartData: {
+    label: string;
+    value: number;
+  }[];
+}
 
-export default function AnalyticsCurrentVisits() {
+export default function AnalyticsCurrentVisits({
+  title,
+  subheader,
+  chartColors,
+  chartData,
+  ...other
+}: Props) {
   const theme = useTheme();
 
+  const chartLabels = chartData.map((i) => i.label);
+
+  const chartSeries = chartData.map((i) => i.value);
+
   const chartOptions = merge(BaseOptionChart(), {
-    colors: [
-      theme.palette.primary.main,
-      theme.palette.chart.blue[0],
-      theme.palette.chart.violet[0],
-      theme.palette.chart.yellow[0],
-    ],
-    labels: ['America', 'Asia', 'Europe', 'Africa'],
+    colors: chartColors,
+    labels: chartLabels,
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: 'center' },
     dataLabels: { enabled: true, dropShadow: { enabled: false } },
@@ -61,10 +74,11 @@ export default function AnalyticsCurrentVisits() {
   });
 
   return (
-    <Card>
-      <CardHeader title="Current Visits" />
+    <Card {...other}>
+      <CardHeader title={title} subheader={subheader} />
+
       <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="pie" series={CHART_DATA} options={chartOptions} height={280} />
+        <ReactApexChart type="pie" series={chartSeries} options={chartOptions} height={280} />
       </ChartWrapperStyle>
     </Card>
   );

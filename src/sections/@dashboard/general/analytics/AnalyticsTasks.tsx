@@ -8,6 +8,7 @@ import {
   Divider,
   Checkbox,
   MenuItem,
+  CardProps,
   IconButton,
   CardHeader,
   CheckboxProps,
@@ -19,30 +20,31 @@ import MenuPopover from '../../../../components/MenuPopover';
 
 // ----------------------------------------------------------------------
 
-const TASKS = [
-  'Create FireStone Logo',
-  'Add SCSS and JS files if required',
-  'Stakeholder Meeting',
-  'Scoping & Estimations',
-  'Sprint Showcase',
-];
+type ItemProps = {
+  id: string;
+  label: string;
+};
 
-// ----------------------------------------------------------------------
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  list: ItemProps[];
+}
 
 type FormValuesProps = {
   taskCompleted: string[];
 };
 
-export default function AnalyticsTasks() {
+export default function AnalyticsTasks({ title, subheader, list, ...other }: Props) {
   const { control } = useForm<FormValuesProps>({
     defaultValues: {
-      taskCompleted: ['Stakeholder Meeting'],
+      taskCompleted: ['2'],
     },
   });
 
   return (
-    <Card>
-      <CardHeader title="Tasks" />
+    <Card {...other}>
+      <CardHeader title={title} subheader={subheader} />
 
       <Controller
         name="taskCompleted"
@@ -55,12 +57,12 @@ export default function AnalyticsTasks() {
 
           return (
             <>
-              {TASKS.map((task) => (
+              {list.map((task) => (
                 <TaskItem
-                  key={task}
+                  key={task.id}
                   task={task}
-                  checked={field.value.includes(task)}
-                  onChange={() => field.onChange(onSelected(task))}
+                  checked={field.value.includes(task.id)}
+                  onChange={() => field.onChange(onSelected(task.id))}
                 />
               ))}
             </>
@@ -74,10 +76,40 @@ export default function AnalyticsTasks() {
 // ----------------------------------------------------------------------
 
 interface TaskItemProps extends CheckboxProps {
-  task: string;
+  task: ItemProps;
 }
 
 function TaskItem({ task, checked, onChange }: TaskItemProps) {
+  const [open, setOpen] = useState<HTMLElement | null>(null);
+
+  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setOpen(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setOpen(null);
+  };
+
+  const handleMarkComplete = () => {
+    handleCloseMenu();
+    console.log('MARK COMPLETE', task.id);
+  };
+
+  const handleShare = () => {
+    handleCloseMenu();
+    console.log('SHARE', task.id);
+  };
+
+  const handleEdit = () => {
+    handleCloseMenu();
+    console.log('EDIT', task.id);
+  };
+
+  const handleDelete = () => {
+    handleCloseMenu();
+    console.log('DELETE', task.id);
+  };
+
   return (
     <Stack
       direction="row"
@@ -92,73 +124,79 @@ function TaskItem({ task, checked, onChange }: TaskItemProps) {
     >
       <FormControlLabel
         control={<Checkbox checked={checked} onChange={onChange} />}
-        label={task}
+        label={task.label}
         sx={{ flexGrow: 1, m: 0 }}
       />
-      <MoreMenuButton />
+
+      <MoreMenuButton
+        open={open}
+        onClose={handleCloseMenu}
+        onOpen={handleOpenMenu}
+        actions={
+          <>
+            <MenuItem onClick={handleMarkComplete}>
+              <Iconify icon={'eva:checkmark-circle-2-fill'} />
+              Mark Complete
+            </MenuItem>
+
+            <MenuItem onClick={handleEdit}>
+              <Iconify icon={'eva:edit-fill'} />
+              Edit
+            </MenuItem>
+
+            <MenuItem onClick={handleShare}>
+              <Iconify icon={'eva:share-fill'} />
+              Share
+            </MenuItem>
+
+            <Divider sx={{ borderStyle: 'dashed' }} />
+
+            <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
+              <Iconify icon={'eva:trash-2-outline'} />
+              Delete
+            </MenuItem>
+          </>
+        }
+      />
     </Stack>
   );
 }
 
 // ----------------------------------------------------------------------
 
-function MoreMenuButton() {
-  const [open, setOpen] = useState<HTMLElement | null>(null);
+type MoreMenuButtonProps = {
+  actions: React.ReactNode;
+  open: HTMLElement | null;
+  onClose: VoidFunction;
+  onOpen: (event: React.MouseEvent<HTMLElement>) => void;
+};
 
-  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setOpen(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setOpen(null);
-  };
-
-  const ICON = {
-    mr: 2,
-    width: 20,
-    height: 20,
-  };
-
+function MoreMenuButton({ actions, open, onOpen, onClose }: MoreMenuButtonProps) {
   return (
     <>
-      <IconButton size="large" onClick={handleOpen}>
+      <IconButton size="large" color="inherit" sx={{ opacity: 0.48 }} onClick={onOpen}>
         <Iconify icon={'eva:more-vertical-fill'} width={20} height={20} />
       </IconButton>
 
       <MenuPopover
         open={Boolean(open)}
         anchorEl={open}
-        onClose={handleClose}
+        onClose={onClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         arrow="right-top"
         sx={{
           mt: -0.5,
           width: 'auto',
-          '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
+          '& .MuiMenuItem-root': {
+            px: 1,
+            typography: 'body2',
+            borderRadius: 0.75,
+            '& svg': { mr: 2, width: 20, height: 20 },
+          },
         }}
       >
-        <MenuItem>
-          <Iconify icon={'eva:checkmark-circle-2-fill'} sx={{ ...ICON }} />
-          Mark Complete
-        </MenuItem>
-
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
-          Edit
-        </MenuItem>
-
-        <MenuItem>
-          <Iconify icon={'eva:share-fill'} sx={{ ...ICON }} />
-          Share
-        </MenuItem>
-
-        <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
-          Delete
-        </MenuItem>
+        {actions}
       </MenuPopover>
     </>
   );

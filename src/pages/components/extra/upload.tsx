@@ -43,11 +43,11 @@ export default function DemoUpload() {
 
   const [files, setFiles] = useState<(File | string)[]>([]);
 
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<File | string | null>(null);
 
-  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState<File | string | null>(null);
 
-  const handleDropSingleFile = useCallback((acceptedFiles) => {
+  const handleDropSingleFile = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
     if (file) {
       setFile(
@@ -58,7 +58,7 @@ export default function DemoUpload() {
     }
   }, []);
 
-  const handleDropAvatar = useCallback((acceptedFiles) => {
+  const handleDropAvatar = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
     if (file) {
       setAvatarUrl(
@@ -70,16 +70,17 @@ export default function DemoUpload() {
   }, []);
 
   const handleDropMultiFile = useCallback(
-    (acceptedFiles) => {
-      setFiles(
-        acceptedFiles.map((file: File) =>
+    (acceptedFiles: File[]) => {
+      setFiles([
+        ...files,
+        ...acceptedFiles.map((file) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file),
           })
-        )
-      );
+        ),
+      ]);
     },
-    [setFiles]
+    [files]
   );
 
   const handleRemoveAll = () => {
@@ -135,6 +136,7 @@ export default function DemoUpload() {
                   onDrop={handleDropMultiFile}
                   onRemove={handleRemove}
                   onRemoveAll={handleRemoveAll}
+                  onUpload={() => console.log('ON UPLOAD')}
                 />
               </CardContent>
             </Card>
@@ -150,7 +152,6 @@ export default function DemoUpload() {
               <CardHeader title="Upload Avatar" />
               <CardContent>
                 <UploadAvatar
-                  accept="image/*"
                   file={avatarUrl}
                   onDrop={handleDropAvatar}
                   helperText={

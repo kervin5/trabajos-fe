@@ -1,27 +1,14 @@
 import { memo } from 'react';
 // @mui
-import { styled } from '@mui/material/styles';
 import { Box, Slider, Switch, Typography } from '@mui/material';
 // utils
 import { fDate } from '../../../../../utils/formatTime';
-import cssStyles from '../../../../../utils/cssStyles';
+// components
+import { ControlPanelStyle } from '../../../../../components/map';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('div')(({ theme }) => ({
-  ...cssStyles().bgBlur({ color: theme.palette.grey[900] }),
-  zIndex: 9,
-  minWidth: 240,
-  position: 'absolute',
-  top: theme.spacing(1),
-  right: theme.spacing(1),
-  padding: theme.spacing(2),
-  borderRadius: theme.shape.borderRadius,
-}));
-
-// ----------------------------------------------------------------------
-
-type ControlPanelProps = {
+type Props = {
   startTime: number;
   endTime: number;
   allDays: boolean;
@@ -37,19 +24,23 @@ function ControlPanel({
   selectedTime,
   onChangeTime,
   onChangeAllDays,
-}: ControlPanelProps) {
+}: Props) {
   const day = 24 * 60 * 60 * 1000;
+
   const days = Math.round((endTime - startTime) / day);
+
   const selectedDay = Math.round((selectedTime - startTime) / day);
 
   const handleChangeDays = (value: number) => {
     const daysToAdd = value;
+
     const newTime = startTime + daysToAdd * day;
+
     onChangeTime(newTime);
   };
 
   return (
-    <RootStyle>
+    <ControlPanelStyle>
       <Box
         sx={{
           width: '100%',
@@ -61,13 +52,16 @@ function ControlPanel({
         <Typography variant="subtitle2" sx={{ color: 'common.white' }}>
           All Days
         </Typography>
+
         <Switch
           size="small"
           checked={allDays}
           onChange={(event) => onChangeAllDays(event.target.checked)}
         />
       </Box>
+
       <br />
+
       <Typography
         gutterBottom
         variant="body2"
@@ -75,6 +69,7 @@ function ControlPanel({
       >
         Each Day: {fDate(selectedTime)}
       </Typography>
+
       <Slider
         min={1}
         step={1}
@@ -85,7 +80,7 @@ function ControlPanel({
           if (typeof value === 'number') handleChangeDays(value);
         }}
       />
-    </RootStyle>
+    </ControlPanelStyle>
   );
 }
 

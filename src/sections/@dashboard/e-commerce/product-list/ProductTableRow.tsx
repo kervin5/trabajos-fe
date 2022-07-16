@@ -10,8 +10,8 @@ import { fCurrency } from '../../../../utils/formatNumber';
 import { Product } from '../../../../@types/product';
 // components
 import Label from '../../../../components/Label';
-import Iconify from '../../../../components/Iconify';
 import Image from '../../../../components/Image';
+import Iconify from '../../../../components/Iconify';
 import { TableMoreMenu } from '../../../../components/table';
 
 // ----------------------------------------------------------------------

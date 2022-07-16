@@ -1,6 +1,6 @@
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Container, Stack, Card, CardHeader } from '@mui/material';
+import { Box, Container, Stack, Card, CardHeader, Typography, Link } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // layouts
@@ -44,7 +44,21 @@ export default function MUIDataGrid() {
               heading="DataGrid"
               links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'DataGrid' }]}
               moreLink="https://material-ui.com/components/data-grid"
+              sx={{ mb: 0 }}
             />
+            <Typography variant="body2" sx={{ my: 3 }}>
+              This component includes 2 <strong>Free</strong> and <strong>Paid</strong> versions
+              from MUI.
+              <br />
+              Paid version will have more features. Please read more{' '}
+              <Link
+                href="https://material-ui.com/components/data-grid"
+                target="_blank"
+                rel="noopener"
+              >
+                here
+              </Link>
+            </Typography>
           </Container>
         </Box>
 

@@ -18,11 +18,12 @@ import CheckoutNewAddressForm from './CheckoutNewAddressForm';
 // ----------------------------------------------------------------------
 
 export default function CheckoutBillingAddress() {
-  //
   const dispatch = useDispatch();
+
   const { checkout } = useSelector((state) => state.product);
+
   const { total, discount, subtotal } = checkout;
-  //
+
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -111,18 +112,22 @@ function AddressItem({ address, onNextStep, onCreateBilling }: AddressItemProps)
     <Card sx={{ p: 3, mb: 3, position: 'relative' }}>
       <Box sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
         <Typography variant="subtitle1">{receiver}</Typography>
+
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           &nbsp;({addressType})
         </Typography>
+
         {isDefault && (
           <Label color="info" sx={{ ml: 1 }}>
             Default
           </Label>
         )}
       </Box>
+
       <Typography variant="body2" gutterBottom>
         {fullAddress}
       </Typography>
+
       <Typography variant="body2" sx={{ color: 'text.secondary' }}>
         {phone}
       </Typography>
