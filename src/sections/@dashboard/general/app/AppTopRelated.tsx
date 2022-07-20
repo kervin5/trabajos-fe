@@ -1,10 +1,8 @@
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Box, Card, Rating, CardHeader, Typography, Stack } from '@mui/material';
+import { Box, Card, Rating, CardHeader, Typography, Stack, CardProps } from '@mui/material';
 // utils
 import { fCurrency, fShortenNumber } from '../../../../utils/formatNumber';
-// _mock_
-import { _appRelated } from '../../../../_mock';
 // components
 import Label from '../../../../components/Label';
 import Image from '../../../../components/Image';
@@ -13,13 +11,30 @@ import Scrollbar from '../../../../components/Scrollbar';
 
 // ----------------------------------------------------------------------
 
-export default function AppTopRelated() {
+type ItemProps = {
+  id: string;
+  name: string;
+  system: string;
+  price: number;
+  rating: number;
+  review: number;
+  shortcut: string;
+};
+
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  list: ItemProps[];
+}
+
+export default function AppTopRelated({ title, subheader, list, ...other }: Props) {
   return (
-    <Card>
-      <CardHeader title="Top Related Applications" />
+    <Card {...other}>
+      <CardHeader title={title} subheader={subheader} />
+
       <Scrollbar>
         <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
-          {_appRelated.map((app) => (
+          {list.map((app) => (
             <ApplicationItem key={app.id} app={app} />
           ))}
         </Stack>
@@ -31,15 +46,10 @@ export default function AppTopRelated() {
 // ----------------------------------------------------------------------
 
 type ApplicationItemProps = {
-  name: string;
-  system: string;
-  price: number;
-  rating: number;
-  review: number;
-  shortcut: string;
+  app: ItemProps;
 };
 
-function ApplicationItem({ app }: { app: ApplicationItemProps }) {
+function ApplicationItem({ app }: ApplicationItemProps) {
   const theme = useTheme();
   const { shortcut, system, price, rating, review, name } = app;
 
@@ -68,9 +78,11 @@ function ApplicationItem({ app }: { app: ApplicationItemProps }) {
             height={16}
             icon={system === 'Mac' ? 'ant-design:apple-filled' : 'ant-design:windows-filled'}
           />
+
           <Typography variant="caption" sx={{ ml: 0.5, mr: 1 }}>
             {system}
           </Typography>
+
           <Label
             variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
             color={price === 0 ? 'success' : 'error'}

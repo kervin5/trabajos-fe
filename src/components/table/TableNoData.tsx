@@ -11,23 +11,19 @@ type Props = {
 
 export default function TableNoData({ isNotFound }: Props) {
   return (
-    <>
+    <TableRow>
       {isNotFound ? (
-        <TableRow>
-          <TableCell colSpan={9}>
-            <EmptyContent
-              title="No Data"
-              sx={{
-                '& span.MuiBox-root': { height: 160 },
-              }}
-            />
-          </TableCell>
-        </TableRow>
+        <TableCell colSpan={12}>
+          <EmptyContent
+            title="No Data"
+            sx={{
+              '& span.MuiBox-root': { height: 160 },
+            }}
+          />
+        </TableCell>
       ) : (
-        <TableRow>
-          <TableCell colSpan={9} sx={{ p: 0 }} />
-        </TableRow>
+        <TableCell colSpan={12} sx={{ p: 0 }} />
       )}
-    </>
+    </TableRow>
   );
 }

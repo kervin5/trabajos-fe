@@ -1,29 +1,25 @@
-import { ReactNode } from 'react';
 // @mui
 import { alpha, styled } from '@mui/material/styles';
-import { Button, Popover, ButtonProps, LinkProps } from '@mui/material';
+import { Popover, ListItemButton, ListItemButtonProps } from '@mui/material';
+// utils
+import cssStyles from '../../../utils/cssStyles';
 // config
 import { NAVBAR } from '../../../config';
 
 // ----------------------------------------------------------------------
 
-type IProps = LinkProps & ButtonProps;
-
-interface ListItemStyleProps extends IProps {
-  component?: ReactNode;
-  activeRoot?: boolean;
-  activeSub?: boolean;
-  subItem?: boolean;
-  open?: boolean;
+export interface ListItemStyleProps extends ListItemButtonProps {
+  open: boolean;
+  active: boolean;
+  depth: number;
 }
 
-export const ListItemStyle = styled(Button, {
-  shouldForwardProp: (prop) =>
-    prop !== 'activeRoot' && prop !== 'activeSub' && prop !== 'subItem' && prop !== 'open',
-})<ListItemStyleProps>(({ activeRoot, activeSub, subItem, open, theme }) => {
+export const ListItemStyle = styled(ListItemButton, {
+  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'open',
+})<ListItemStyleProps>(({ active, depth, open, theme }) => {
   const isLight = theme.palette.mode === 'light';
 
-  const activeRootStyle = {
+  const activeStyle = {
     color: theme.palette.grey[800],
     backgroundColor: theme.palette.common.white,
     boxShadow: `-2px 4px 6px 0 ${alpha(
@@ -32,41 +28,48 @@ export const ListItemStyle = styled(Button, {
     )}`,
   };
 
+  const activeSubStyle = {
+    boxShadow: 'none',
+    color: theme.palette.primary.main,
+    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+  };
+
+  const hoverStyle = {
+    color: theme.palette.text.primary,
+    backgroundColor: theme.palette.action.hover,
+    boxShadow: `inset 0 0 1px 1px ${theme.palette.divider}`,
+  };
+
   return {
-    ...theme.typography.body2,
+    textTransform: 'capitalize',
     margin: theme.spacing(0, 0.5),
     padding: theme.spacing(0, 1),
     color: theme.palette.text.secondary,
+    borderRadius: theme.shape.borderRadius,
     height: NAVBAR.DASHBOARD_ITEM_HORIZONTAL_HEIGHT,
-    '&:hover': {
-      color: theme.palette.text.primary,
-      backgroundColor: theme.palette.background.paper,
-    },
-    // activeRoot
-    ...(activeRoot && {
-      ...theme.typography.subtitle2,
-      ...activeRootStyle,
-      '&:hover': { ...activeRootStyle },
+    '&:hover': hoverStyle,
+    // Active item
+    ...(active && {
+      ...activeStyle,
+      '&:hover': { ...activeStyle },
     }),
-    // activeSub
-    ...(activeSub && {
-      ...theme.typography.subtitle2,
-      color: theme.palette.text.primary,
-    }),
-    // subItem
-    ...(subItem && {
-      width: '100%',
-      margin: 0,
-      paddingRight: 0,
-      paddingLeft: theme.spacing(1),
-      justifyContent: 'space-between',
-    }),
-    // open
-    ...(open &&
-      !activeRoot && {
-        color: theme.palette.text.primary,
-        backgroundColor: theme.palette.action.hover,
+    // Active item sub
+    ...(active &&
+      depth !== 1 && {
+        ...activeSubStyle,
+        '&:hover': { ...activeSubStyle },
       }),
+    // Sub item
+    ...(depth && {
+      ...(depth > 1 && {
+        width: '100%',
+        margin: 0,
+        paddingRight: 0,
+        paddingLeft: theme.spacing(1),
+      }),
+    }),
+    // Open
+    ...(open && !active && hoverStyle),
   };
 });
 
@@ -78,7 +81,9 @@ export const PaperStyle = styled(Popover)(({ theme }) => ({
     width: 160,
     pointerEvents: 'auto',
     padding: theme.spacing(1),
-    borderRadius: Number(theme.shape.borderRadius) * 1.5,
+    marginTop: theme.spacing(0.5),
     boxShadow: theme.customShadows.dropdown,
+    borderRadius: Number(theme.shape.borderRadius) * 1.5,
+    ...cssStyles(theme).bgBlur(),
   },
 }));

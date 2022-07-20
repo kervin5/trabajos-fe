@@ -69,7 +69,7 @@ export default function InvoiceTableRow({
             onClick={onViewRow}
             sx={{ color: 'text.disabled', cursor: 'pointer' }}
           >
-            {invoiceNumber}
+            {`INV-${invoiceNumber}`}
           </Link>
         </Stack>
       </TableCell>

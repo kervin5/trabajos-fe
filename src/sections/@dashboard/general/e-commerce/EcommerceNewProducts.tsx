@@ -1,9 +1,8 @@
 import Slider from 'react-slick';
 // @mui
 import { alpha, useTheme, styled } from '@mui/material/styles';
-import { Box, Card, Button, CardContent, Typography } from '@mui/material';
-// _mock_
-import { _ecommerceNewProducts } from '../../../../_mock';
+import { Box, Card, Button, CardContent, Typography, CardProps } from '@mui/material';
+
 // components
 import Image from '../../../../components/Image';
 import { CarouselDots } from '../../../../components/carousel';
@@ -22,7 +21,17 @@ const OverlayStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function EcommerceNewProducts() {
+type ItemProps = {
+  id: string;
+  image: string;
+  name: string;
+};
+
+interface Props extends CardProps {
+  list: ItemProps[];
+}
+
+export default function EcommerceNewProducts({ list, ...other }: Props) {
   const theme = useTheme();
 
   const settings = {
@@ -37,10 +46,10 @@ export default function EcommerceNewProducts() {
   };
 
   return (
-    <Card>
+    <Card {...other}>
       <Slider {...settings}>
-        {_ecommerceNewProducts.map((item) => (
-          <CarouselItem key={item.name} item={item} />
+        {list.map((item) => (
+          <CarouselItem key={item.id} item={item} />
         ))}
       </Slider>
     </Card>
@@ -50,10 +59,7 @@ export default function EcommerceNewProducts() {
 // ----------------------------------------------------------------------
 
 type CarouselItemProps = {
-  item: {
-    image: string;
-    name: string;
-  };
+  item: ItemProps;
 };
 
 function CarouselItem({ item }: CarouselItemProps) {
@@ -74,9 +80,11 @@ function CarouselItem({ item }: CarouselItemProps) {
         <Typography variant="overline" sx={{ opacity: 0.48 }}>
           New
         </Typography>
+
         <Typography noWrap variant="h5" sx={{ mt: 1, mb: 3 }}>
           {name}
         </Typography>
+
         <Button variant="contained">Buy Now</Button>
       </CardContent>
       <OverlayStyle />

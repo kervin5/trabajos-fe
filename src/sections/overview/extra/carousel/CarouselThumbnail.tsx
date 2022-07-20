@@ -29,9 +29,13 @@ const RootStyle = styled(Box)(({ theme }) => {
 
 export default function CarouselThumbnail() {
   const [currentIndex, setCurrentIndex] = useState(0);
+
   const [nav1, setNav1] = useState<Slider | undefined>(undefined);
+
   const [nav2, setNav2] = useState<Slider | undefined>(undefined);
+
   const slider1 = useRef<Slider | null>(null);
+
   const slider2 = useRef<Slider | null>(null);
 
   const settings1 = {

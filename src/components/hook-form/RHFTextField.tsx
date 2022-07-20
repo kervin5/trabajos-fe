@@ -5,11 +5,13 @@ import { TextField, TextFieldProps } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
-interface IProps {
+type IProps = {
   name: string;
-}
+};
 
-export default function RHFTextField({ name, ...other }: IProps & TextFieldProps) {
+type Props = IProps & TextFieldProps;
+
+export default function RHFTextField({ name, ...other }: Props) {
   const { control } = useFormContext();
 
   return (
@@ -17,7 +19,14 @@ export default function RHFTextField({ name, ...other }: IProps & TextFieldProps
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <TextField {...field} fullWidth error={!!error} helperText={error?.message} {...other} />
+        <TextField
+          {...field}
+          fullWidth
+          value={typeof field.value === 'number' && field.value === 0 ? '' : field.value}
+          error={!!error}
+          helperText={error?.message}
+          {...other}
+        />
       )}
     />
   );

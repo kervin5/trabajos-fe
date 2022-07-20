@@ -24,14 +24,14 @@ const PAYMENT_OPTIONS = [
   {
     value: 'paypal',
     title: 'Pay with Paypal',
-    icons: ['https://minimals.cc/assets/icons/ic_paypal.svg'],
+    icons: ['https://minimal-assets-api-dev.vercel.app/assets/icons/ic_paypal.svg'],
   },
   {
     value: 'credit_card',
     title: 'Credit / Debit Card',
     icons: [
-      'https://minimals.cc/assets/icons/ic_mastercard.svg',
-      'https://minimals.cc/assets/icons/ic_visa.svg',
+      'https://minimal-assets-api-dev.vercel.app/assets/icons/ic_mastercard.svg',
+      'https://minimal-assets-api-dev.vercel.app/assets/icons/ic_visa.svg',
     ],
   },
 ];

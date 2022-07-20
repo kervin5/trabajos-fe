@@ -97,7 +97,7 @@ export default function InvoiceNewEditAddress() {
           <AddressInfo name={invoiceTo.name} address={invoiceTo.address} phone={invoiceTo.phone} />
         ) : (
           <Typography typography="caption" sx={{ color: 'error.main' }}>
-            {errors.invoiceTo ? errors.invoiceTo.message : null}
+            {(errors.invoiceTo as any)?.message}
           </Typography>
         )}
       </Stack>

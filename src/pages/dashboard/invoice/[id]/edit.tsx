@@ -41,7 +41,7 @@ export default function InvoiceEdit() {
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             { name: 'Invoices', href: PATH_DASHBOARD.invoice.list },
-            { name: currentInvoice?.invoiceNumber || '' },
+            { name: `INV-${currentInvoice?.invoiceNumber}` || '' },
           ]}
         />
 

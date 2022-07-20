@@ -15,137 +15,220 @@ import {
   TableRow,
   TableBody,
   TableCell,
-  TableHead,
+  CardProps,
   CardHeader,
   Typography,
-  IconButton,
   TableContainer,
 } from '@mui/material';
 // utils
 import { fCurrency } from '../../../../utils/formatNumber';
-// _mock
-import { _bankingRecentTransitions } from '../../../../_mock';
 // components
 import Label from '../../../../components/Label';
 import Iconify from '../../../../components/Iconify';
 import Scrollbar from '../../../../components/Scrollbar';
-import MenuPopover from '../../../../components/MenuPopover';
+import { TableMoreMenu, TableHeadCustom } from '../../../../components/table';
 
 // ----------------------------------------------------------------------
 
-export default function BankingRecentTransitions() {
+type RowProps = {
+  id: string;
+  name: string | null;
+  avatar: string | null;
+  type: string;
+  message: string;
+  category: string;
+  date: number;
+  status: string;
+  amount: number;
+};
+
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  tableData: RowProps[];
+  tableLabels: any;
+}
+
+export default function BankingRecentTransitions({
+  title,
+  subheader,
+  tableLabels,
+  tableData,
+  ...other
+}: Props) {
+  return (
+    <Card {...other}>
+      <CardHeader title={title} subheader={subheader} sx={{ mb: 3 }} />
+
+      <Scrollbar>
+        <TableContainer sx={{ minWidth: 720 }}>
+          <Table>
+            <TableHeadCustom headLabel={tableLabels} />
+
+            <TableBody>
+              {tableData.map((row) => (
+                <BankingRecentTransitionsRow key={row.id} row={row} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Scrollbar>
+
+      <Divider />
+
+      <Box sx={{ p: 2, textAlign: 'right' }}>
+        <Button
+          size="small"
+          color="inherit"
+          endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}
+        >
+          View All
+        </Button>
+      </Box>
+    </Card>
+  );
+}
+
+// ----------------------------------------------------------------------
+
+type BankingRecentTransitionsRowProps = {
+  row: RowProps;
+};
+
+function BankingRecentTransitionsRow({ row }: BankingRecentTransitionsRowProps) {
   const theme = useTheme();
 
   const isLight = theme.palette.mode === 'light';
 
+  const [openMenu, setOpenMenuActions] = useState<HTMLElement | null>(null);
+
+  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setOpenMenuActions(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setOpenMenuActions(null);
+  };
+
+  const handleDownload = () => {
+    handleCloseMenu();
+    console.log('DOWNLOAD', row.id);
+  };
+
+  const handlePrint = () => {
+    handleCloseMenu();
+    console.log('PRINT', row.id);
+  };
+
+  const handleShare = () => {
+    handleCloseMenu();
+    console.log('SHARE', row.id);
+  };
+
+  const handleDelete = () => {
+    handleCloseMenu();
+    console.log('DELETE', row.id);
+  };
+
   return (
-    <>
-      <Card>
-        <CardHeader title="Recent Transitions" sx={{ mb: 3 }} />
-        <Scrollbar>
-          <TableContainer sx={{ minWidth: 720 }}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Description</TableCell>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Amount</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell />
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {_bankingRecentTransitions.map((row) => (
-                  <TableRow key={row.id}>
-                    <TableCell>
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Box sx={{ position: 'relative' }}>
-                          {renderAvatar(row.category, row.avatar)}
-                          <Box
-                            sx={{
-                              right: 0,
-                              bottom: 0,
-                              width: 18,
-                              height: 18,
-                              display: 'flex',
-                              borderRadius: '50%',
-                              position: 'absolute',
-                              alignItems: 'center',
-                              color: 'common.white',
-                              bgcolor: 'error.main',
-                              justifyContent: 'center',
-                              ...(row.type === 'Income' && {
-                                bgcolor: 'success.main',
-                              }),
-                            }}
-                          >
-                            <Iconify
-                              icon={
-                                row.type === 'Income'
-                                  ? 'eva:diagonal-arrow-left-down-fill'
-                                  : 'eva:diagonal-arrow-right-up-fill'
-                              }
-                              width={16}
-                              height={16}
-                            />
-                          </Box>
-                        </Box>
-                        <Box sx={{ ml: 2 }}>
-                          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                            {row.message}
-                          </Typography>
-                          <Typography variant="subtitle2"> {row.category}</Typography>
-                        </Box>
-                      </Box>
-                    </TableCell>
-
-                    <TableCell>
-                      <Typography variant="subtitle2">
-                        {format(new Date(row.date), 'dd MMM yyyy')}
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                        {format(new Date(row.date), 'p')}
-                      </Typography>
-                    </TableCell>
-
-                    <TableCell>{fCurrency(row.amount)}</TableCell>
-
-                    <TableCell>
-                      <Label
-                        variant={isLight ? 'ghost' : 'filled'}
-                        color={
-                          (row.status === 'completed' && 'success') ||
-                          (row.status === 'in_progress' && 'warning') ||
-                          'error'
-                        }
-                      >
-                        {sentenceCase(row.status)}
-                      </Label>
-                    </TableCell>
-
-                    <TableCell align="right">
-                      <MoreMenuButton />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Scrollbar>
-
-        <Divider />
-
-        <Box sx={{ p: 2, textAlign: 'right' }}>
-          <Button
-            size="small"
-            color="inherit"
-            endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}
-          >
-            View All
-          </Button>
+    <TableRow>
+      <TableCell>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ position: 'relative' }}>
+            {renderAvatar(row.category, row.avatar)}
+            <Box
+              sx={{
+                right: 0,
+                bottom: 0,
+                width: 18,
+                height: 18,
+                display: 'flex',
+                borderRadius: '50%',
+                position: 'absolute',
+                alignItems: 'center',
+                color: 'common.white',
+                bgcolor: 'error.main',
+                justifyContent: 'center',
+                ...(row.type === 'Income' && {
+                  bgcolor: 'success.main',
+                }),
+              }}
+            >
+              <Iconify
+                icon={
+                  row.type === 'Income'
+                    ? 'eva:diagonal-arrow-left-down-fill'
+                    : 'eva:diagonal-arrow-right-up-fill'
+                }
+                width={16}
+                height={16}
+              />
+            </Box>
+          </Box>
+          <Box sx={{ ml: 2 }}>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              {row.message}
+            </Typography>
+            <Typography variant="subtitle2"> {row.category}</Typography>
+          </Box>
         </Box>
-      </Card>
-    </>
+      </TableCell>
+
+      <TableCell>
+        <Typography variant="subtitle2">{format(new Date(row.date), 'dd MMM yyyy')}</Typography>
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          {format(new Date(row.date), 'p')}
+        </Typography>
+      </TableCell>
+
+      <TableCell>{fCurrency(row.amount)}</TableCell>
+
+      <TableCell>
+        <Label
+          variant={isLight ? 'ghost' : 'filled'}
+          color={
+            (row.status === 'completed' && 'success') ||
+            (row.status === 'in_progress' && 'warning') ||
+            'error'
+          }
+        >
+          {sentenceCase(row.status)}
+        </Label>
+      </TableCell>
+
+      <TableCell align="right">
+        <TableMoreMenu
+          open={openMenu}
+          onOpen={handleOpenMenu}
+          onClose={handleCloseMenu}
+          actions={
+            <>
+              <MenuItem onClick={handleDownload}>
+                <Iconify icon={'eva:download-fill'} />
+                Download
+              </MenuItem>
+
+              <MenuItem onClick={handlePrint}>
+                <Iconify icon={'eva:printer-fill'} />
+                Print
+              </MenuItem>
+
+              <MenuItem onClick={handleShare}>
+                <Iconify icon={'eva:share-fill'} />
+                Share
+              </MenuItem>
+
+              <Divider sx={{ borderStyle: 'dashed' }} />
+
+              <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
+                <Iconify icon={'eva:trash-2-outline'} />
+                Delete
+              </MenuItem>
+            </>
+          }
+        />
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -186,68 +269,4 @@ function renderAvatar(category: string, avatar: string | null) {
       sx={{ width: 48, height: 48, boxShadow: (theme) => theme.customShadows.z8 }}
     />
   ) : null;
-}
-
-// ----------------------------------------------------------------------
-
-function MoreMenuButton() {
-  const [open, setOpen] = useState<HTMLElement | null>(null);
-
-  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setOpen(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setOpen(null);
-  };
-
-  const ICON = {
-    mr: 2,
-    width: 20,
-    height: 20,
-  };
-
-  return (
-    <>
-      <IconButton size="large" onClick={handleOpen}>
-        <Iconify icon={'eva:more-vertical-fill'} width={20} height={20} />
-      </IconButton>
-
-      <MenuPopover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        arrow="right-top"
-        sx={{
-          mt: -0.5,
-          width: 160,
-          '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
-        }}
-      >
-        <MenuItem>
-          <Iconify icon={'eva:download-fill'} sx={{ ...ICON }} />
-          Download
-        </MenuItem>
-
-        <MenuItem>
-          <Iconify icon={'eva:printer-fill'} sx={{ ...ICON }} />
-          Print
-        </MenuItem>
-
-        <MenuItem>
-          <Iconify icon={'eva:share-fill'} sx={{ ...ICON }} />
-          Share
-        </MenuItem>
-
-        <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
-          Delete
-        </MenuItem>
-      </MenuPopover>
-    </>
-  );
 }

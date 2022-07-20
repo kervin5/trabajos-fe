@@ -41,7 +41,7 @@ DemoMultiLanguage.getLayout = function getLayout(page: React.ReactElement) {
 // ----------------------------------------------------------------------
 
 export default function DemoMultiLanguage() {
-  const { allLang, currentLang, translate, onChangeLang } = useLocales();
+  const { allLangs, currentLang, translate, onChangeLang } = useLocales();
 
   const [page, setPage] = useState(2);
 
@@ -94,7 +94,7 @@ export default function DemoMultiLanguage() {
                   value={currentLang.value}
                   onChange={(event) => onChangeLang(event.target.value)}
                 >
-                  {allLang.map((lang) => (
+                  {allLangs.map((lang) => (
                     <FormControlLabel
                       key={lang.label}
                       value={lang.value}

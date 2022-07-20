@@ -38,7 +38,7 @@ export default function HomeDarkMode() {
           visibleByDefault
           disabledEffect
           alt="image shape"
-          src="https://minimals.cc/assets/images/home/shape.svg"
+          src="https://minimal-assets-api-dev.vercel.app/assets/images/home/shape.svg"
           sx={{
             top: 0,
             right: 0,
@@ -81,15 +81,21 @@ export default function HomeDarkMode() {
 
           <Grid item xs={12} md={7} sx={{ position: 'relative' }}>
             <m.div variants={varFade().inUp}>
-              <Image alt="light mode" src="https://minimals.cc/assets/images/home/lightmode.png" />
+              <Image
+                alt="light mode"
+                src="https://minimal-assets-api-dev.vercel.app/assets/images/home/lightmode.png"
+              />
             </m.div>
 
             <Box
               component={m.div}
               variants={varFade().inDown}
-              sx={{ top: 0, left: 0, position: 'absolute' }}
+              sx={{ top: 0, right: 0, position: 'absolute' }}
             >
-              <Image alt="dark mode" src="https://minimals.cc/assets/images/home/darkmode.png" />
+              <Image
+                alt="dark mode"
+                src="https://minimal-assets-api-dev.vercel.app/assets/images/home/darkmode.png"
+              />
             </Box>
           </Grid>
         </Grid>

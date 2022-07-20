@@ -1,36 +1,38 @@
 import { ReactElement } from 'react';
 // @mui
-import { styled } from '@mui/material/styles';
-import { Card, Typography, Box } from '@mui/material';
+import { Card, Typography, Box, CardProps } from '@mui/material';
 // utils
 import { fShortenNumber } from '../../../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled(Card)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: theme.spacing(2, 2, 2, 3),
-}));
-
-// ----------------------------------------------------------------------
-
-type Props = {
+interface Props extends CardProps {
   title: string;
   total: number;
   icon: ReactElement;
-};
+}
 
-export default function BookingWidgetSummary({ title, total, icon }: Props) {
+export default function BookingWidgetSummary({ title, total, icon, sx, ...other }: Props) {
   return (
-    <RootStyle>
+    <Card
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        p: 2,
+        pl: 3,
+        ...sx,
+      }}
+      {...other}
+    >
       <div>
         <Typography variant="h3">{fShortenNumber(total)}</Typography>
+
         <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
           {title}
         </Typography>
       </div>
+
       <Box
         sx={{
           width: 120,
@@ -42,6 +44,6 @@ export default function BookingWidgetSummary({ title, total, icon }: Props) {
       >
         {icon}
       </Box>
-    </RootStyle>
+    </Card>
   );
 }

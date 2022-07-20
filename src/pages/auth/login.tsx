@@ -54,10 +54,10 @@ const SectionStyle = styled(Card)(({ theme }) => ({
 const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 480,
   margin: 'auto',
-  display: 'flex',
   minHeight: '100vh',
-  flexDirection: 'column',
+  display: 'flex',
   justifyContent: 'center',
+  flexDirection: 'column',
   padding: theme.spacing(12, 0),
 }));
 
@@ -78,9 +78,9 @@ export default function Login() {
             <Logo />
             {smUp && (
               <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-                ¿No tienes una cuenta? {''}
+                Don’t have an account? {''}
                 <NextLink href={PATH_AUTH.register} passHref>
-                  <Link variant="subtitle2">Crea una nueva</Link>
+                  <Link variant="subtitle2">Get started</Link>
                 </NextLink>
               </Typography>
             )}
@@ -89,12 +89,12 @@ export default function Login() {
           {mdUp && (
             <SectionStyle>
               <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-                Hola, Bienvenido!
+                Hi, Welcome Back
               </Typography>
               <Image
                 visibleByDefault
                 disabledEffect
-                src="https://minimals.cc/assets/illustrations/illustration_login.png"
+                src="/assets/illustrations/illustration_login.png"
                 alt="login"
               />
             </SectionStyle>
@@ -105,9 +105,11 @@ export default function Login() {
               <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
                 <Box sx={{ flexGrow: 1 }}>
                   <Typography variant="h4" gutterBottom>
-                    Iniciar Sesión
+                    Sign in to Minimal
                   </Typography>
-                  <Typography sx={{ color: 'text.secondary' }}>Ingrese sus detalles.</Typography>
+                  <Typography sx={{ color: 'text.secondary' }}>
+                    Enter your details below.
+                  </Typography>
                 </Box>
 
                 <Tooltip title={capitalCase(method)} placement="right">
@@ -122,17 +124,17 @@ export default function Login() {
                 </Tooltip>
               </Stack>
 
-              {/* <Alert severity="info" sx={{ mb: 3 }}>
+              <Alert severity="info" sx={{ mb: 3 }}>
                 Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
-              </Alert> */}
+              </Alert>
 
               <LoginForm />
 
               {!smUp && (
                 <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                  ¿No tienes una cuenta?{' '}
+                  Don’t have an account?{' '}
                   <NextLink href={PATH_AUTH.register} passHref>
-                    <Link variant="subtitle2">Crea una nueva</Link>
+                    <Link variant="subtitle2">Get started</Link>
                   </NextLink>
                 </Typography>
               )}

@@ -138,7 +138,7 @@ export default function HomeColorPresets() {
           <Image
             disabledEffect
             alt="grid"
-            src="https://minimals.cc/assets/images/home/theme-color/grid.png"
+            src="https://minimal-assets-api-dev.vercel.app/assets/images/home/theme-color/grid.png"
           />
 
           <Box sx={{ position: 'absolute', top: 0 }}>
@@ -146,7 +146,7 @@ export default function HomeColorPresets() {
               <Image
                 disabledEffect
                 alt="screen"
-                src={`https://minimals.cc/assets/images/home/theme-color/screen-${themeColorPresets}.png`}
+                src={`https://minimal-assets-api-dev.vercel.app/assets/images/home/theme-color/screen-${themeColorPresets}.png`}
               />
             </m.div>
           </Box>
@@ -157,7 +157,7 @@ export default function HomeColorPresets() {
                 <Image
                   disabledEffect
                   alt="sidebar"
-                  src={`https://minimals.cc/assets/images/home/theme-color/block1-${themeColorPresets}.png`}
+                  src={`https://minimal-assets-api-dev.vercel.app/assets/images/home/theme-color/block1-${themeColorPresets}.png`}
                 />
               </m.div>
             </m.div>
@@ -169,7 +169,7 @@ export default function HomeColorPresets() {
                 <Image
                   disabledEffect
                   alt="sidebar"
-                  src={`https://minimals.cc/assets/images/home/theme-color/block2-${themeColorPresets}.png`}
+                  src={`https://minimal-assets-api-dev.vercel.app/assets/images/home/theme-color/block2-${themeColorPresets}.png`}
                 />
               </m.div>
             </m.div>
@@ -181,7 +181,7 @@ export default function HomeColorPresets() {
                 <Image
                   disabledEffect
                   alt="sidebar"
-                  src={`https://minimals.cc/assets/images/home/theme-color/sidebar-${themeColorPresets}.png`}
+                  src={`https://minimal-assets-api-dev.vercel.app/assets/images/home/theme-color/sidebar-${themeColorPresets}.png`}
                 />
               </m.div>
             </m.div>

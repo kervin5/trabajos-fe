@@ -1,51 +1,38 @@
-import MapGL from 'react-map-gl';
-import { useState } from 'react';
+import { memo } from 'react';
 import DeckGL, { ArcLayer } from 'deck.gl';
-import { InteractiveMapProps } from 'react-map-gl/src/components/interactive-map';
+import Map from 'react-map-gl';
 // components
-import {
-  MapControlScale,
-  MapControlGeolocate,
-  MapControlNavigation,
-  MapControlFullscreen,
-} from '../../../../components/map';
+import { MapControl, MapBoxProps } from '../../../../components/map';
 
 // ----------------------------------------------------------------------
 
-export default function MapDeckglOverlay({ ...other }: InteractiveMapProps) {
-  const [viewport, setViewport] = useState({
-    longitude: -122.45,
-    latitude: 37.78,
-    zoom: 11,
-    bearing: 0,
-    pitch: 30,
+function MapDeckglOverlay({ ...other }: MapBoxProps) {
+  const arcLayer = new ArcLayer({
+    data: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/bart-segments.json',
+    getSourcePosition: (d: { from: { coordinates: number } }) => d.from.coordinates,
+    getTargetPosition: (d: { to: { coordinates: number } }) => d.to.coordinates,
+    getSourceColor: [91, 229, 132],
+    getTargetColor: [24, 144, 255],
+    getWidth: 1.5,
   });
 
   return (
-    <>
-      <MapGL {...viewport} onViewportChange={setViewport} maxPitch={85} {...other}>
-        <MapControlScale />
-        <MapControlNavigation />
-        <MapControlFullscreen />
-        <MapControlGeolocate />
-
-        <DeckGL
-          viewState={viewport}
-          layers={[
-            new ArcLayer({
-              data: [
-                {
-                  sourcePosition: [-122.41669, 37.7853],
-                  targetPosition: [-122.45669, 37.781],
-                },
-              ],
-              strokeWidth: 4,
-              getSourceColor: () => [0, 0, 255],
-              getTargetColor: () => [0, 255, 0],
-            }),
-          ]}
-        />
-      </MapGL>
-    </>
+    <DeckGL
+      initialViewState={{
+        longitude: -122.45,
+        latitude: 37.75,
+        zoom: 11,
+        bearing: 0,
+        pitch: 60,
+      }}
+      controller={true}
+      layers={[arcLayer]}
+    >
+      <Map {...other}>
+        <MapControl />
+      </Map>
+    </DeckGL>
   );
 }
+
+export default memo(MapDeckglOverlay);

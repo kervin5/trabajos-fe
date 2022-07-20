@@ -30,7 +30,10 @@ export function RHFCheckbox({ name, ...other }: RHFCheckboxProps) {
 
 interface RHFMultiCheckboxProps extends Omit<FormControlLabelProps, 'control' | 'label'> {
   name: string;
-  options: string[];
+  options: {
+    label: string;
+    value: any;
+  }[];
 }
 
 export function RHFMultiCheckbox({ name, options, ...other }: RHFMultiCheckboxProps) {
@@ -50,14 +53,14 @@ export function RHFMultiCheckbox({ name, options, ...other }: RHFMultiCheckboxPr
           <FormGroup>
             {options.map((option) => (
               <FormControlLabel
-                key={option}
+                key={option.value}
                 control={
                   <Checkbox
-                    checked={field.value.includes(option)}
-                    onChange={() => field.onChange(onSelected(option))}
+                    checked={field.value.includes(option.value)}
+                    onChange={() => field.onChange(onSelected(option.value))}
                   />
                 }
-                label={option}
+                label={option.label}
                 {...other}
               />
             ))}

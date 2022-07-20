@@ -33,7 +33,6 @@ export default function cssStyles(theme?: Theme) {
   return {
     bgBlur: (props?: BackgroundBlurProps) => {
       const color = props?.color || theme?.palette.background.default || '#000000';
-
       const blur = props?.blur || 6;
       const opacity = props?.opacity || 0.8;
 
@@ -53,7 +52,7 @@ export default function cssStyles(theme?: Theme) {
       };
     },
     bgImage: (props?: BackgroundImageProps) => {
-      const url = props?.url || 'https://minimals.cc/assets/images/bg_gradient.jpg';
+      const url = props?.url || '/assets/bg_gradient.jpg';
       const direction = getDirection(props?.direction);
       const startColor = props?.startColor || alpha(theme?.palette.grey[900] || '#000000', 0.88);
       const endColor = props?.endColor || alpha(theme?.palette.grey[900] || '#000000', 0.88);

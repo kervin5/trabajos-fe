@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import Slider from 'react-slick';
 // @mui
-import { styled, useTheme } from '@mui/material/styles';
-import { Box, Typography, Stack, MenuItem, IconButton } from '@mui/material';
+import { styled, useTheme, Theme } from '@mui/material/styles';
+import { Box, Typography, Stack, MenuItem, IconButton, SxProps } from '@mui/material';
 // utils
 import { fCurrency } from '../../../../utils/formatNumber';
-// _mock_
-import { _bankingCreditCard } from '../../../../_mock';
 // components
 import Image from '../../../../components/Image';
 import Iconify from '../../../../components/Iconify';
@@ -32,7 +30,7 @@ const CardItemStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(3),
   backgroundRepeat: 'no-repeat',
   color: theme.palette.common.white,
-  backgroundImage: 'url("https://minimals.cc/assets/bg_card.png")',
+  backgroundImage: 'url("/assets/bg_card.png")',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
@@ -54,7 +52,21 @@ const shadowStyle = {
 
 // ----------------------------------------------------------------------
 
-export default function BankingCurrentBalance() {
+type ItemProps = {
+  id: string;
+  cardType: string;
+  balance: number;
+  cardHolder: string;
+  cardNumber: string;
+  cardValid: string;
+};
+
+type Props = {
+  list: ItemProps[];
+  sx?: SxProps<Theme>;
+};
+
+export default function BankingCurrentBalance({ list, sx }: Props) {
   const theme = useTheme();
 
   const settings = {
@@ -67,16 +79,17 @@ export default function BankingCurrentBalance() {
   };
 
   return (
-    <RootStyle>
+    <RootStyle sx={sx}>
       <Box sx={{ position: 'relative', zIndex: 9 }}>
         <Slider {...settings}>
-          {_bankingCreditCard.map((card) => (
+          {list.map((card) => (
             <CardItem key={card.id} card={card} />
           ))}
         </Slider>
       </Box>
 
       <Box sx={{ ...shadowStyle }} />
+
       <Box
         sx={{
           ...shadowStyle,
@@ -93,124 +106,143 @@ export default function BankingCurrentBalance() {
 // ----------------------------------------------------------------------
 
 type CardItemProps = {
-  card: {
-    id: string;
-    cardType: string;
-    balance: number;
-    cardHolder: string;
-    cardNumber: string;
-    cardValid: string;
-  };
+  card: ItemProps;
 };
 
 function CardItem({ card }: CardItemProps) {
-  const { cardType, balance, cardHolder, cardNumber, cardValid } = card;
+  const { id, cardType, balance, cardHolder, cardNumber, cardValid } = card;
+
+  const [open, setOpen] = useState<HTMLElement | null>(null);
+
   const [showCurrency, setShowCurrency] = useState(true);
 
   const onToggleShowCurrency = () => {
     setShowCurrency((prev) => !prev);
   };
 
-  return (
-    <>
-      <CardItemStyle>
-        <Box sx={{ position: 'absolute', top: 16, right: 16, zIndex: 9 }}>
-          <MoreMenuButton />
-        </Box>
+  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setOpen(event.currentTarget);
+  };
 
-        <div>
-          <Typography sx={{ mb: 2, typography: 'subtitle2', opacity: 0.72 }}>
-            Current Balance
+  const handleCloseMenu = () => {
+    setOpen(null);
+  };
+
+  const handleDelete = () => {
+    handleCloseMenu();
+    console.log('DELETE', id);
+  };
+
+  const handleEdit = () => {
+    handleCloseMenu();
+    console.log('EDIT', id);
+  };
+
+  return (
+    <CardItemStyle>
+      <Box sx={{ position: 'absolute', top: 16, right: 16, zIndex: 9 }}>
+        <MoreMenuButton
+          open={open}
+          onOpen={handleOpenMenu}
+          onClose={handleCloseMenu}
+          actions={
+            <>
+              <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
+                <Iconify icon={'eva:trash-2-outline'} />
+                Delete card
+              </MenuItem>
+
+              <MenuItem onClick={handleEdit}>
+                <Iconify icon={'eva:edit-fill'} />
+                Edit card
+              </MenuItem>
+            </>
+          }
+        />
+      </Box>
+
+      <div>
+        <Typography sx={{ mb: 2, typography: 'subtitle2', opacity: 0.72 }}>
+          Current Balance
+        </Typography>
+
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <Typography sx={{ typography: 'h3' }}>
+            {showCurrency ? '********' : fCurrency(balance)}
           </Typography>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography sx={{ typography: 'h3' }}>
-              {showCurrency ? '********' : fCurrency(balance)}
-            </Typography>
-            <IconButton color="inherit" onClick={onToggleShowCurrency} sx={{ opacity: 0.48 }}>
-              <Iconify icon={showCurrency ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-            </IconButton>
-          </Stack>
+
+          <IconButton color="inherit" onClick={onToggleShowCurrency} sx={{ opacity: 0.48 }}>
+            <Iconify icon={showCurrency ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+          </IconButton>
+        </Stack>
+      </div>
+
+      <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
+        <Image
+          disabledEffect
+          visibleByDefault
+          alt="credit-card"
+          src={`https://minimal-assets-api-dev.vercel.app/assets/icons/ic_${
+            cardType === 'mastercard' ? 'mastercard' : 'visa'
+          }.svg`}
+          sx={{ height: 24 }}
+        />
+
+        <Typography sx={{ typography: 'subtitle1', textAlign: 'right' }}>{cardNumber}</Typography>
+      </Stack>
+
+      <Stack direction="row" spacing={5}>
+        <div>
+          <Typography sx={{ mb: 1, typography: 'caption', opacity: 0.48 }}>Card Holder</Typography>
+
+          <Typography sx={{ typography: 'subtitle1' }}>{cardHolder}</Typography>
         </div>
 
-        <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={1}>
-          <Image
-            disabledEffect
-            visibleByDefault
-            alt="credit-card"
-            src={`https://minimals.cc/assets/icons/ic_${
-              cardType === 'mastercard' ? 'mastercard' : 'visa'
-            }.svg`}
-            sx={{ height: 24 }}
-          />
-          <Typography sx={{ typography: 'subtitle1', textAlign: 'right' }}>{cardNumber}</Typography>
-        </Stack>
+        <div>
+          <Typography sx={{ mb: 1, typography: 'caption', opacity: 0.48 }}>Valid Dates</Typography>
 
-        <Stack direction="row" spacing={5}>
-          <div>
-            <Typography sx={{ mb: 1, typography: 'caption', opacity: 0.48 }}>
-              Card Holder
-            </Typography>
-            <Typography sx={{ typography: 'subtitle1' }}>{cardHolder}</Typography>
-          </div>
-          <div>
-            <Typography sx={{ mb: 1, typography: 'caption', opacity: 0.48 }}>
-              Valid Dates
-            </Typography>
-            <Typography sx={{ typography: 'subtitle1' }}>{cardValid}</Typography>
-          </div>
-        </Stack>
-      </CardItemStyle>
-    </>
+          <Typography sx={{ typography: 'subtitle1' }}>{cardValid}</Typography>
+        </div>
+      </Stack>
+    </CardItemStyle>
   );
 }
 
 // ----------------------------------------------------------------------
 
-function MoreMenuButton() {
-  const [open, setOpen] = useState<HTMLElement | null>(null);
+type MoreMenuButtonProps = {
+  actions: React.ReactNode;
+  open: HTMLElement | null;
+  onClose: VoidFunction;
+  onOpen: (event: React.MouseEvent<HTMLElement>) => void;
+};
 
-  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setOpen(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setOpen(null);
-  };
-
-  const ICON = {
-    mr: 2,
-    width: 20,
-    height: 20,
-  };
-
+function MoreMenuButton({ actions, open, onOpen, onClose }: MoreMenuButtonProps) {
   return (
     <>
-      <IconButton size="large" color="inherit" sx={{ opacity: 0.48 }} onClick={handleOpen}>
+      <IconButton size="large" color="inherit" sx={{ opacity: 0.48 }} onClick={onOpen}>
         <Iconify icon={'eva:more-vertical-fill'} width={20} height={20} />
       </IconButton>
 
       <MenuPopover
         open={Boolean(open)}
         anchorEl={open}
-        onClose={handleClose}
+        onClose={onClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         arrow="right-top"
         sx={{
           mt: -0.5,
           width: 'auto',
-          '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
+          '& .MuiMenuItem-root': {
+            px: 1,
+            typography: 'body2',
+            borderRadius: 0.75,
+            '& svg': { mr: 2, width: 20, height: 20 },
+          },
         }}
       >
-        <MenuItem onClick={handleClose} sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
-          Delete card
-        </MenuItem>
-
-        <MenuItem onClick={handleClose}>
-          <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
-          Edit card
-        </MenuItem>
+        {actions}
       </MenuPopover>
     </>
   );

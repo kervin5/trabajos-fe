@@ -1,4 +1,3 @@
-// @mui
 import { SvgIcon, SvgIconProps } from '@mui/material';
 
 // ----------------------------------------------------------------------

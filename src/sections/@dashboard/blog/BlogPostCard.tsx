@@ -78,7 +78,7 @@ export default function BlogPostCard({ post, index }: Props) {
     <Card>
       <Box sx={{ position: 'relative' }}>
         <SvgIconStyle
-          src="https://minimals.cc/assets/icons/shape-avatar.svg"
+          src="https://minimal-assets-api-dev.vercel.app/assets/icons/shape-avatar.svg"
           sx={{
             width: 80,
             height: 36,

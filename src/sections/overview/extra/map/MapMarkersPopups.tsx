@@ -1,62 +1,56 @@
-import { useState } from 'react';
-import MapGL from 'react-map-gl';
-import { InteractiveMapProps } from 'react-map-gl/src/components/interactive-map';
+import { useState, memo } from 'react';
+import Map from 'react-map-gl';
 // @mui
 import { Box, Typography } from '@mui/material';
 // components
 import Image from '../../../../components/Image';
-import {
-  MapControlPopup,
-  MapControlMarker,
-  MapControlScale,
-  MapControlGeolocate,
-  MapControlNavigation,
-  MapControlFullscreen,
-} from '../../../../components/map';
+import { MapPopup, MapMarker, MapControl, MapBoxProps } from '../../../../components/map';
 
 // ----------------------------------------------------------------------
 
-type CountryData = {
-  timezones: string[];
-  latlng: number[];
+type CountryProps = {
   name: string;
-  country_code: string;
-  capital: string;
   photo: string;
+  capital: string;
+  latlng: number[];
+  timezones: string[];
+  country_code: string;
 };
 
-interface MapMarkersPopupsProps extends InteractiveMapProps {
-  data: CountryData[];
+interface Props extends MapBoxProps {
+  data: CountryProps[];
 }
 
-export default function MapMarkersPopups({ data, ...other }: MapMarkersPopupsProps) {
-  const [tooltip, setTooltip] = useState<CountryData | null>(null);
-  const [viewport, setViewport] = useState({
-    zoom: 2,
-  });
+function MapMarkersPopups({ data, ...other }: Props) {
+  const [popupInfo, setPopupInfo] = useState<CountryProps | null>(null);
 
   return (
     <>
-      <MapGL {...viewport} onViewportChange={setViewport} {...other}>
-        <MapControlScale />
-        <MapControlNavigation />
-        <MapControlFullscreen />
-        <MapControlGeolocate />
+      <Map
+        initialViewState={{
+          zoom: 2,
+        }}
+        {...other}
+      >
+        <MapControl />
 
-        {data.map((country) => (
-          <MapControlMarker
-            key={country.name}
-            latitude={country.latlng[0]}
-            longitude={country.latlng[1]}
-            onClick={() => setTooltip(country)}
+        {data.map((city, index) => (
+          <MapMarker
+            key={`marker-${index}`}
+            latitude={city.latlng[0]}
+            longitude={city.latlng[1]}
+            onClick={(event) => {
+              event.originalEvent.stopPropagation();
+              setPopupInfo(city);
+            }}
           />
         ))}
 
-        {tooltip && (
-          <MapControlPopup
-            longitude={tooltip.latlng[1]}
-            latitude={tooltip.latlng[0]}
-            onClose={() => setTooltip(null)}
+        {popupInfo && (
+          <MapPopup
+            latitude={popupInfo.latlng[0]}
+            longitude={popupInfo.latlng[1]}
+            onClose={() => setPopupInfo(null)}
           >
             <Box sx={{ color: 'common.white' }}>
               <Box
@@ -75,30 +69,36 @@ export default function MapMarkersPopups({ data, ...other }: MapMarkersPopupsPro
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
-                    backgroundImage: `url(https://cdn.staticaly.com/gh/hjnilsson/country-flags/master/svg/${tooltip.country_code.toLowerCase()}.svg)`,
+                    backgroundImage: `url(https://cdn.staticaly.com/gh/hjnilsson/country-flags/master/svg/${popupInfo.country_code.toLowerCase()}.svg)`,
                   }}
                 />
-                <Typography variant="subtitle2">{tooltip.name}</Typography>
+                <Typography variant="subtitle2">{popupInfo.name}</Typography>
               </Box>
+
               <Typography component="div" variant="caption">
-                Timezones: {tooltip.timezones}
+                Timezones: {popupInfo.timezones}
               </Typography>
+
               <Typography component="div" variant="caption">
-                Lat: {tooltip.latlng[0]}
+                Lat: {popupInfo.latlng[0]}
               </Typography>
+
               <Typography component="div" variant="caption">
-                Long: {tooltip.latlng[1]}
+                Long: {popupInfo.latlng[1]}
               </Typography>
+
               <Image
-                alt={tooltip.name}
-                src={tooltip.photo}
+                alt={popupInfo.name}
+                src={popupInfo.photo}
                 ratio="4/3"
                 sx={{ mt: 1, borderRadius: 1 }}
               />
             </Box>
-          </MapControlPopup>
+          </MapPopup>
         )}
-      </MapGL>
+      </Map>
     </>
   );
 }
+
+export default memo(MapMarkersPopups);

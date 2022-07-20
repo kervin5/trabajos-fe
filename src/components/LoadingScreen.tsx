@@ -26,8 +26,10 @@ export default function LoadingScreen() {
   return (
     <RootStyle>
       <m.div
-        initial={{ rotateY: 0 }}
-        animate={{ rotateY: 360 }}
+        animate={{
+          scale: [1, 0.9, 0.9, 1, 1],
+          opacity: [1, 0.48, 0.48, 1, 1],
+        }}
         transition={{
           duration: 2,
           ease: 'easeInOut',

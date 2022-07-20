@@ -1,24 +1,11 @@
 import { memo } from 'react';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Switch, InputBase, Typography } from '@mui/material';
-// @types
-import { MapSettingKeys, MapSettings } from '../../../../../components/map/type';
-// utils
-import cssStyles from '../../../../../utils/cssStyles';
+import { Switch, InputBase, Typography } from '@mui/material';
+// components
+import { MapSettingKeys, MapSettings, ControlPanelStyle } from '../../../../../components/map';
 
 // ----------------------------------------------------------------------
-
-const RootStyle = styled('div')(({ theme }) => ({
-  ...cssStyles().bgBlur({ color: theme.palette.grey[900] }),
-  zIndex: 9,
-  minWidth: 200,
-  position: 'absolute',
-  top: theme.spacing(1),
-  right: theme.spacing(1),
-  padding: theme.spacing(2),
-  borderRadius: theme.shape.borderRadius,
-}));
 
 const RowStyle = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -33,27 +20,18 @@ const RowStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const EVENTS = [
-  { label: 'Dragging', value: 'isDragging' },
-  { label: 'Transition', value: 'inTransition' },
-  { label: 'Panning', value: 'isPanning' },
-  { label: 'Rotating', value: 'isRotating' },
-  { label: 'Zooming', value: 'isZooming' },
-];
-
 const camelPattern = /(^|[A-Z])[a-z]*/g;
 
 function formatSettingName(name: string) {
   return name.match(camelPattern)?.join(' ');
 }
 
-type ControlPanelProps = {
+type Props = {
   settings: MapSettings;
-  interactionState: any;
   onChange: (name: MapSettingKeys, value: boolean | number) => void;
 };
 
-function ControlPanel({ settings, interactionState, onChange }: ControlPanelProps) {
+function ControlPanel({ settings, onChange }: Props) {
   const renderSetting = (name: MapSettingKeys, value: boolean | number) => {
     switch (typeof value) {
       case 'boolean':
@@ -95,25 +73,11 @@ function ControlPanel({ settings, interactionState, onChange }: ControlPanelProp
   };
 
   return (
-    <RootStyle>
+    <ControlPanelStyle>
       {Object.keys(settings).map((name) =>
         renderSetting(name as MapSettingKeys, settings[name as MapSettingKeys])
       )}
-
-      {EVENTS.map((event) => (
-        <RowStyle key={event.label}>
-          <Typography variant="body2">{event.label}</Typography>
-          <Box
-            sx={{
-              width: 22,
-              height: 22,
-              borderRadius: 1,
-              bgcolor: interactionState[event.value] ? 'primary.main' : 'error.main',
-            }}
-          />
-        </RowStyle>
-      ))}
-    </RootStyle>
+    </ControlPanelStyle>
   );
 }
 

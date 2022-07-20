@@ -1,10 +1,9 @@
 import { memo } from 'react';
-import { Coordinate } from 'react-map-gl/src/components/draggable-control';
+import { LngLat } from 'react-map-gl';
 // @mui
-import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
-// utils
-import cssStyles from '../../../../../utils/cssStyles';
+// components
+import { ControlPanelStyle } from '../../../../../components/map';
 
 // ----------------------------------------------------------------------
 
@@ -14,50 +13,37 @@ function round5(value: number) {
   return (Math.round(value * 1e5) / 1e5).toFixed(5);
 }
 
-const RootStyle = styled('div')(({ theme }) => ({
-  ...cssStyles().bgBlur({ color: theme.palette.grey[900] }),
-  zIndex: 9,
-  minWidth: 200,
-  position: 'absolute',
-  top: theme.spacing(1),
-  right: theme.spacing(1),
-  padding: theme.spacing(2),
-  borderRadius: theme.shape.borderRadius,
-}));
-
 // ----------------------------------------------------------------------
 
-function ControlPanel({
-  events = {},
-}: {
-  events: {
-    onDragStart?: Coordinate;
-    onDrag?: Coordinate;
-    onDragEnd?: Coordinate;
-  };
-}) {
+type Props = {
+  events: Record<string, LngLat>;
+};
+
+function ControlPanel({ events = {} }: Props) {
   return (
-    <RootStyle>
+    <ControlPanelStyle>
       {EVENT_NAMES.map((event) => {
         const lngLat = events[event];
+
         return (
           <div key={event}>
             <Typography variant="subtitle2" sx={{ color: 'common.white' }}>
               {event}:
             </Typography>
+
             {lngLat ? (
               <Typography variant="subtitle2" sx={{ color: 'primary.main' }}>
-                {lngLat.map(round5).join(', ')}
+                {`${round5(lngLat.lng)}, ${round5(lngLat.lat)}`}
               </Typography>
             ) : (
-              <Typography variant="subtitle2" sx={{ color: 'error.main' }}>
-                <em>null</em>
+              <Typography variant="body2" component="em" sx={{ color: 'red' }}>
+                null
               </Typography>
             )}
           </div>
         );
       })}
-    </RootStyle>
+    </ControlPanelStyle>
   );
 }
 export default memo(ControlPanel);

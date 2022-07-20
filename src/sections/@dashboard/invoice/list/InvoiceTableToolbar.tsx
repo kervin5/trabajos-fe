@@ -1,5 +1,5 @@
 import { Stack, InputAdornment, TextField, MenuItem } from '@mui/material';
-import DatePicker from '@mui/lab/DatePicker';
+import { DatePicker } from '@mui/x-date-pickers';
 // components
 import Iconify from '../../../../components/Iconify';
 

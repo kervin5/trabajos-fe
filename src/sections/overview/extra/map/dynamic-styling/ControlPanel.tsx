@@ -5,16 +5,18 @@ import { useTheme, styled } from '@mui/material/styles';
 import { Box, Switch, Typography } from '@mui/material';
 // _mock_
 import MAP_STYLE from '../../../../../_mock/map/map-style-basic-v8.json';
-// utils
-import cssStyles from '../../../../../utils/cssStyles';
+// components
+import { ControlPanelStyle } from '../../../../../components/map';
 
 // ----------------------------------------------------------------------
 
-const defaultMapStyle = fromJS(MAP_STYLE) as any;
+const defaultMapStyle: any = fromJS(MAP_STYLE);
 
-const CATEGORIES = ['labels', 'roads', 'buildings', 'parks', 'water', 'background'] as const;
+const defaultLayers = defaultMapStyle.get('layers');
 
-const LAYER_SELECTOR = {
+const categories = ['labels', 'roads', 'buildings', 'parks', 'water', 'background'] as const;
+
+const layerSelector = {
   background: /background/,
   water: /water/,
   parks: /park/,
@@ -25,23 +27,12 @@ const LAYER_SELECTOR = {
 
 type ColorClassKey = 'line' | 'fill' | 'background' | 'symbol';
 
-const COLOR_CLASS = {
+const colorClass = {
   line: 'line-color',
   fill: 'fill-color',
   background: 'background-color',
   symbol: 'text-color',
 } as const;
-
-const RootStyle = styled('div')(({ theme }) => ({
-  ...cssStyles().bgBlur({ color: theme.palette.grey[900] }),
-  zIndex: 9,
-  minWidth: 200,
-  position: 'absolute',
-  top: theme.spacing(1),
-  right: theme.spacing(1),
-  padding: theme.spacing(2),
-  borderRadius: theme.shape.borderRadius,
-}));
 
 const ColorBoxStyle = styled('div')(({ theme }) => ({
   width: 20,
@@ -68,8 +59,13 @@ const ColorBoxStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-function ControlPanel({ onChange }: { onChange: (value: string) => void }) {
+type Props = {
+  onChange: React.Dispatch<React.SetStateAction<null>>;
+};
+
+function ControlPanel({ onChange }: Props) {
   const theme = useTheme();
+
   const [visibility, setVisibility] = useState({
     water: true,
     parks: true,
@@ -78,6 +74,7 @@ function ControlPanel({ onChange }: { onChange: (value: string) => void }) {
     buildings: true,
     background: true,
   });
+
   const [color, setColor] = useState({
     water: theme.palette.grey[900],
     labels: theme.palette.grey[800],
@@ -88,62 +85,21 @@ function ControlPanel({ onChange }: { onChange: (value: string) => void }) {
   });
 
   useEffect(() => {
-    updateMapStyle({ color, visibility });
+    onChange(getMapStyle({ visibility, color }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [color, visibility]);
+  }, [visibility, color]);
 
   const onColorChange = (name: string, value: string) => {
-    const state = {
-      ...color,
-      [name]: value,
-    };
-    setColor(state);
-    updateMapStyle({
-      color: state,
-      visibility,
-    });
+    setColor({ ...color, [name]: value });
   };
 
-  const onVisibilityChange = (name: string, checked: boolean) => {
-    const state = {
-      ...visibility,
-      [name]: checked,
-    };
-    setVisibility(state);
-    updateMapStyle({
-      color,
-      visibility: state,
-    });
-  };
-
-  const updateMapStyle = ({
-    color,
-    visibility,
-  }: {
-    color: Record<string, string>;
-    visibility: Record<string, boolean>;
-  }) => {
-    const layers = defaultMapStyle
-      .get('layers')
-      .filter((layer: any) => {
-        const id = layer.get('id');
-        return CATEGORIES.every((name) => visibility[name] || !LAYER_SELECTOR[name].test(id));
-      })
-      .map((layer: any) => {
-        const id = layer.get('id');
-        const type: ColorClassKey = layer.get('type');
-        const category = CATEGORIES.find((name) => LAYER_SELECTOR[name].test(id));
-        if (category && COLOR_CLASS[type]) {
-          return layer?.setIn(['paint', COLOR_CLASS[type]], color[category]);
-        }
-        return layer;
-      });
-    onChange(defaultMapStyle.set('layers', layers));
+  const onVisibilityChange = (name: string, value: boolean) => {
+    setVisibility({ ...visibility, [name]: value });
   };
 
   return (
-    <RootStyle>
-      {CATEGORIES.map((name) => (
+    <ControlPanelStyle>
+      {categories.map((name) => (
         <Box key={name} sx={{ py: 1, display: 'flex', alignItems: 'center' }}>
           <ColorBoxStyle sx={{ ...(!visibility[name] && { opacity: 0.48 }) }}>
             <input
@@ -170,8 +126,39 @@ function ControlPanel({ onChange }: { onChange: (value: string) => void }) {
           />
         </Box>
       ))}
-    </RootStyle>
+    </ControlPanelStyle>
   );
 }
 
 export default memo(ControlPanel);
+
+// ----------------------------------------------------------------------
+
+function getMapStyle({
+  visibility,
+  color,
+}: {
+  color: Record<string, string>;
+  visibility: Record<string, boolean>;
+}) {
+  const layers = defaultLayers
+    .filter((layer: any) => {
+      const id = layer.get('id');
+
+      return categories.every((name) => visibility[name] || !layerSelector[name].test(id));
+    })
+    .map((layer: any) => {
+      const id = layer.get('id');
+
+      const type: ColorClassKey = layer.get('type');
+
+      const category = categories.find((name) => layerSelector[name].test(id));
+      if (category && colorClass[type]) {
+        return layer.setIn(['paint', colorClass[type]], color[category]);
+      }
+
+      return layer;
+    });
+
+  return defaultMapStyle.set('layers', layers);
+}

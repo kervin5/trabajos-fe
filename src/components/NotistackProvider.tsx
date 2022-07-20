@@ -3,7 +3,9 @@ import { IconifyIcon } from '@iconify/react';
 import { SnackbarProvider, SnackbarKey } from 'notistack';
 // @mui
 import { alpha, useTheme } from '@mui/material/styles';
-import { Box, GlobalStyles } from '@mui/material';
+import { Box, GlobalStyles, Collapse } from '@mui/material';
+// hooks
+import useSettings from '../hooks/useSettings';
 // theme
 import { ColorSchema } from '../theme/palette';
 //
@@ -59,6 +61,10 @@ type Props = {
 };
 
 export default function NotistackProvider({ children }: Props) {
+  const { themeDirection } = useSettings();
+
+  const isRTL = themeDirection === 'rtl';
+
   const notistackRef = useRef<any>(null);
 
   const onClose = (key: SnackbarKey) => () => {
@@ -75,6 +81,7 @@ export default function NotistackProvider({ children }: Props) {
         maxSnack={5}
         preventDuplicate
         autoHideDuration={3000}
+        TransitionComponent={isRTL ? Collapse : undefined}
         variant="success" // Set default variant
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         iconVariant={{

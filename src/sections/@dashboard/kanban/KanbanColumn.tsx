@@ -8,7 +8,7 @@ import { Paper, Stack, Button } from '@mui/material';
 import { RootState, useDispatch } from '../../../redux/store';
 import { deleteColumn, updateColumn, addTask, deleteTask } from '../../../redux/slices/kanban';
 // @types
-import { KanbanColumn as Column } from '../../../@types/kanban';
+import { KanbanColumn as Column, KanbanCard } from '../../../@types/kanban';
 // components
 import Iconify from '../../../components/Iconify';
 //
@@ -44,6 +44,7 @@ export default function KanbanColumn({ column, index }: Props) {
 
   const handleDeleteTask = (cardId: string) => {
     dispatch(deleteTask({ cardId, columnId: id }));
+    enqueueSnackbar('Delete success!');
   };
 
   const handleUpdateColumn = async (newName: string) => {
@@ -60,12 +61,13 @@ export default function KanbanColumn({ column, index }: Props) {
   const handleDeleteColumn = async () => {
     try {
       dispatch(deleteColumn(id));
+      enqueueSnackbar('Delete success!');
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleAddTask = (task: any) => {
+  const handleAddTask = (task: KanbanCard) => {
     dispatch(addTask({ card: task, columnId: id }));
     handleCloseAddTask();
   };

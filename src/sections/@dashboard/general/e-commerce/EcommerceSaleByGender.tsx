@@ -1,7 +1,7 @@
 import merge from 'lodash/merge';
 // @mui
-import { useTheme, styled } from '@mui/material/styles';
-import { Card, CardHeader } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { Card, CardHeader, CardProps } from '@mui/material';
 // utils
 import { fNumber } from '../../../../utils/formatNumber';
 // components
@@ -10,6 +10,7 @@ import ReactApexChart, { BaseOptionChart } from '../../../../components/chart';
 // ----------------------------------------------------------------------
 
 const CHART_HEIGHT = 392;
+
 const LEGEND_HEIGHT = 72;
 
 const ChartWrapperStyle = styled('div')(({ theme }) => ({
@@ -30,39 +31,39 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [44, 75];
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  total: number;
+  chartData: {
+    label: string;
+    value: number;
+  }[];
+  chartColors: string[][];
+}
 
-export default function EcommerceSaleByGender() {
-  const theme = useTheme();
+export default function EcommerceSaleByGender({
+  title,
+  subheader,
+  total,
+  chartColors,
+  chartData,
+  ...other
+}: Props) {
+  const chartLabels = chartData.map((i) => i.label);
+
+  const chartSeries = chartData.map((i) => i.value);
 
   const chartOptions = merge(BaseOptionChart(), {
-    labels: ['Mens', 'Womens'],
+    labels: chartLabels,
     legend: { floating: true, horizontalAlign: 'center' },
     fill: {
       type: 'gradient',
       gradient: {
-        colorStops: [
-          [
-            {
-              offset: 0,
-              color: theme.palette.primary.light,
-            },
-            {
-              offset: 100,
-              color: theme.palette.primary.main,
-            },
-          ],
-          [
-            {
-              offset: 0,
-              color: theme.palette.warning.light,
-            },
-            {
-              offset: 100,
-              color: theme.palette.warning.main,
-            },
-          ],
-        ],
+        colorStops: chartColors.map((colors) => [
+          { offset: 0, color: colors[0] },
+          { offset: 100, color: colors[1] },
+        ]),
       },
     },
     plotOptions: {
@@ -71,7 +72,7 @@ export default function EcommerceSaleByGender() {
         dataLabels: {
           value: { offsetY: 16 },
           total: {
-            formatter: () => fNumber(2324),
+            formatter: () => fNumber(total),
           },
         },
       },
@@ -79,10 +80,11 @@ export default function EcommerceSaleByGender() {
   });
 
   return (
-    <Card>
-      <CardHeader title="Sale By Gender" />
+    <Card {...other}>
+      <CardHeader title={title} subheader={subheader} />
+
       <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="radialBar" series={CHART_DATA} options={chartOptions} height={310} />
+        <ReactApexChart type="radialBar" series={chartSeries} options={chartOptions} height={310} />
       </ChartWrapperStyle>
     </Card>
   );

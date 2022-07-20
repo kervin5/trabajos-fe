@@ -1,18 +1,27 @@
 // @mui
-import { Card, CardHeader, Typography, Stack, LinearProgress, Box } from '@mui/material';
+import { Card, CardHeader, Typography, Stack, LinearProgress, Box, CardProps } from '@mui/material';
 // utils
 import { fShortenNumber } from '../../../../utils/formatNumber';
-// _mock_
-import { _bookingsOverview } from '../../../../_mock';
 
 // ----------------------------------------------------------------------
 
-export default function BookingBookedRoom() {
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  data: {
+    status: string;
+    quantity: number;
+    value: number;
+  }[];
+}
+
+export default function BookingBookedRoom({ title, subheader, data, ...other }: Props) {
   return (
-    <Card>
-      <CardHeader title="Booked Room" />
+    <Card {...other}>
+      <CardHeader title={title} subheader={subheader} />
+
       <Stack spacing={3} sx={{ px: 3, my: 5 }}>
-        {_bookingsOverview.map((progress) => (
+        {data.map((progress) => (
           <LinearProgress
             variant="determinate"
             key={progress.status}
@@ -28,7 +37,7 @@ export default function BookingBookedRoom() {
       </Stack>
 
       <Stack direction="row" justifyContent="space-between" sx={{ px: 3, pb: 3 }}>
-        {_bookingsOverview.map((progress) => (
+        {data.map((progress) => (
           <Stack key={progress.status} alignItems="center">
             <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
               <Box
@@ -41,6 +50,7 @@ export default function BookingBookedRoom() {
                   ...(progress.status === 'Cancel' && { bgcolor: 'error.main' }),
                 }}
               />
+
               <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
                 {progress.status}
               </Typography>

@@ -14,14 +14,12 @@ import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import PickerDate from '../../../sections/overview/mui/pickers/PickerDate';
 import PickerTime from '../../../sections/overview/mui/pickers/PickerTime';
 import PickerDateTime from '../../../sections/overview/mui/pickers/PickerDateTime';
-import PickerDateRange from '../../../sections/overview/mui/pickers/PickerDateRange';
 
 // ----------------------------------------------------------------------
 
 const PICKERS = [
   { name: 'Date', component: <PickerDate /> },
   { name: 'DateTime', component: <PickerDateTime /> },
-  { name: 'DateRange', component: <PickerDateRange /> },
   { name: 'Time', component: <PickerTime /> },
 ];
 
@@ -63,7 +61,10 @@ export default function MUIPickers() {
                 { name: 'Components', href: PATH_PAGE.components },
                 { name: 'Date / Time pickers' },
               ]}
-              moreLink="https://mui.com/components/pickers"
+              moreLink={[
+                'https://mui.com/components/pickers',
+                'https://mui.com/x/react-date-pickers/getting-started/',
+              ]}
             />
           </Container>
         </Box>

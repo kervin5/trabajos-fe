@@ -1,36 +1,23 @@
 import { memo } from 'react';
 // @mui
-import { styled } from '@mui/material/styles';
 import { Slider, Typography } from '@mui/material';
-// utils
-import cssStyles from '../../../../../utils/cssStyles';
+// components
+import { ControlPanelStyle } from '../../../../../components/map';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('div')(({ theme }) => ({
-  ...cssStyles().bgBlur({ color: theme.palette.grey[900] }),
-  zIndex: 99,
-  minWidth: 200,
-  position: 'absolute',
-  top: theme.spacing(1),
-  right: theme.spacing(1),
-  padding: theme.spacing(2),
-  borderRadius: theme.shape.borderRadius,
-}));
-
-// ----------------------------------------------------------------------
-
-type ControlPanelProps = {
+type Props = {
   year: number;
   onChange: (year: number) => void;
 };
 
-function ControlPanel({ year, onChange }: ControlPanelProps) {
+function ControlPanel({ year, onChange }: Props) {
   return (
-    <RootStyle>
+    <ControlPanelStyle>
       <Typography variant="body2" sx={{ color: 'common.white' }}>
         Year: {year}
       </Typography>
+
       <Slider
         name="year"
         value={year}
@@ -43,7 +30,7 @@ function ControlPanel({ year, onChange }: ControlPanelProps) {
           }
         }}
       />
-    </RootStyle>
+    </ControlPanelStyle>
   );
 }
 

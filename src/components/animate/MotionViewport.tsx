@@ -21,9 +21,9 @@ export default function MotionViewport({
   disableAnimatedMobile = true,
   ...other
 }: Props) {
-  const isDesktop = useResponsive('up', 'sm');
+  const isMobile = useResponsive('down', 'sm');
 
-  if (!isDesktop && disableAnimatedMobile) {
+  if (isMobile && disableAnimatedMobile) {
     return <Box {...other}>{children}</Box>;
   }
 

@@ -101,7 +101,13 @@ export default function CheckoutNewAddressForm({
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
           <Stack spacing={3}>
-            <RHFRadioGroup name="addressType" options={['Home', 'Office']} />
+            <RHFRadioGroup
+              name="addressType"
+              options={[
+                { label: 'Home', value: 'Home' },
+                { label: 'Office', value: 'Office' },
+              ]}
+            />
 
             <Box
               sx={{

@@ -44,15 +44,15 @@ const PAYMENT_OPTIONS: PaymentOption[] = [
     value: 'paypal',
     title: 'Pay with Paypal',
     description: 'You will be redirected to PayPal website to complete your purchase securely.',
-    icons: ['https://minimals.cc/assets/icons/ic_paypal.svg'],
+    icons: ['https://minimal-assets-api-dev.vercel.app/assets/icons/ic_paypal.svg'],
   },
   {
     value: 'credit_card',
     title: 'Credit / Debit Card',
     description: 'We support Mastercard, Visa, Discover and Stripe.',
     icons: [
-      'https://minimals.cc/assets/icons/ic_mastercard.svg',
-      'https://minimals.cc/assets/icons/ic_visa.svg',
+      'https://minimal-assets-api-dev.vercel.app/assets/icons/ic_mastercard.svg',
+      'https://minimal-assets-api-dev.vercel.app/assets/icons/ic_visa.svg',
     ],
   },
   {

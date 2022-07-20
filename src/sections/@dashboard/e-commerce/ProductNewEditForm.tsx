@@ -24,6 +24,7 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
 import { Product } from '../../../@types/product';
 // components
+import { CustomFile } from '../../../components/upload';
 import {
   FormProvider,
   RHFSwitch,
@@ -36,7 +37,11 @@ import {
 
 // ----------------------------------------------------------------------
 
-const GENDER_OPTION = ['Men', 'Women', 'Kids'];
+const GENDER_OPTION = [
+  { label: 'Men', value: 'Men' },
+  { label: 'Women', value: 'Women' },
+  { label: 'Kids', value: 'Kids' },
+];
 
 const CATEGORY_OPTION = [
   { group: 'Clothing', classify: ['Shirts', 'T-shirts', 'Jeans', 'Leather'] },
@@ -68,9 +73,10 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-interface FormValuesProps extends Partial<Product> {
+interface FormValuesProps extends Omit<Product, 'images'> {
   taxes: boolean;
   inStock: boolean;
+  images: (CustomFile | string)[];
 }
 
 type Props = {
@@ -102,7 +108,7 @@ export default function ProductNewEditForm({ isEdit, currentProduct }: Props) {
       tags: currentProduct?.tags || [TAGS_OPTION[0]],
       inStock: true,
       taxes: true,
-      gender: currentProduct?.gender || GENDER_OPTION[2],
+      gender: currentProduct?.gender || GENDER_OPTION[2].value,
       category: currentProduct?.category || CATEGORY_OPTION[0].classify[1],
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -148,17 +154,19 @@ export default function ProductNewEditForm({ isEdit, currentProduct }: Props) {
   };
 
   const handleDrop = useCallback(
-    (acceptedFiles) => {
-      setValue(
-        'images',
-        acceptedFiles.map((file: Blob | MediaSource) =>
+    (acceptedFiles: File[]) => {
+      const images = values.images || [];
+
+      setValue('images', [
+        ...images,
+        ...acceptedFiles.map((file) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file),
           })
-        )
-      );
+        ),
+      ]);
     },
-    [setValue]
+    [setValue, values.images]
   );
 
   const handleRemoveAll = () => {
@@ -166,7 +174,8 @@ export default function ProductNewEditForm({ isEdit, currentProduct }: Props) {
   };
 
   const handleRemove = (file: File | string) => {
-    const filteredItems = values.images?.filter((_file) => _file !== file);
+    const filteredItems = values.images && values.images?.filter((_file) => _file !== file);
+
     setValue('images', filteredItems);
   };
 
@@ -186,13 +195,13 @@ export default function ProductNewEditForm({ isEdit, currentProduct }: Props) {
               <div>
                 <LabelStyle>Images</LabelStyle>
                 <RHFUploadMultiFile
-                  name="images"
                   showPreview
-                  accept="image/*"
+                  name="images"
                   maxSize={3145728}
                   onDrop={handleDrop}
                   onRemove={handleRemove}
                   onRemoveAll={handleRemoveAll}
+                  onUpload={() => console.log('ON UPLOAD')}
                 />
               </div>
             </Stack>
@@ -206,6 +215,7 @@ export default function ProductNewEditForm({ isEdit, currentProduct }: Props) {
 
               <Stack spacing={3} mt={2}>
                 <RHFTextField name="code" label="Product Code" />
+
                 <RHFTextField name="sku" label="Product SKU" />
 
                 <div>

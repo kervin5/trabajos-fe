@@ -1,7 +1,6 @@
 // @mui
 import { styled } from '@mui/material/styles';
-import { Typography, Button, Card, CardContent, CardProps } from '@mui/material';
-import { SeoIllustration } from '../../../../assets';
+import { Typography, Card, CardContent, CardProps } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -21,12 +20,15 @@ const RootStyle = styled(Card)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 interface AppWelcomeProps extends CardProps {
-  displayName?: string;
+  title?: string;
+  description?: string;
+  action?: React.ReactNode;
+  img?: React.ReactNode;
 }
 
-export default function AppWelcome({ displayName }: AppWelcomeProps) {
+export default function AppWelcome({ title, description, action, img, ...other }: AppWelcomeProps) {
   return (
-    <RootStyle>
+    <RootStyle {...other}>
       <CardContent
         sx={{
           p: { md: 0 },
@@ -34,25 +36,18 @@ export default function AppWelcome({ displayName }: AppWelcomeProps) {
           color: 'grey.800',
         }}
       >
-        <Typography gutterBottom variant="h4">
-          Welcome back,
-          <br /> {!displayName ? '...' : displayName}!
+        <Typography gutterBottom variant="h4" sx={{ whiteSpace: 'pre-line' }}>
+          {title}
         </Typography>
 
         <Typography variant="body2" sx={{ pb: { xs: 3, xl: 5 }, maxWidth: 480, mx: 'auto' }}>
-          If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything
+          {description}
         </Typography>
 
-        <Button variant="contained">Go Now</Button>
+        {action && action}
       </CardContent>
 
-      <SeoIllustration
-        sx={{
-          p: 3,
-          width: 360,
-          margin: { xs: 'auto', md: 'inherit' },
-        }}
-      />
+      {img && img}
     </RootStyle>
   );
 }

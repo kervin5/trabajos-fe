@@ -1,8 +1,6 @@
-// @mui
 import { Theme } from '@mui/material/styles';
-// theme
-import { ColorSchema } from '../palette';
 //
+import { ColorSchema } from '../palette';
 import { ErrorIcon, InfoIcon, SuccessIcon, WarningIcon } from './CustomIcons';
 
 // ----------------------------------------------------------------------

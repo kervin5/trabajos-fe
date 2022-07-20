@@ -43,7 +43,10 @@ export default function ChipOutlined() {
           <Chip
             variant="outlined"
             avatar={
-              <Avatar alt="Natacha" src="https://minimals.cc/assets/images/avatars/avatar_1.jpg" />
+              <Avatar
+                alt="Natacha"
+                src="https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_1.jpg"
+              />
             }
             label="Deletable"
             onDelete={handleDelete}
@@ -97,7 +100,10 @@ export default function ChipOutlined() {
             variant="outlined"
             label="Default deletable"
             avatar={
-              <Avatar alt="Natacha" src="https://minimals.cc/assets/images/avatars/avatar_1.jpg" />
+              <Avatar
+                alt="Natacha"
+                src="https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_1.jpg"
+              />
             }
             onDelete={handleDelete}
             deleteIcon={<Iconify width={24} height={24} icon="eva:checkmark-fill" />}
@@ -108,7 +114,10 @@ export default function ChipOutlined() {
             clickable
             label="Default clickable"
             avatar={
-              <Avatar alt="Natacha" src="https://minimals.cc/assets/images/avatars/avatar_1.jpg" />
+              <Avatar
+                alt="Natacha"
+                src="https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_1.jpg"
+              />
             }
             onDelete={handleDelete}
             deleteIcon={<Iconify width={24} height={24} icon="eva:checkmark-fill" />}
@@ -118,7 +127,10 @@ export default function ChipOutlined() {
             variant="outlined"
             label="Primary deletable"
             avatar={
-              <Avatar alt="Natacha" src="https://minimals.cc/assets/images/avatars/avatar_1.jpg" />
+              <Avatar
+                alt="Natacha"
+                src="https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_1.jpg"
+              />
             }
             color="primary"
             onDelete={handleDelete}
@@ -130,7 +142,10 @@ export default function ChipOutlined() {
             clickable
             label="Primary clickable"
             avatar={
-              <Avatar alt="Natacha" src="https://minimals.cc/assets/images/avatars/avatar_1.jpg" />
+              <Avatar
+                alt="Natacha"
+                src="https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_1.jpg"
+              />
             }
             color="primary"
             onDelete={handleDelete}

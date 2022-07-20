@@ -1,37 +1,32 @@
 import merge from 'lodash/merge';
 import { useState } from 'react';
 // @mui
-import { Card, CardHeader, Box, TextField } from '@mui/material';
+import { Card, CardHeader, Box, TextField, CardProps } from '@mui/material';
 // components
 import ReactApexChart, { BaseOptionChart } from '../../../../components/chart';
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [
-  {
-    year: 'Week',
-    data: [
-      { name: 'Check In', data: [10, 41, 35, 151, 49, 62, 69, 91, 48] },
-      { name: 'Check Out', data: [10, 34, 13, 56, 77, 88, 99, 77, 45] },
-    ],
-  },
-  {
-    year: 'Month',
-    data: [
-      { name: 'Check In', data: [148, 91, 69, 62, 49, 51, 35, 41, 10] },
-      { name: 'Check Out', data: [45, 77, 99, 88, 77, 56, 13, 34, 10] },
-    ],
-  },
-  {
-    year: 'Year',
-    data: [
-      { name: 'Check In', data: [76, 42, 29, 41, 27, 138, 117, 86, 63] },
-      { name: 'Check Out', data: [80, 55, 34, 114, 80, 130, 15, 28, 55] },
-    ],
-  },
-];
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  chartLabels: string[];
+  chartData: {
+    year: string;
+    data: {
+      name: string;
+      data: number[];
+    }[];
+  }[];
+}
 
-export default function BookingReservationStats() {
+export default function BookingReservationStats({
+  title,
+  subheader,
+  chartLabels,
+  chartData,
+  ...other
+}: Props) {
   const [seriesData, setSeriesData] = useState('Year');
 
   const handleChangeSeriesData = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +40,7 @@ export default function BookingReservationStats() {
       colors: ['transparent'],
     },
     xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+      categories: chartLabels,
     },
     tooltip: {
       y: {
@@ -55,10 +50,10 @@ export default function BookingReservationStats() {
   });
 
   return (
-    <Card>
+    <Card {...other}>
       <CardHeader
-        title="Reservation Stats"
-        subheader="(+43% Check In | +12% Check Out) than last year"
+        title={title}
+        subheader={subheader}
         action={
           <TextField
             select
@@ -73,7 +68,7 @@ export default function BookingReservationStats() {
               '& .MuiNativeSelect-icon': { top: 4, right: 0, width: 20, height: 20 },
             }}
           >
-            {CHART_DATA.map((option) => (
+            {chartData.map((option) => (
               <option key={option.year} value={option.year}>
                 {option.year}
               </option>
@@ -82,7 +77,7 @@ export default function BookingReservationStats() {
         }
       />
 
-      {CHART_DATA.map((item) => (
+      {chartData.map((item) => (
         <Box key={item.year} sx={{ mt: 3, mx: 3 }} dir="ltr">
           {item.year === seriesData && (
             <ReactApexChart type="bar" series={item.data} options={chartOptions} height={364} />

@@ -1,7 +1,6 @@
 import merge from 'lodash/merge';
 // @mui
-import { styled } from '@mui/material/styles';
-import { Card, Typography, Stack } from '@mui/material';
+import { Card, Typography, Stack, CardProps } from '@mui/material';
 // utils
 import { fCurrency, fPercent } from '../../../../utils/formatNumber';
 // components
@@ -10,20 +9,13 @@ import ReactApexChart, { BaseOptionChart } from '../../../../components/chart';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled(Card)(({ theme }) => ({
-  boxShadow: 'none',
-  padding: theme.spacing(3),
-  color: theme.palette.primary.darker,
-  backgroundColor: theme.palette.primary.lighter,
-}));
+interface Props extends CardProps {
+  total: number;
+  percent: number;
+  chartData: number[];
+}
 
-// ----------------------------------------------------------------------
-
-const TOTAL = 18765;
-const PERCENT = 2.6;
-const CHART_DATA = [{ data: [111, 136, 76, 108, 74, 54, 57, 84] }];
-
-export default function BookingTotalIncomes() {
+export default function BookingTotalIncomes({ total, percent, chartData, sx, ...other }: Props) {
   const chartOptions = merge(BaseOptionChart(), {
     chart: { sparkline: { enabled: true } },
     xaxis: { labels: { show: false } },
@@ -44,11 +36,20 @@ export default function BookingTotalIncomes() {
   });
 
   return (
-    <RootStyle>
+    <Card
+      sx={{
+        p: 3,
+        boxShadow: 0,
+        color: 'primary.darker',
+        backgroundColor: 'primary.lighter',
+        ...sx,
+      }}
+      {...other}
+    >
       <Stack direction="row" justifyContent="space-between" sx={{ mb: 3 }}>
         <div>
           <Typography sx={{ mb: 2, typography: 'subtitle2' }}>Total Incomes</Typography>
-          <Typography sx={{ typography: 'h3' }}>{fCurrency(TOTAL)}</Typography>
+          <Typography sx={{ typography: 'h3' }}>{fCurrency(total)}</Typography>
         </div>
 
         <div>
@@ -56,11 +57,11 @@ export default function BookingTotalIncomes() {
             <Iconify
               width={20}
               height={20}
-              icon={PERCENT >= 0 ? 'eva:trending-up-fill' : 'eva:trending-down-fill'}
+              icon={percent >= 0 ? 'eva:trending-up-fill' : 'eva:trending-down-fill'}
             />
             <Typography variant="subtitle2" component="span" sx={{ ml: 0.5 }}>
-              {PERCENT > 0 && '+'}
-              {fPercent(PERCENT)}
+              {percent > 0 && '+'}
+              {fPercent(percent)}
             </Typography>
           </Stack>
           <Typography variant="body2" component="span" sx={{ opacity: 0.72 }}>
@@ -69,7 +70,12 @@ export default function BookingTotalIncomes() {
         </div>
       </Stack>
 
-      <ReactApexChart type="area" series={CHART_DATA} options={chartOptions} height={132} />
-    </RootStyle>
+      <ReactApexChart
+        type="area"
+        series={[{ data: chartData }]}
+        options={chartOptions}
+        height={132}
+      />
+    </Card>
   );
 }

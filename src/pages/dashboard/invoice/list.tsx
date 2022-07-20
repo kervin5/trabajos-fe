@@ -270,11 +270,8 @@ export default function InvoiceList() {
                 disableRipple
                 key={tab.value}
                 value={tab.value}
-                label={
-                  <Stack spacing={1} direction="row" alignItems="center">
-                    <div>{tab.label}</div> <Label color={tab.color}> {tab.count} </Label>
-                  </Stack>
-                }
+                icon={<Label color={tab.color}> {tab.count} </Label>}
+                label={tab.label}
               />
             ))}
           </Tabs>

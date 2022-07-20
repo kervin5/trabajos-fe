@@ -1,5 +1,5 @@
 // @mui
-import { Card, Typography, CardHeader, CardContent } from '@mui/material';
+import { Card, Typography, CardHeader, CardContent, CardProps } from '@mui/material';
 import {
   Timeline,
   TimelineDot,
@@ -10,29 +10,37 @@ import {
 } from '@mui/lab';
 // utils
 import { fDateTime } from '../../../../utils/formatTime';
-// _mock_
-import { _analyticOrderTimeline } from '../../../../_mock';
 
 // ----------------------------------------------------------------------
 
-export default function AnalyticsOrderTimeline() {
+type ItemProps = {
+  id: string;
+  title: string;
+  time: Date | string | number;
+  type: string;
+};
+
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  list: ItemProps[];
+}
+
+export default function AnalyticsOrderTimeline({ title, subheader, list, ...other }: Props) {
   return (
-    <Card
-      sx={{
-        '& .MuiTimelineItem-missingOppositeContent:before': {
-          display: 'none',
-        },
-      }}
-    >
-      <CardHeader title="Order Timeline" />
-      <CardContent>
+    <Card {...other}>
+      <CardHeader title={title} subheader={subheader} />
+
+      <CardContent
+        sx={{
+          '& .MuiTimelineItem-missingOppositeContent:before': {
+            display: 'none',
+          },
+        }}
+      >
         <Timeline>
-          {_analyticOrderTimeline.map((item, index) => (
-            <OrderItem
-              key={item.id}
-              item={item}
-              isLast={index === _analyticOrderTimeline.length - 1}
-            />
+          {list.map((item, index) => (
+            <OrderItem key={item.id} item={item} isLast={index === list.length - 1} />
           ))}
         </Timeline>
       </CardContent>
@@ -43,12 +51,7 @@ export default function AnalyticsOrderTimeline() {
 // ----------------------------------------------------------------------
 
 type OrderItemProps = {
-  item: {
-    id: string;
-    title: string;
-    time: Date | string | number;
-    type: string;
-  };
+  item: ItemProps;
   isLast: boolean;
 };
 
@@ -68,8 +71,10 @@ function OrderItem({ item, isLast }: OrderItemProps) {
         />
         {isLast ? null : <TimelineConnector />}
       </TimelineSeparator>
+
       <TimelineContent>
         <Typography variant="subtitle2">{title}</Typography>
+
         <Typography variant="caption" sx={{ color: 'text.secondary' }}>
           {fDateTime(time)}
         </Typography>

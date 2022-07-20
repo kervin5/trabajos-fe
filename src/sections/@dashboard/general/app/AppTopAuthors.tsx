@@ -1,11 +1,9 @@
 import orderBy from 'lodash/orderBy';
 // @mui
 import { alpha, styled } from '@mui/material/styles';
-import { Box, Stack, Card, Avatar, CardHeader, Typography } from '@mui/material';
+import { Box, Stack, Card, Avatar, CardHeader, Typography, CardProps } from '@mui/material';
 // utils
 import { fShortenNumber } from '../../../../utils/formatNumber';
-// _mock_
-import { _appAuthors } from '../../../../_mock';
 // components
 import Iconify from '../../../../components/Iconify';
 
@@ -24,14 +22,26 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function AppTopAuthors() {
-  const displayAuthor = orderBy(_appAuthors, ['favourite'], ['desc']);
+type ItemProps = {
+  id: string;
+  name: string;
+  avatar: string;
+  favourite: number;
+};
 
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  list: ItemProps[];
+}
+
+export default function AppTopAuthors({ title, subheader, list, ...other }: Props) {
   return (
-    <Card>
-      <CardHeader title="Top Authors" />
+    <Card {...other}>
+      <CardHeader title={title} subheader={subheader} />
+
       <Stack spacing={3} sx={{ p: 3 }}>
-        {displayAuthor.map((author, index) => (
+        {orderBy(list, ['favourite'], ['desc']).map((author, index) => (
           <AuthorItem key={author.id} author={author} index={index} />
         ))}
       </Stack>
@@ -42,11 +52,7 @@ export default function AppTopAuthors() {
 // ----------------------------------------------------------------------
 
 type AuthorItemProps = {
-  author: {
-    name: string;
-    avatar: string;
-    favourite: number;
-  };
+  author: ItemProps;
   index: number;
 };
 
@@ -54,8 +60,10 @@ function AuthorItem({ author, index }: AuthorItemProps) {
   return (
     <Stack direction="row" alignItems="center" spacing={2}>
       <Avatar alt={author.name} src={author.avatar} />
+
       <Box sx={{ flexGrow: 1 }}>
         <Typography variant="subtitle2">{author.name}</Typography>
+
         <Typography
           variant="caption"
           sx={{

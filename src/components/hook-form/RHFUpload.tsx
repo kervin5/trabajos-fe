@@ -29,7 +29,12 @@ export function RHFUploadAvatar({ name, ...other }: Props) {
 
         return (
           <div>
-            <UploadAvatar error={checkError} {...other} file={field.value} />
+            <UploadAvatar
+              accept={{ 'image/*': [] }}
+              error={checkError}
+              {...other}
+              file={field.value}
+            />
             {checkError && (
               <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
                 {error.message}
@@ -56,7 +61,7 @@ export function RHFUploadSingleFile({ name, ...other }: Props) {
 
         return (
           <UploadSingleFile
-            accept="image/*"
+            accept={{ 'image/*': [] }}
             file={field.value}
             error={checkError}
             helperText={
@@ -92,7 +97,7 @@ export function RHFUploadMultiFile({ name, ...other }: RHFUploadMultiFileProps) 
 
         return (
           <UploadMultiFile
-            accept="image/*"
+            accept={{ 'image/*': [] }}
             files={field.value}
             error={checkError}
             helperText={

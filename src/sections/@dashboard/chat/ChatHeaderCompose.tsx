@@ -20,10 +20,13 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 const AutocompleteStyle = styled('div')(({ theme }) => ({
   '& .MuiAutocomplete-root': {
-    minWidth: 280,
+    width: 240,
     marginLeft: theme.spacing(2),
     '&.Mui-focused .MuiAutocomplete-inputRoot': {
       boxShadow: theme.customShadows.z8,
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: 280,
     },
   },
   '& .MuiAutocomplete-inputRoot': {

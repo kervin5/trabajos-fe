@@ -1,43 +1,28 @@
 import { useTranslation } from 'react-i18next';
-// @mui
-import { enUS, deDE, frFR } from '@mui/material/locale';
+import useSettings from './useSettings';
+// config
+import { allLangs, defaultLang } from '../config';
 
 // ----------------------------------------------------------------------
 
-const LANGS = [
-  {
-    label: 'English',
-    value: 'en',
-    systemValue: enUS,
-    icon: 'https://minimals.cc/assets/icons/ic_flag_en.svg',
-  },
-  {
-    label: 'German',
-    value: 'de',
-    systemValue: deDE,
-    icon: 'https://minimals.cc/assets/icons/ic_flag_de.svg',
-  },
-  {
-    label: 'French',
-    value: 'fr',
-    systemValue: frFR,
-    icon: 'https://minimals.cc/assets/icons/ic_flag_fr.svg',
-  },
-];
-
 export default function useLocales() {
   const { i18n, t: translate } = useTranslation();
-  const langStorage = localStorage.getItem('i18nextLng');
-  const currentLang = LANGS.find((_lang) => _lang.value === langStorage) || LANGS[1];
+
+  const { onChangeDirectionByLang } = useSettings();
+
+  const langStorage = typeof window !== 'undefined' ? localStorage.getItem('i18nextLng') : '';
+
+  const currentLang = allLangs.find((_lang) => _lang.value === langStorage) || defaultLang;
 
   const handleChangeLanguage = (newlang: string) => {
     i18n.changeLanguage(newlang);
+    onChangeDirectionByLang(newlang);
   };
 
   return {
     onChangeLang: handleChangeLanguage,
-    translate,
+    translate: (text: any, options?: any) => translate(text, options),
     currentLang,
-    allLang: LANGS,
+    allLangs,
   };
 }

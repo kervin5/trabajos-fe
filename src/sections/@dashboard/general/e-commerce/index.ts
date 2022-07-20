@@ -1,4 +1,3 @@
-export { default as EcommerceWelcome } from './EcommerceWelcome';
 export { default as EcommerceNewProducts } from './EcommerceNewProducts';
 export { default as EcommerceYearlySales } from './EcommerceYearlySales';
 export { default as EcommerceBestSalesman } from './EcommerceBestSalesman';

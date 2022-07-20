@@ -1,3 +1,6 @@
+// @mui
+import { enUS, frFR, zhCN, viVN, arSD } from '@mui/material/locale';
+// components
 import { SettingsValueProps } from './components/settings/type';
 // routes
 import { PATH_DASHBOARD } from './routes/paths';
@@ -26,7 +29,7 @@ export const AUTH0_API = {
   domain: process.env.AUTH0_DOMAIN,
 };
 
-export const MAPBOX_API = process.env.MAPBOX;
+export const MAPBOX_API = process.env.MAPBOX_API;
 
 // ROOT PATH AFTER LOGIN SUCCESSFUL
 export const PATH_AFTER_LOGIN = PATH_DASHBOARD.general.app; // as '/dashboard/app'
@@ -57,22 +60,64 @@ export const ICON = {
 };
 
 // SETTINGS
+// Please remove `localStorage` when you change settings.
 // ----------------------------------------------------------------------
 
 export const cookiesExpires = 3;
 
 export const cookiesKey = {
   themeMode: 'themeMode',
-  themeDirection: 'themeDirection',
-  themeColorPresets: 'themeColorPresets',
   themeLayout: 'themeLayout',
   themeStretch: 'themeStretch',
+  themeContrast: 'themeContrast',
+  themeDirection: 'themeDirection',
+  themeColorPresets: 'themeColorPresets',
 };
 
 export const defaultSettings: SettingsValueProps = {
   themeMode: 'light',
   themeDirection: 'ltr',
-  themeColorPresets: 'default',
+  themeContrast: 'bold',
   themeLayout: 'horizontal',
-  themeStretch: true,
+  themeColorPresets: 'default',
+  themeStretch: false,
 };
+
+// MULTI LANGUAGES
+// Please remove `localStorage` when you change settings.
+// ----------------------------------------------------------------------
+
+export const allLangs = [
+  {
+    label: 'English',
+    value: 'en',
+    systemValue: enUS,
+    icon: '/assets/icons/flags/ic_flag_en.svg',
+  },
+  {
+    label: 'French',
+    value: 'fr',
+    systemValue: frFR,
+    icon: '/assets/icons/flags/ic_flag_fr.svg',
+  },
+  {
+    label: 'Vietnamese',
+    value: 'vn',
+    systemValue: viVN,
+    icon: '/assets/icons/flags/ic_flag_vn.svg',
+  },
+  {
+    label: 'Chinese',
+    value: 'cn',
+    systemValue: zhCN,
+    icon: '/assets/icons/flags/ic_flag_cn.svg',
+  },
+  {
+    label: 'Arabic (Sudan)',
+    value: 'ar',
+    systemValue: arSD,
+    icon: '/assets/icons/flags/ic_flag_sa.svg',
+  },
+];
+
+export const defaultLang = allLangs[0]; // English

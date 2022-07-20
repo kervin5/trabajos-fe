@@ -1,11 +1,13 @@
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Container, Grid, Stack } from '@mui/material';
+import { Container, Grid, Stack, Button } from '@mui/material';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useSettings from '../../hooks/useSettings';
 // layouts
 import Layout from '../../layouts';
+// _mock_
+import { _appFeatured, _appAuthors, _appInstalled, _appRelated, _appInvoices } from '../../_mock';
 // components
 import Page from '../../components/Page';
 // sections
@@ -21,6 +23,8 @@ import {
   AppCurrentDownload,
   AppTopInstalledCountries,
 } from '../../sections/@dashboard/general/app';
+// assets
+import { SeoIllustration } from '../../assets';
 
 // ----------------------------------------------------------------------
 
@@ -42,11 +46,24 @@ export default function GeneralApp() {
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
-            <AppWelcome displayName={user?.displayName} />
+            <AppWelcome
+              title={`Welcome back! \n ${user?.displayName}`}
+              description="If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything."
+              img={
+                <SeoIllustration
+                  sx={{
+                    p: 3,
+                    width: 360,
+                    margin: { xs: 'auto', md: 'inherit' },
+                  }}
+                />
+              }
+              action={<Button variant="contained">Go Now</Button>}
+            />
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <AppFeatured />
+            <AppFeatured list={_appFeatured} />
           </Grid>
 
           <Grid item xs={12} md={4}>
@@ -80,27 +97,71 @@ export default function GeneralApp() {
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <AppCurrentDownload />
+            <AppCurrentDownload
+              title="Current Download"
+              chartColors={[
+                theme.palette.primary.lighter,
+                theme.palette.primary.light,
+                theme.palette.primary.main,
+                theme.palette.primary.dark,
+              ]}
+              chartData={[
+                { label: 'Mac', value: 12244 },
+                { label: 'Window', value: 53345 },
+                { label: 'iOS', value: 44313 },
+                { label: 'Android', value: 78343 },
+              ]}
+            />
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
-            <AppAreaInstalled />
+            <AppAreaInstalled
+              title="Area Installed"
+              subheader="(+43%) than last year"
+              chartLabels={['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep']}
+              chartData={[
+                {
+                  year: '2019',
+                  data: [
+                    { name: 'Asia', data: [10, 41, 35, 51, 49, 62, 69, 91, 148] },
+                    { name: 'America', data: [10, 34, 13, 56, 77, 88, 99, 77, 45] },
+                  ],
+                },
+                {
+                  year: '2020',
+                  data: [
+                    { name: 'Asia', data: [148, 91, 69, 62, 49, 51, 35, 41, 10] },
+                    { name: 'America', data: [45, 77, 99, 88, 77, 56, 13, 34, 10] },
+                  ],
+                },
+              ]}
+            />
           </Grid>
 
           <Grid item xs={12} lg={8}>
-            <AppNewInvoice />
+            <AppNewInvoice
+              title="New Invoice"
+              tableData={_appInvoices}
+              tableLabels={[
+                { id: 'id', label: 'Invoice ID' },
+                { id: 'category', label: 'Category' },
+                { id: 'price', label: 'Price' },
+                { id: 'status', label: 'Status' },
+                { id: '' },
+              ]}
+            />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <AppTopRelated />
+            <AppTopRelated title="Top Related Applications" list={_appRelated} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <AppTopInstalledCountries />
+            <AppTopInstalledCountries title="Top Installed Countries" list={_appInstalled} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <AppTopAuthors />
+            <AppTopAuthors title="Top Authors" list={_appAuthors} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>

@@ -64,8 +64,13 @@ export default function EcommerceShop() {
 
   const values = watch();
 
+  const min = values.priceRange[0];
+
+  const max = values.priceRange[1];
+
   const isDefault =
-    !values.priceRange &&
+    min === 0 &&
+    max === 200 &&
     !values.rating &&
     values.gender.length === 0 &&
     values.colors.length === 0 &&
@@ -88,8 +93,16 @@ export default function EcommerceShop() {
   };
 
   const handleResetFilter = () => {
-    reset();
-    handleCloseFilter();
+    if (openFilter) {
+      handleCloseFilter();
+    }
+    reset({
+      gender: [],
+      category: 'All',
+      colors: [],
+      priceRange: [0, 200],
+      rating: '',
+    });
   };
 
   const handleRemoveGender = (value: string) => {
@@ -107,7 +120,7 @@ export default function EcommerceShop() {
   };
 
   const handleRemovePrice = () => {
-    setValue('priceRange', '');
+    setValue('priceRange', [0, 200]);
   };
 
   const handleRemoveRating = () => {
@@ -141,10 +154,11 @@ export default function EcommerceShop() {
           <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
             <FormProvider methods={methods}>
               <ShopFilterSidebar
-                onResetAll={handleResetFilter}
+                isDefault={isDefault}
                 isOpen={openFilter}
                 onOpen={handleOpenFilter}
                 onClose={handleCloseFilter}
+                onResetAll={handleResetFilter}
               />
             </FormProvider>
 
@@ -209,17 +223,14 @@ function applyFilter(products: Product[], sortBy: string | null, filters: Produc
       product.colors.some((color) => filters.colors.includes(color))
     );
   }
-  if (filters.priceRange) {
-    products = products.filter((product) => {
-      if (filters.priceRange === 'below') {
-        return product.price < 25;
-      }
-      if (filters.priceRange === 'between') {
-        return product.price >= 25 && product.price <= 75;
-      }
-      return product.price > 75;
-    });
+
+  const min = filters.priceRange[0];
+  const max = filters.priceRange[1];
+
+  if (min !== 0 || max !== 200) {
+    products = products.filter((product) => product.price >= min && product.price <= max);
   }
+
   if (filters.rating) {
     products = products.filter((product) => {
       const convertRating = (value: string) => {

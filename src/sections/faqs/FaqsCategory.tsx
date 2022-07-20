@@ -24,32 +24,32 @@ import { MotionViewport, varFade } from '../../components/animate';
 const CATEGORIES = [
   {
     label: 'Managing your account',
-    icon: 'https://minimals.cc/assets/icons/faqs/ic_account.svg',
+    icon: 'https://minimal-assets-api-dev.vercel.app/assets/icons/faqs/ic_account.svg',
     href: '#',
   },
   {
     label: 'Payment',
-    icon: 'https://minimals.cc/assets/icons/faqs/ic_payment.svg',
+    icon: 'https://minimal-assets-api-dev.vercel.app/assets/icons/faqs/ic_payment.svg',
     href: '#',
   },
   {
     label: 'Delivery',
-    icon: 'https://minimals.cc/assets/icons/faqs/ic_delivery.svg',
+    icon: 'https://minimal-assets-api-dev.vercel.app/assets/icons/faqs/ic_delivery.svg',
     href: '#',
   },
   {
     label: 'Problem with the Product',
-    icon: 'https://minimals.cc/assets/icons/faqs/ic_package.svg',
+    icon: 'https://minimal-assets-api-dev.vercel.app/assets/icons/faqs/ic_package.svg',
     href: '#',
   },
   {
     label: 'Return & Refund',
-    icon: 'https://minimals.cc/assets/icons/faqs/ic_refund.svg',
+    icon: 'https://minimal-assets-api-dev.vercel.app/assets/icons/faqs/ic_refund.svg',
     href: '#',
   },
   {
     label: 'Guarantees and assurances',
-    icon: 'https://minimals.cc/assets/icons/faqs/ic_assurances.svg',
+    icon: 'https://minimal-assets-api-dev.vercel.app/assets/icons/faqs/ic_assurances.svg',
     href: '#',
   },
 ];

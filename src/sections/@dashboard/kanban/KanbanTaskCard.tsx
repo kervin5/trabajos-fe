@@ -20,7 +20,9 @@ type Props = {
 
 export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
   const { name, attachments } = card;
+
   const [openDetails, setOpenDetails] = useState(false);
+
   const [completed, setCompleted] = useState(card.completed);
 
   const handleOpenDetails = () => {

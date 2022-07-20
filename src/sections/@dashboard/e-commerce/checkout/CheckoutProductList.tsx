@@ -2,12 +2,12 @@
 import { styled } from '@mui/material/styles';
 import {
   Box,
+  Stack,
   Table,
   Divider,
   TableRow,
   TableBody,
   TableCell,
-  TableHead,
   Typography,
   IconButton,
   TableContainer,
@@ -20,8 +20,17 @@ import { CartItem } from '../../../../@types/product';
 // components
 import Image from '../../../../components/Image';
 import Iconify from '../../../../components/Iconify';
+import { TableHeadCustom } from '../../../../components/table';
 
 // ----------------------------------------------------------------------
+
+const TABLE_HEAD = [
+  { id: 'product', label: 'Product' },
+  { id: 'price', label: 'Price' },
+  { id: 'quantity', label: 'Quantity' },
+  { id: 'totalPrice', label: 'Total Price', align: 'right' },
+  { id: '' },
+];
 
 const IncrementerStyle = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -51,89 +60,94 @@ export default function CheckoutProductList({
   return (
     <TableContainer sx={{ minWidth: 720 }}>
       <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Product</TableCell>
-            <TableCell align="left">Price</TableCell>
-            <TableCell align="left">Quantity</TableCell>
-            <TableCell align="right">Total Price</TableCell>
-            <TableCell align="right" />
-          </TableRow>
-        </TableHead>
+        <TableHeadCustom headLabel={TABLE_HEAD} />
 
         <TableBody>
-          {products.map((product) => {
-            const { id, name, size, price, color, cover, quantity, available } = product;
-            return (
-              <TableRow key={id}>
-                <TableCell>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Image
-                      alt="product image"
-                      src={cover}
-                      sx={{ width: 64, height: 64, borderRadius: 1.5, mr: 2 }}
-                    />
-                    <Box>
-                      <Typography noWrap variant="subtitle2" sx={{ maxWidth: 240 }}>
-                        {name}
-                      </Typography>
-
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Typography variant="body2">
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            sx={{ color: 'text.secondary' }}
-                          >
-                            size:&nbsp;
-                          </Typography>
-                          {size}
-                        </Typography>
-                        <Divider orientation="vertical" sx={{ mx: 1, height: 16 }} />
-                        <Typography variant="body2">
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            sx={{ color: 'text.secondary' }}
-                          >
-                            color:&nbsp;
-                          </Typography>
-                          {getColorName(color)}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Box>
-                </TableCell>
-
-                <TableCell align="left">{fCurrency(price)}</TableCell>
-
-                <TableCell align="left">
-                  <Incrementer
-                    quantity={quantity}
-                    available={available}
-                    onDecrease={() => onDecreaseQuantity(id)}
-                    onIncrease={() => onIncreaseQuantity(id)}
-                  />
-                </TableCell>
-
-                <TableCell align="right">{fCurrency(price * quantity)}</TableCell>
-
-                <TableCell align="right">
-                  <IconButton onClick={() => onDelete(id)}>
-                    <Iconify icon={'eva:trash-2-outline'} width={20} height={20} />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            );
-          })}
+          {products.map((row) => (
+            <CheckoutProductListRow
+              key={row.id}
+              row={row}
+              onDelete={() => onDelete(row.id)}
+              onDecrease={() => onDecreaseQuantity(row.id)}
+              onIncrease={() => onIncreaseQuantity(row.id)}
+            />
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
+  );
+}
+
+// ----------------------------------------------------------------------
+
+type CheckoutProductListRowProps = {
+  row: CartItem;
+  onDelete: VoidFunction;
+  onDecrease: VoidFunction;
+  onIncrease: VoidFunction;
+};
+
+function CheckoutProductListRow({
+  row,
+  onDelete,
+  onDecrease,
+  onIncrease,
+}: CheckoutProductListRowProps) {
+  const { name, size, price, color, cover, quantity, available } = row;
+
+  return (
+    <TableRow>
+      <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
+        <Image
+          alt="product image"
+          src={cover}
+          sx={{ width: 64, height: 64, borderRadius: 1.5, mr: 2 }}
+        />
+
+        <Stack spacing={0.5}>
+          <Typography noWrap variant="subtitle2" sx={{ maxWidth: 240 }}>
+            {name}
+          </Typography>
+
+          <Stack direction="row" alignItems="center">
+            <Typography variant="body2">
+              <Box component="span" sx={{ color: 'text.secondary' }}>
+                size:&nbsp;
+              </Box>
+              {size}
+            </Typography>
+
+            <Divider orientation="vertical" sx={{ mx: 1, height: 16 }} />
+
+            <Typography variant="body2">
+              <Box component="span" sx={{ color: 'text.secondary' }}>
+                color:&nbsp;
+              </Box>
+              {getColorName(color)}
+            </Typography>
+          </Stack>
+        </Stack>
+      </TableCell>
+
+      <TableCell>{fCurrency(price)}</TableCell>
+
+      <TableCell>
+        <Incrementer
+          quantity={quantity}
+          available={available}
+          onDecrease={onDecrease}
+          onIncrease={onIncrease}
+        />
+      </TableCell>
+
+      <TableCell align="right">{fCurrency(price * quantity)}</TableCell>
+
+      <TableCell align="right">
+        <IconButton onClick={onDelete}>
+          <Iconify icon={'eva:trash-2-outline'} width={20} height={20} />
+        </IconButton>
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -153,7 +167,9 @@ function Incrementer({ available, quantity, onIncrease, onDecrease }: Incremente
         <IconButton size="small" color="inherit" onClick={onDecrease} disabled={quantity <= 1}>
           <Iconify icon={'eva:minus-fill'} width={16} height={16} />
         </IconButton>
+
         {quantity}
+
         <IconButton
           size="small"
           color="inherit"
@@ -163,6 +179,7 @@ function Incrementer({ available, quantity, onIncrease, onDecrease }: Incremente
           <Iconify icon={'eva:plus-fill'} width={16} height={16} />
         </IconButton>
       </IncrementerStyle>
+
       <Typography variant="caption" sx={{ color: 'text.secondary' }}>
         available: {available}
       </Typography>

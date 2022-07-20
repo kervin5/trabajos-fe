@@ -51,6 +51,7 @@ export default function ProductDetailsCarousel({ product }: Props) {
   };
 
   const settings1 = {
+    speed: 320,
     dots: false,
     arrows: false,
     slidesToShow: 1,
@@ -61,6 +62,7 @@ export default function ProductDetailsCarousel({ product }: Props) {
   };
 
   const settings2 = {
+    speed: 320,
     dots: false,
     arrows: false,
     centerMode: true,
@@ -164,12 +166,21 @@ export default function ProductDetailsCarousel({ product }: Props) {
       </Box>
 
       <LightboxModal
+        animationDuration={320}
         images={imagesLightbox}
         mainSrc={imagesLightbox[selectedImage]}
         photoIndex={selectedImage}
         setPhotoIndex={setSelectedImage}
         isOpen={openLightbox}
         onCloseRequest={() => setOpenLightbox(false)}
+        onMovePrevRequest={() => {
+          handlePrevious();
+          setSelectedImage((selectedImage + imagesLightbox.length - 1) % imagesLightbox.length);
+        }}
+        onMoveNextRequest={() => {
+          handleNext();
+          setSelectedImage((selectedImage + 1) % imagesLightbox.length);
+        }}
       />
     </RootStyle>
   );

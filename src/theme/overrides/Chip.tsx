@@ -20,10 +20,10 @@ export default function Chip(theme: Theme) {
         outlined: {
           borderColor: theme.palette.grey[500_32],
           '&.MuiChip-colorPrimary': {
-            borderColor: theme.palette.primary.main,
+            borderColor: theme.palette.primary?.main,
           },
           '&.MuiChip-colorSecondary': {
-            borderColor: theme.palette.secondary.main,
+            borderColor: theme.palette.secondary?.main,
           },
         },
         //

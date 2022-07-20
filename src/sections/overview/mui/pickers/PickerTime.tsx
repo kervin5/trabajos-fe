@@ -1,20 +1,20 @@
 import { useState } from 'react';
 // @mui
 import { TextField, Stack } from '@mui/material';
+import { Masonry } from '@mui/lab';
 import {
-  Masonry,
   TimePicker,
   MobileTimePicker,
   StaticTimePicker,
   DesktopTimePicker,
-} from '@mui/lab';
+} from '@mui/x-date-pickers';
 //
 import { Block } from '../../Block';
 
 // ----------------------------------------------------------------------
 
 export default function PickerTime() {
-  const [value, setValue] = useState<Date | null>(null);
+  const [value, setValue] = useState<Date | null>(new Date());
 
   return (
     <Masonry columns={{ xs: 1, md: 2 }} spacing={3}>
@@ -27,6 +27,7 @@ export default function PickerTime() {
           }}
           renderInput={(params) => <TextField fullWidth {...params} margin="normal" />}
         />
+
         <TimePicker
           ampm={false}
           label="24 hours"
@@ -48,6 +49,7 @@ export default function PickerTime() {
           }}
           renderInput={(params) => <TextField {...params} fullWidth margin="normal" />}
         />
+
         <DesktopTimePicker
           label="For desktop"
           value={value}
@@ -56,6 +58,7 @@ export default function PickerTime() {
           }}
           renderInput={(params) => <TextField {...params} margin="normal" fullWidth />}
         />
+
         <TimePicker
           value={value}
           onChange={setValue}

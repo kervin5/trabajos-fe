@@ -19,7 +19,7 @@ const initialState: ProductState = {
     gender: [],
     category: 'All',
     colors: [],
-    priceRange: '',
+    priceRange: [0, 200],
     rating: '',
   },
   checkout: {

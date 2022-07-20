@@ -1,10 +1,9 @@
-import { ReactNode } from 'react';
 // next
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Link, Tooltip, Typography, Checkbox, LinkProps } from '@mui/material';
+import { Box, Tooltip, Typography, Checkbox } from '@mui/material';
 // redux
 import { useSelector } from '../../../redux/store';
 // hooks
@@ -40,21 +39,11 @@ const RootStyle = styled('div')(({ theme }) => ({
   },
 }));
 
-interface WrapStyleProps extends LinkProps {
-  component?: ReactNode;
-}
-
-const WrapStyle = styled(Link)<WrapStyleProps>(({ theme }) => ({
-  minWidth: 0,
-  display: 'flex',
-  padding: theme.spacing(2, 0),
-  transition: theme.transitions.create('padding'),
-}));
-
 // ----------------------------------------------------------------------
 
 const linkTo = (params: { systemLabel?: string; customLabel?: string }, mailId: string) => {
   const { systemLabel, customLabel } = params;
+
   const baseUrl = PATH_DASHBOARD.mail.root;
 
   if (systemLabel) {
@@ -83,7 +72,9 @@ export default function MailItem({
   ...other
 }: Props) {
   const { query } = useRouter();
+
   const params = query;
+
   const { labels } = useSelector((state) => state.mail);
 
   const isDesktop = useResponsive('up', 'md');
@@ -111,6 +102,7 @@ export default function MailItem({
               handleChangeCheckbox(event.target.checked)
             }
           />
+
           <Tooltip title="Starred">
             <Checkbox
               color="warning"
@@ -119,6 +111,7 @@ export default function MailItem({
               checkedIcon={<Iconify icon={'eva:star-fill'} />}
             />
           </Tooltip>
+
           <Tooltip title="Important">
             <Checkbox
               color="warning"
@@ -131,7 +124,15 @@ export default function MailItem({
       )}
 
       <NextLink href={linkTo(params, mail.id)} passHref>
-        <WrapStyle color="inherit" underline="none" sx={{ ...(isDense && { py: 1 }) }}>
+        <Box
+          sx={{
+            py: 2,
+            minWidth: 0,
+            display: 'flex',
+            transition: (theme) => theme.transitions.create('padding'),
+            ...(isDense && { py: 1 }),
+          }}
+        >
           <Avatar
             alt={mail.from.name}
             src={mail.from.avatar || ''}
@@ -190,7 +191,9 @@ export default function MailItem({
                 <Box sx={{ display: 'flex' }}>
                   {mail.labelIds.map((labelId) => {
                     const label = labels.find((_label) => _label.id === labelId);
+
                     if (!label) return null;
+
                     return (
                       <Label
                         key={label.id}
@@ -233,7 +236,7 @@ export default function MailItem({
               {fDate(mail.createdAt)}
             </Typography>
           </Box>
-        </WrapStyle>
+        </Box>
       </NextLink>
 
       <MailItemAction className="showActions" />

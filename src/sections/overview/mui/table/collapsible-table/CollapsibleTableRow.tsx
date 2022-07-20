@@ -45,7 +45,7 @@ export default function CollapsibleTableRow(props: { row: ReturnType<typeof crea
       </TableRow>
       <TableRow>
         <TableCell sx={{ py: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
+          <Collapse in={open} unmountOnExit>
             <Paper
               sx={{ px: 1, py: 2, borderRadius: 1.5, boxShadow: (theme) => theme.customShadows.z8 }}
             >

@@ -1,4 +1,3 @@
-import isString from 'lodash/isString';
 import { useDropzone } from 'react-dropzone';
 // @mui
 import { styled } from '@mui/material/styles';
@@ -61,7 +60,7 @@ export default function UploadSingleFile({
         {file && (
           <Image
             alt="file preview"
-            src={isString(file) ? file : file.preview}
+            src={typeof file === 'string' ? file : file.preview}
             sx={{
               top: 8,
               left: 8,

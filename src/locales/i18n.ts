@@ -1,17 +1,21 @@
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
+// config
+import { defaultLang } from '../config';
 //
-import enLocales from './en.json';
-import deLocales from './de.json';
-import frLocales from './fr.json';
+import enLocales from './en';
+import frLocales from './fr';
+import vnLocales from './vn';
+import cnLocales from './cn';
+import arLocales from './ar';
 
 // ----------------------------------------------------------------------
 
-let lng = 'en';
+let lng = defaultLang.value;
 
-if (typeof localStorage !== 'undefined') {
-  lng = localStorage.getItem('i18nextLng') || 'en';
+if (typeof window !== 'undefined') {
+  lng = localStorage.getItem('i18nextLng') || defaultLang.value;
 }
 
 i18n
@@ -20,17 +24,19 @@ i18n
   .init({
     resources: {
       en: { translations: enLocales },
-      de: { translations: deLocales },
-      fr: { translations: frLocales }
+      fr: { translations: frLocales },
+      vn: { translations: vnLocales },
+      cn: { translations: cnLocales },
+      ar: { translations: arLocales },
     },
     lng,
-    fallbackLng: 'en',
+    fallbackLng: defaultLang.value,
     debug: false,
     ns: ['translations'],
     defaultNS: 'translations',
     interpolation: {
-      escapeValue: false
-    }
+      escapeValue: false,
+    },
   });
 
 export default i18n;

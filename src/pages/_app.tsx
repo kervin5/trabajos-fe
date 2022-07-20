@@ -29,6 +29,7 @@ import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import '@fullcalendar/common/main.min.css';
 import '@fullcalendar/daygrid/main.min.css';
 
+// import cookie from 'cookie';
 import { ReactElement, ReactNode } from 'react';
 // next
 import { NextPage } from 'next';
@@ -36,35 +37,31 @@ import Head from 'next/head';
 import App, { AppProps, AppContext } from 'next/app';
 //
 import { Provider as ReduxProvider } from 'react-redux';
-import { PersistGate } from 'redux-persist/lib/integration/react';
 // @mui
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 // redux
-import { store, persistor } from '../redux/store';
+import { store } from '../redux/store';
 // utils
-import { getSettings } from '../utils/settings';
-import { SettingsValueProps } from '../components/settings/type';
+import { getSettings } from '../utils/getSettings';
 // contexts
 import { SettingsProvider } from '../contexts/SettingsContext';
 import { CollapseDrawerProvider } from '../contexts/CollapseDrawerContext';
 // theme
 import ThemeProvider from '../theme';
 // components
-import Settings from '../components/settings';
+import ThemeSettings from '../components/settings';
+import { SettingsValueProps } from '../components/settings/type';
 import { ChartStyle } from '../components/chart';
-import RtlLayout from '../components/RtlLayout';
 import ProgressBar from '../components/ProgressBar';
-import ThemeColorPresets from '../components/ThemeColorPresets';
 import NotistackProvider from '../components/NotistackProvider';
-import ThemeLocalization from '../components/ThemeLocalization';
 import MotionLazyContainer from '../components/animate/MotionLazyContainer';
 
 // Check our docs
 // https://docs-minimals.vercel.app/authentication/ts-version
 
 import { AuthProvider } from '../contexts/JWTContext';
-import GraphqlProvider from 'src/components/providers/GraphqlProvider';
+import GraphqlProvider from 'src/contexts/GraphqlProvider';
 // import { AuthProvider } from '../contexts/Auth0Context';
 // import { AuthProvider } from '../contexts/FirebaseContext';
 // import { AuthProvider } from '../contexts/AwsCognitoContext';
@@ -81,7 +78,9 @@ interface MyAppProps extends AppProps {
 }
 
 export default function MyApp(props: MyAppProps) {
-  const { Component, pageProps, settings } = props;
+  const { Component, pageProps } = props;
+
+  const settings = getSettings();
 
   const getLayout = Component.getLayout ?? ((page) => page);
 
@@ -94,30 +93,23 @@ export default function MyApp(props: MyAppProps) {
       <AuthProvider>
         <GraphqlProvider pageProps={pageProps}>
           <ReduxProvider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <CollapseDrawerProvider>
-                  <SettingsProvider defaultSettings={settings}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <CollapseDrawerProvider>
+                <SettingsProvider defaultSettings={settings}>
+                  <MotionLazyContainer>
                     <ThemeProvider>
+                      {/* <ThemeSettings> */}
                       <NotistackProvider>
-                        <MotionLazyContainer>
-                          <ThemeColorPresets>
-                            <ThemeLocalization>
-                              <RtlLayout>
-                                <ChartStyle />
-                                {/* <Settings /> */}
-                                <ProgressBar />
-                                {getLayout(<Component {...pageProps} />)}
-                              </RtlLayout>
-                            </ThemeLocalization>
-                          </ThemeColorPresets>
-                        </MotionLazyContainer>
+                        <ChartStyle />
+                        <ProgressBar />
+                        {getLayout(<Component {...pageProps} />)}
                       </NotistackProvider>
+                      {/* </ThemeSettings> */}
                     </ThemeProvider>
-                  </SettingsProvider>
-                </CollapseDrawerProvider>
-              </LocalizationProvider>
-            </PersistGate>
+                  </MotionLazyContainer>
+                </SettingsProvider>
+              </CollapseDrawerProvider>
+            </LocalizationProvider>
           </ReduxProvider>
         </GraphqlProvider>
       </AuthProvider>

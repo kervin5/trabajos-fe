@@ -8,21 +8,18 @@ export type NavListProps = {
   path: string;
   icon?: ReactElement;
   info?: ReactElement;
-  children?: {
-    title: string;
-    path: string;
-    children?: { title: string; path: string }[];
-  }[];
+  caption?: string;
+  disabled?: boolean;
+  roles?: string[];
+  children?: any;
 };
 
 export type NavItemProps = {
   item: NavListProps;
+  depth: number;
+  open: boolean;
+  active: boolean;
   isCollapse?: boolean;
-  active?: boolean | undefined;
-  open?: boolean;
-  onOpen?: VoidFunction;
-  onMouseEnter?: VoidFunction;
-  onMouseLeave?: VoidFunction;
 };
 
 export interface NavSectionProps extends BoxProps {

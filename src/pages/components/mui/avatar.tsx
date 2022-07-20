@@ -67,7 +67,9 @@ export default function MUIAvatar() {
                 <Avatar
                   key={index}
                   alt="Remy Sharp"
-                  src={`https://minimals.cc/assets/images/avatars/avatar_${index + 1}.jpg`}
+                  src={`https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_${
+                    index + 1
+                  }.jpg`}
                 />
               ))}
             </Block>
@@ -133,28 +135,28 @@ export default function MUIAvatar() {
               <AvatarGroup max={4}>
                 <Avatar
                   alt="Remy Sharp"
-                  src="https://minimals.cc/assets/images/avatars/avatar_4.jpg"
+                  src="https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_4.jpg"
                 />
                 <Avatar color="info">OP</Avatar>
                 <Avatar
                   alt="Cindy Baker"
-                  src="https://minimals.cc/assets/images/avatars/avatar_5.jpg"
+                  src="https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_5.jpg"
                 />
                 <Avatar
                   alt="Agnes Walker"
-                  src="https://minimals.cc/assets/images/avatars/avatar_6.jpg"
+                  src="https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_6.jpg"
                 />
                 <Avatar
                   alt="Trevor Henderson"
-                  src="https://minimals.cc/assets/images/avatars/avatar_7.jpg"
+                  src="https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_7.jpg"
                 />
                 <Avatar
                   alt="Trevor Henderson"
-                  src="https://minimals.cc/assets/images/avatars/avatar_8.jpg"
+                  src="https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_8.jpg"
                 />
                 <Avatar
                   alt="Trevor Henderson"
-                  src="https://minimals.cc/assets/images/avatars/avatar_9.jpg"
+                  src="https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_9.jpg"
                 />
               </AvatarGroup>
             </Block>
@@ -177,7 +179,7 @@ export default function MUIAvatar() {
                 badgeContent={
                   <Avatar
                     alt="Travis Howard"
-                    src="https://minimals.cc/assets/images/avatars/avatar_7.jpg"
+                    src="https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_7.jpg"
                     sx={{
                       width: 24,
                       height: 24,
@@ -188,7 +190,7 @@ export default function MUIAvatar() {
               >
                 <Avatar
                   alt="Travis Howard"
-                  src="https://minimals.cc/assets/images/avatars/avatar_8.jpg"
+                  src="https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_8.jpg"
                 />
               </Badge>
 
@@ -196,7 +198,9 @@ export default function MUIAvatar() {
                 <Box key={status} sx={{ position: 'relative' }}>
                   <Avatar
                     alt="Travis Howard"
-                    src={`https://minimals.cc/assets/images/avatars/avatar_${index + 7}.jpg`}
+                    src={`https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_${
+                      index + 7
+                    }.jpg`}
                   />
                   <BadgeStatus status={status} sx={{ right: 2, bottom: 2, position: 'absolute' }} />
                 </Box>
@@ -216,7 +220,9 @@ export default function MUIAvatar() {
                 <Avatar
                   key={size}
                   alt="Travis Howard"
-                  src={`https://minimals.cc/assets/images/avatars/avatar_${index + 4}.jpg`}
+                  src={`https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_${
+                    index + 4
+                  }.jpg`}
                   sx={{ width: size, height: size }}
                 />
               ))}

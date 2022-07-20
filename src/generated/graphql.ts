@@ -19,8 +19,8 @@ export type Scalars = {
 
 export type AuthResponse = {
   __typename?: 'AuthResponse';
-  accessToken: Scalars['String'];
-  user: User;
+  accessToken?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
 };
 
 export type BoolFilter = {
@@ -594,7 +594,7 @@ export type Query = {
 
 
 export type QueryJobArgs = {
-  id?: InputMaybe<Scalars['String']>;
+  id: Scalars['String'];
 };
 
 

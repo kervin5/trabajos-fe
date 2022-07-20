@@ -1,7 +1,7 @@
 import { useState } from 'react';
 // @mui
 import { TextField, Stack } from '@mui/material';
-import { DateTimePicker, MobileDateTimePicker, DesktopDateTimePicker } from '@mui/lab';
+import { DateTimePicker, MobileDateTimePicker, DesktopDateTimePicker } from '@mui/x-date-pickers';
 //
 import { Block } from '../../Block';
 
@@ -9,6 +9,7 @@ import { Block } from '../../Block';
 
 export default function PickerDateTime() {
   const [value, setValue] = useState<Date | null>(new Date());
+
   const [valueResponsive, setValueResponsive] = useState<Date | null>(
     new Date('2018-01-01T00:00:00.000Z')
   );
@@ -32,6 +33,7 @@ export default function PickerDateTime() {
           }}
           renderInput={(params) => <TextField {...params} fullWidth margin="normal" />}
         />
+
         <DesktopDateTimePicker
           value={valueResponsive}
           onChange={(newValue) => {
@@ -39,6 +41,7 @@ export default function PickerDateTime() {
           }}
           renderInput={(params) => <TextField {...params} margin="normal" fullWidth />}
         />
+
         <DateTimePicker
           value={valueResponsive}
           onChange={(newValue) => {

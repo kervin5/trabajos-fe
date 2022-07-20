@@ -7,7 +7,7 @@ export default function useTabs(defaultValues?: string) {
 
   return {
     currentTab,
-    onChangeTab: (event: React.SyntheticEvent<Element, Event>, newValue: any) => {
+    onChangeTab: (event: React.SyntheticEvent<Element, Event>, newValue: string) => {
       setCurrentTab(newValue);
     },
     setCurrentTab,

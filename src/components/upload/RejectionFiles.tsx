@@ -2,10 +2,9 @@ import { FileRejection } from 'react-dropzone';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Paper, Typography } from '@mui/material';
-// type
-import { CustomFile } from './type';
 // utils
 import { fData } from '../../utils/formatNumber';
+import getFileData from '../../utils/getFileData';
 
 // ----------------------------------------------------------------------
 
@@ -26,18 +25,18 @@ export default function RejectionFiles({ fileRejections }: Props) {
       }}
     >
       {fileRejections.map(({ file, errors }) => {
-        const { path, size }: CustomFile = file;
+        const { path, size } = getFileData(file);
 
         return (
           <Box key={path} sx={{ my: 1 }}>
             <Typography variant="subtitle2" noWrap>
-              {path} - {fData(size)}
+              {path} - {size ? fData(size) : ''}
             </Typography>
 
             {errors.map((error) => (
-              <Typography key={error.code} variant="caption" component="p">
-                - {error.message}
-              </Typography>
+              <Box key={error.code} component="li" sx={{ typography: 'caption' }}>
+                {error.message}
+              </Box>
             ))}
           </Box>
         );

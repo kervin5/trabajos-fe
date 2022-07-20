@@ -1,57 +1,60 @@
 // @mui
-import { styled } from '@mui/material/styles';
-import { Button, Card, Typography, Stack } from '@mui/material';
+import { Button, Card, Typography, Stack, CardProps } from '@mui/material';
 // utils
 import { fCurrency } from '../../../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
 
-const RowStyle = styled('div')({
-  display: 'flex',
-  justifyContent: 'space-between'
-});
+interface Props extends CardProps {
+  title: string;
+  sentAmount: number;
+  currentBalance: number;
+}
 
-// ----------------------------------------------------------------------
-
-export default function EcommerceCurrentBalance() {
-  const currentBalance = 187650;
-  const sentAmount = 25500;
+export default function EcommerceCurrentBalance({
+  title,
+  sentAmount,
+  currentBalance,
+  sx,
+  ...other
+}: Props) {
   const totalAmount = currentBalance - sentAmount;
 
   return (
-    <Card sx={{ p: 3 }}>
+    <Card sx={{ p: 3, ...sx }} {...other}>
       <Typography variant="subtitle2" gutterBottom>
-        Your Current Balance
+        {title}
       </Typography>
 
       <Stack spacing={2}>
         <Typography variant="h3">{fCurrency(totalAmount)}</Typography>
 
-        <RowStyle>
+        <Stack direction="row" justifyContent="space-between">
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             Your Current Balance
           </Typography>
           <Typography variant="body2">{fCurrency(currentBalance)}</Typography>
-        </RowStyle>
+        </Stack>
 
-        <RowStyle>
+        <Stack direction="row" justifyContent="space-between">
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             Sent Amount
           </Typography>
           <Typography variant="body2">- {fCurrency(sentAmount)}</Typography>
-        </RowStyle>
+        </Stack>
 
-        <RowStyle>
+        <Stack direction="row" justifyContent="space-between">
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             Total Amount
           </Typography>
           <Typography variant="subtitle1">{fCurrency(totalAmount)}</Typography>
-        </RowStyle>
+        </Stack>
 
         <Stack direction="row" spacing={1.5}>
           <Button fullWidth variant="contained" color="warning">
             Transfer
           </Button>
+
           <Button fullWidth variant="contained">
             Receive
           </Button>

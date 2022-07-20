@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { Box, Stack, SvgIcon, Container, Link } from '@mui/material';
+import { Box, Stack, Container, Link } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // layouts
@@ -61,78 +61,103 @@ export default function FoundationIcons() {
 
         <Container>
           <Stack spacing={3}>
-            <Box sx={{ position: 'relative' }}>
-              <Block title="Material Icons" sx={style}>
-                <Link
-                  href="https://mui.com/components/icons/#main-content"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  https://mui.com/components/icons/#main-content
-                </Link>
-              </Block>
-            </Box>
+            <Block title="Material Icons" sx={style}>
+              <Link
+                href="https://mui.com/components/icons/#main-content"
+                target="_blank"
+                rel="noopener"
+              >
+                https://mui.com/components/icons/#main-content
+              </Link>
+            </Block>
 
-            <Box sx={{ position: 'relative' }}>
-              <Block title="Iconify Icons" sx={style}>
-                <SvgIcon color="action">
-                  <Iconify icon={'eva:alert-circle-fill'} width={24} height={24} />
-                </SvgIcon>
-                <SvgIcon color="disabled">
-                  <Iconify icon={'eva:charging-fill'} width={24} height={24} />
-                </SvgIcon>
-                <SvgIcon color="error">
-                  <Iconify icon={'eva:arrow-circle-down-fill'} width={24} height={24} />
-                </SvgIcon>
-                <SvgIcon color="inherit">
-                  <Iconify icon={'eva:clock-fill'} width={24} height={24} />
-                </SvgIcon>
-                <SvgIcon color="primary">
-                  <Iconify icon={'eva:color-palette-fill'} width={24} height={24} />
-                </SvgIcon>
-                <SvgIcon color="secondary">
-                  <Iconify icon={'eva:color-palette-fill'} width={24} height={24} />
-                </SvgIcon>
-              </Block>
-            </Box>
+            <Block title="Iconify Icons" sx={style}>
+              <Iconify icon="eva:color-palette-fill" width={24} height={24} />
+              <Iconify
+                icon="eva:color-palette-fill"
+                width={24}
+                height={24}
+                sx={{ color: 'action.active' }}
+              />
+              <Iconify
+                icon="eva:color-palette-fill"
+                width={24}
+                height={24}
+                sx={{ color: 'action.disabled' }}
+              />
+              <Iconify
+                icon="eva:color-palette-fill"
+                width={24}
+                height={24}
+                sx={{ color: 'primary.main' }}
+              />
+              <Iconify
+                icon="eva:color-palette-fill"
+                width={24}
+                height={24}
+                sx={{ color: 'secondary.main' }}
+              />
+              <Iconify
+                icon="eva:color-palette-fill"
+                width={24}
+                height={24}
+                sx={{ color: 'info.main' }}
+              />
+              <Iconify
+                icon="eva:color-palette-fill"
+                width={24}
+                height={24}
+                sx={{ color: 'success.main' }}
+              />
+              <Iconify
+                icon="eva:color-palette-fill"
+                width={24}
+                height={24}
+                sx={{ color: 'warning.main' }}
+              />
+              <Iconify
+                icon="eva:color-palette-fill"
+                width={24}
+                height={24}
+                sx={{ color: 'error.main' }}
+              />
+            </Block>
 
-            <Box sx={{ position: 'relative' }}>
-              <Block title="Local Icons" sx={style}>
-                <SvgIconStyle src="https://minimals.cc/assets/icons/browser-edge.svg" />
-                <SvgIconStyle
-                  src="https://minimals.cc/assets/icons/browser-edge.svg"
-                  sx={{ color: 'action.active' }}
-                />
-                <SvgIconStyle
-                  src="https://minimals.cc/assets/icons/browser-edge.svg"
-                  sx={{ color: 'action.disabled' }}
-                />
-                <SvgIconStyle
-                  src="https://minimals.cc/assets/icons/browser-edge.svg"
-                  sx={{ color: 'primary.main' }}
-                />
-                <SvgIconStyle
-                  src="https://minimals.cc/assets/icons/browser-edge.svg"
-                  sx={{ color: 'secondary.main' }}
-                />
-                <SvgIconStyle
-                  src="https://minimals.cc/assets/icons/elephant.svg"
-                  sx={{ color: 'info.main' }}
-                />
-                <SvgIconStyle
-                  src="https://minimals.cc/assets/icons/json-logo.svg"
-                  sx={{ color: 'success.main' }}
-                />
-                <SvgIconStyle
-                  src="https://minimals.cc/assets/icons/love-camera.svg"
-                  sx={{ color: 'warning.main' }}
-                />
-                <SvgIconStyle
-                  src="https://minimals.cc/assets/icons/shield.svg"
-                  sx={{ color: 'error.main' }}
-                />
-              </Block>
-            </Box>
+            <Block title="Local Icons" sx={style}>
+              <SvgIconStyle src="https://minimal-assets-api-dev.vercel.app/assets/icons/browser-edge.svg" />
+              <SvgIconStyle
+                src="https://minimal-assets-api-dev.vercel.app/assets/icons/browser-edge.svg"
+                sx={{ color: 'action.active' }}
+              />
+              <SvgIconStyle
+                src="https://minimal-assets-api-dev.vercel.app/assets/icons/browser-edge.svg"
+                sx={{ color: 'action.disabled' }}
+              />
+              <SvgIconStyle
+                src="https://minimal-assets-api-dev.vercel.app/assets/icons/browser-edge.svg"
+                sx={{ color: 'primary.main' }}
+              />
+              <SvgIconStyle
+                src="https://minimal-assets-api-dev.vercel.app/assets/icons/browser-edge.svg"
+                sx={{ color: 'secondary.main' }}
+              />
+              <SvgIconStyle
+                src="https://minimal-assets-api-dev.vercel.app/assets/icons/browser-edge.svg"
+                sx={{ color: 'info.main' }}
+              />
+              <SvgIconStyle
+                src="https://minimal-assets-api-dev.vercel.app/assets/icons/browser-edge.svg"
+                sx={{ color: 'success.main' }}
+              />
+              <SvgIconStyle
+                src="https://minimal-assets-api-dev.vercel.app/assets/icons/browser-edge.svg"
+                sx={{ color: 'warning.main' }}
+              />
+              <SvgIconStyle
+                src="https://minimal-assets-api-dev.vercel.app/assets/icons/browser-edge.svg"
+                sx={{ color: 'error.main' }}
+              />
+            </Block>
           </Stack>
         </Container>
       </RootStyle>

@@ -2,19 +2,44 @@ import Slider from 'react-slick';
 import { useRef } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Card, Chip, Stack, Avatar, Rating, Button, CardHeader, Typography } from '@mui/material';
+import {
+  Card,
+  Chip,
+  Stack,
+  Avatar,
+  Rating,
+  Button,
+  CardProps,
+  CardHeader,
+  Typography,
+} from '@mui/material';
 // utils
 import { fDateTime } from '../../../../utils/formatTime';
-// _mock_
-import { _bookingReview } from '../../../../_mock';
 // components
 import Iconify from '../../../../components/Iconify';
 import { CarouselArrows } from '../../../../components/carousel';
 
 // ----------------------------------------------------------------------
 
-export default function BookingCustomerReviews() {
+type ItemProps = {
+  id: string;
+  name: string;
+  description: string;
+  avatar: string;
+  rating: number;
+  postedAt: Date | string | number;
+  tags: string[];
+};
+
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  list: ItemProps[];
+}
+
+export default function BookingCustomerReviews({ title, subheader, list, ...other }: Props) {
   const theme = useTheme();
+
   const carouselRef = useRef<Slider | null>(null);
 
   const settings = {
@@ -35,10 +60,10 @@ export default function BookingCustomerReviews() {
   };
 
   return (
-    <Card>
+    <Card {...other}>
       <CardHeader
-        title="Customer Reviews"
-        subheader={`${_bookingReview.length} Reviews`}
+        title={title}
+        subheader={subheader}
         action={
           <CarouselArrows
             customIcon={'ic:round-keyboard-arrow-right'}
@@ -55,7 +80,7 @@ export default function BookingCustomerReviews() {
       />
 
       <Slider ref={carouselRef} {...settings}>
-        {_bookingReview.map((item) => (
+        {list.map((item) => (
           <ReviewItem key={item.id} item={item} />
         ))}
       </Slider>
@@ -66,16 +91,10 @@ export default function BookingCustomerReviews() {
 // ----------------------------------------------------------------------
 
 type ReviewItemProps = {
-  id: string;
-  name: string;
-  description: string;
-  avatar: string;
-  rating: number;
-  postedAt: Date | string | number;
-  tags: string[];
+  item: ItemProps;
 };
 
-function ReviewItem({ item }: { item: ReviewItemProps }) {
+function ReviewItem({ item }: ReviewItemProps) {
   const { avatar, name, description, rating, postedAt, tags } = item;
 
   return (
@@ -107,6 +126,7 @@ function ReviewItem({ item }: { item: ReviewItemProps }) {
         >
           Accept
         </Button>
+
         <Button
           fullWidth
           variant="contained"

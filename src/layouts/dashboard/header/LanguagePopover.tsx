@@ -11,7 +11,7 @@ import { IconButtonAnimate } from '../../../components/animate';
 // ----------------------------------------------------------------------
 
 export default function LanguagePopover() {
-  const { allLang, currentLang, onChangeLang } = useLocales();
+  const { allLangs, currentLang, onChangeLang } = useLocales();
 
   const [open, setOpen] = useState<HTMLElement | null>(null);
 
@@ -21,6 +21,11 @@ export default function LanguagePopover() {
 
   const handleClose = () => {
     setOpen(null);
+  };
+
+  const handleChangeLang = (newLang: string) => {
+    onChangeLang(newLang);
+    handleClose();
   };
 
   return (
@@ -48,14 +53,11 @@ export default function LanguagePopover() {
         }}
       >
         <Stack spacing={0.75}>
-          {allLang.map((option) => (
+          {allLangs.map((option) => (
             <MenuItem
               key={option.value}
               selected={option.value === currentLang.value}
-              onClick={() => {
-                onChangeLang(option.value);
-                handleClose();
-              }}
+              onClick={() => handleChangeLang(option.value)}
             >
               <Image
                 disabledEffect

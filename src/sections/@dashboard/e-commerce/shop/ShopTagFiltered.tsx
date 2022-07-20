@@ -1,7 +1,7 @@
 import { sentenceCase } from 'change-case';
 // @mui
 import { useTheme, styled } from '@mui/material/styles';
-import { Chip, Typography, Stack, Button } from '@mui/material';
+import { Chip, Stack, Button } from '@mui/material';
 // utils
 import getColorName from '../../../../utils/getColorName';
 // @type
@@ -27,9 +27,8 @@ const WrapperStyle = styled('div')(({ theme }) => ({
   border: `solid 1px ${theme.palette.divider}`,
 }));
 
-const LabelStyle = styled((props) => (
-  <Typography component="span" variant="subtitle2" {...props} />
-))(({ theme }) => ({
+const LabelStyle = styled('span')(({ theme }) => ({
+  ...theme.typography.subtitle2,
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(0, 1),
@@ -39,16 +38,6 @@ const LabelStyle = styled((props) => (
 }));
 
 // ----------------------------------------------------------------------
-
-function labelPriceRange(range: string) {
-  if (range === 'below') {
-    return 'Below $25';
-  }
-  if (range === 'between') {
-    return 'Between $25 - $75';
-  }
-  return 'Above $75';
-}
 
 type Props = {
   filters: ProductFilter;
@@ -74,6 +63,10 @@ export default function ShopTagFiltered({
   const theme = useTheme();
 
   const { gender, category, colors, priceRange, rating } = filters;
+
+  const min = priceRange[0];
+
+  const max = priceRange[1];
 
   return (
     <RootStyle>
@@ -130,13 +123,13 @@ export default function ShopTagFiltered({
         </WrapperStyle>
       )}
 
-      {priceRange && (
+      {(min !== 0 || max !== 200) && (
         <WrapperStyle>
           <LabelStyle>Price:</LabelStyle>
           <Stack direction="row" flexWrap="wrap" sx={{ p: 0.75 }}>
             <Chip
               size="small"
-              label={labelPriceRange(priceRange)}
+              label={`$${min} - ${max}`}
               onDelete={onRemovePrice}
               sx={{ m: 0.5 }}
             />

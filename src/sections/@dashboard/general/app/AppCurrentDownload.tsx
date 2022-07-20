@@ -1,10 +1,10 @@
 import merge from 'lodash/merge';
 // @mui
 import { useTheme, styled } from '@mui/material/styles';
-import { Card, CardHeader } from '@mui/material';
+import { Card, CardHeader, CardProps } from '@mui/material';
 // utils
 import { fNumber } from '../../../../utils/formatNumber';
-//
+// components
 import ReactApexChart, { BaseOptionChart } from '../../../../components/chart';
 
 // ----------------------------------------------------------------------
@@ -30,19 +30,32 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [12244, 53345, 44313, 78343];
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  chartData: {
+    label: string;
+    value: number;
+  }[];
+  chartColors?: string[];
+}
 
-export default function AppCurrentDownload() {
+export default function AppCurrentDownload({
+  title,
+  subheader,
+  chartData,
+  chartColors,
+  ...other
+}: Props) {
   const theme = useTheme();
 
+  const chartLabels = chartData.map((i) => i.label);
+
+  const chartSeries = chartData.map((i) => i.value);
+
   const chartOptions = merge(BaseOptionChart(), {
-    colors: [
-      theme.palette.primary.lighter,
-      theme.palette.primary.light,
-      theme.palette.primary.main,
-      theme.palette.primary.dark,
-    ],
-    labels: ['Mac', 'Window', 'iOS', 'Android'],
+    colors: chartColors,
+    labels: chartLabels,
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: 'center' },
     tooltip: {
@@ -75,10 +88,11 @@ export default function AppCurrentDownload() {
   });
 
   return (
-    <Card>
-      <CardHeader title="Current Download" />
+    <Card {...other}>
+      <CardHeader title={title} subheader={subheader} />
+
       <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="donut" series={CHART_DATA} options={chartOptions} height={280} />
+        <ReactApexChart type="donut" series={chartSeries} options={chartOptions} height={280} />
       </ChartWrapperStyle>
     </Card>
   );

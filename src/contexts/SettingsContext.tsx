@@ -2,45 +2,83 @@ import Cookies from 'js-cookie';
 import { ReactNode, createContext, Dispatch, SetStateAction, useEffect, useState } from 'react';
 // utils
 import getColorPresets, { colorPresets, defaultPreset } from '../utils/getColorPresets';
+// config
+import { defaultSettings, cookiesKey, cookiesExpires } from '../config';
 // @type
 import {
   ThemeMode,
   ThemeLayout,
+  ThemeContrast,
   ThemeDirection,
   ThemeColorPresets,
   SettingsContextProps,
   SettingsValueProps,
 } from '../components/settings/type';
-// config
-import { defaultSettings, cookiesKey, cookiesExpires } from '../config';
 
 // ----------------------------------------------------------------------
 
 const initialState: SettingsContextProps = {
   ...defaultSettings,
-  onChangeMode: () => {},
+  // Mode
   onToggleMode: () => {},
+  onChangeMode: () => {},
+
+  // Direction
+  onToggleDirection: () => {},
   onChangeDirection: () => {},
-  onChangeColor: () => {},
-  onToggleStretch: () => {},
+  onChangeDirectionByLang: () => {},
+
+  // Layout
+  onToggleLayout: () => {},
   onChangeLayout: () => {},
-  onResetSetting: () => {},
+
+  // Contrast
+  onToggleContrast: () => {},
+  onChangeContrast: () => {},
+
+  // Color
+  onChangeColor: () => {},
   setColor: defaultPreset,
   colorOption: [],
+
+  // Stretch
+  onToggleStretch: () => {},
+
+  // Reset
+  onResetSetting: () => {},
 };
 
 const SettingsContext = createContext(initialState);
+
+// ----------------------------------------------------------------------
 
 type SettingsProviderProps = {
   children: ReactNode;
   defaultSettings: SettingsValueProps;
 };
 
-function SettingsProvider({
-  children,
-  defaultSettings = {} as SettingsValueProps,
-}: SettingsProviderProps) {
+function SettingsProvider({ children, defaultSettings }: SettingsProviderProps) {
   const [settings, setSettings] = useSettingCookies(defaultSettings);
+
+  const langStorage = typeof window !== 'undefined' ? localStorage.getItem('i18nextLng') : '';
+
+  const isArabic = langStorage === 'ar';
+
+  useEffect(() => {
+    if (isArabic) {
+      onChangeDirectionByLang('ar');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isArabic]);
+
+  // Mode
+
+  const onToggleMode = () => {
+    setSettings({
+      ...settings,
+      themeMode: settings.themeMode === 'light' ? 'dark' : 'light',
+    });
+  };
 
   const onChangeMode = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSettings({
@@ -49,10 +87,12 @@ function SettingsProvider({
     });
   };
 
-  const onToggleMode = () => {
+  // Direction
+
+  const onToggleDirection = () => {
     setSettings({
       ...settings,
-      themeMode: settings.themeMode === 'light' ? 'dark' : 'light',
+      themeDirection: settings.themeDirection === 'rtl' ? 'ltr' : 'rtl',
     });
   };
 
@@ -63,10 +103,19 @@ function SettingsProvider({
     });
   };
 
-  const onChangeColor = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeDirectionByLang = (lang: string) => {
     setSettings({
       ...settings,
-      themeColorPresets: (event.target as HTMLInputElement).value as ThemeColorPresets,
+      themeDirection: lang === 'ar' ? 'rtl' : 'ltr',
+    });
+  };
+
+  // Layout
+
+  const onToggleLayout = () => {
+    setSettings({
+      ...settings,
+      themeLayout: settings.themeLayout === 'vertical' ? 'horizontal' : 'vertical',
     });
   };
 
@@ -77,6 +126,33 @@ function SettingsProvider({
     });
   };
 
+  // Contrast
+
+  const onToggleContrast = () => {
+    setSettings({
+      ...settings,
+      themeContrast: settings.themeContrast === 'default' ? 'bold' : 'default',
+    });
+  };
+
+  const onChangeContrast = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSettings({
+      ...settings,
+      themeContrast: (event.target as HTMLInputElement).value as ThemeContrast,
+    });
+  };
+
+  // Color
+
+  const onChangeColor = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSettings({
+      ...settings,
+      themeColorPresets: (event.target as HTMLInputElement).value as ThemeColorPresets,
+    });
+  };
+
+  // Stretch
+
   const onToggleStretch = () => {
     setSettings({
       ...settings,
@@ -84,11 +160,14 @@ function SettingsProvider({
     });
   };
 
+  // Reset
+
   const onResetSetting = () => {
     setSettings({
       themeMode: initialState.themeMode,
       themeLayout: initialState.themeLayout,
       themeStretch: initialState.themeStretch,
+      themeContrast: initialState.themeContrast,
       themeDirection: initialState.themeDirection,
       themeColorPresets: initialState.themeColorPresets,
     });
@@ -98,12 +177,27 @@ function SettingsProvider({
     <SettingsContext.Provider
       value={{
         ...settings,
-        themeMode: 'light',
+
         // Mode
-        onChangeMode,
         onToggleMode,
+        onChangeMode,
+
         // Direction
+        onToggleDirection,
         onChangeDirection,
+        onChangeDirectionByLang,
+
+        // Layout
+        onToggleLayout,
+        onChangeLayout,
+
+        // Contrast
+        onChangeContrast,
+        onToggleContrast,
+
+        // Stretch
+        onToggleStretch,
+
         // Color
         onChangeColor,
         setColor: getColorPresets(settings.themeColorPresets),
@@ -111,11 +205,8 @@ function SettingsProvider({
           name: color.name,
           value: color.main,
         })),
-        // Stretch
-        onToggleStretch,
-        // Navbar Horizontal
-        onChangeLayout,
-        // Reset Setting
+
+        // Reset
         onResetSetting,
       }}
     >
@@ -143,6 +234,10 @@ function useSettingCookies(
     });
 
     Cookies.set(cookiesKey.themeLayout, settings.themeLayout, {
+      expires: cookiesExpires,
+    });
+
+    Cookies.set(cookiesKey.themeContrast, settings.themeContrast, {
       expires: cookiesExpires,
     });
 

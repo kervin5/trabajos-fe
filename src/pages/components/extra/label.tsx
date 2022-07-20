@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 // @mui
-import { styled, alpha, Theme } from '@mui/material/styles';
-import { Box, Container, Stack, Paper, CardHeader, SxProps } from '@mui/material';
+import { styled, alpha } from '@mui/material/styles';
+import { Box, Container, Stack, Paper, CardHeader } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // layouts
@@ -9,6 +9,7 @@ import Layout from '../../../layouts';
 // components
 import Page from '../../../components/Page';
 import Label from '../../../components/Label';
+import Iconify from '../../../components/Iconify';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 
 // ----------------------------------------------------------------------
@@ -49,57 +50,82 @@ export default function DemoLabel() {
         <Container>
           <Stack spacing={3}>
             <Block title="Filled">
-              <Label variant="filled"> Default</Label>
-              <Label variant="filled" color="primary">
+              <Label variant="filled">Default</Label>
+              <Label color="primary" variant="filled">
                 Primary
               </Label>
-              <Label variant="filled" color="secondary">
+              <Label color="secondary" variant="filled">
                 Secondary
               </Label>
-              <Label variant="filled" color="info">
+              <Label color="info" variant="filled">
                 Info
               </Label>
-              <Label variant="filled" color="success">
+              <Label color="success" variant="filled">
                 Success
               </Label>
-              <Label variant="filled" color="warning">
+              <Label color="warning" variant="filled">
                 Waring
               </Label>
-              <Label variant="filled" color="error">
+              <Label color="error" variant="filled">
                 Error
               </Label>
             </Block>
 
             <Block title="Outlined">
-              <Label variant="outlined"> Default</Label>
-              <Label variant="outlined" color="primary">
+              <Label variant="outlined">Default</Label>
+              <Label color="primary" variant="outlined">
                 Primary
               </Label>
-              <Label variant="outlined" color="secondary">
+              <Label color="secondary" variant="outlined">
                 Secondary
               </Label>
-              <Label variant="outlined" color="info">
+              <Label color="info" variant="outlined">
                 Info
               </Label>
-              <Label variant="outlined" color="success">
+              <Label color="success" variant="outlined">
                 Success
               </Label>
-              <Label variant="outlined" color="warning">
+              <Label color="warning" variant="outlined">
                 Waring
               </Label>
-              <Label variant="outlined" color="error">
+              <Label color="error" variant="outlined">
                 Error
               </Label>
             </Block>
 
             <Block title="Ghost">
-              <Label> Default</Label>
+              <Label>Default</Label>
               <Label color="primary">Primary</Label>
               <Label color="secondary">Secondary</Label>
               <Label color="info">Info</Label>
               <Label color="success">Success</Label>
               <Label color="warning">Waring</Label>
               <Label color="error">Error</Label>
+            </Block>
+
+            <Block title="With Icon">
+              <Label variant="filled" color="primary" startIcon={<Iconify icon="eva:email-fill" />}>
+                Start Icon
+              </Label>
+              <Label variant="filled" color="primary" endIcon={<Iconify icon="eva:email-fill" />}>
+                End Icon
+              </Label>
+              <Label
+                variant="outlined"
+                color="primary"
+                startIcon={<Iconify icon="eva:email-fill" />}
+              >
+                Start Icon
+              </Label>
+              <Label variant="outlined" color="primary" endIcon={<Iconify icon="eva:email-fill" />}>
+                End Icon
+              </Label>
+              <Label color="primary" startIcon={<Iconify icon="eva:email-fill" />}>
+                Start Icon
+              </Label>
+              <Label color="primary" endIcon={<Iconify icon="eva:email-fill" />}>
+                End Icon
+              </Label>
             </Block>
           </Stack>
         </Container>
@@ -113,7 +139,6 @@ export default function DemoLabel() {
 type BlockProps = {
   title?: string;
   children: ReactNode;
-  sx?: SxProps<Theme>;
 };
 
 export function Block({ title, children }: BlockProps) {

@@ -11,18 +11,17 @@ import {
 
 // ----------------------------------------------------------------------
 
-interface IProps {
+type IProps = {
   name: string;
-  options: string[];
-  getOptionLabel?: string[];
-}
+  options: {
+    label: string;
+    value: any;
+  }[];
+};
 
-export default function RHFRadioGroup({
-  name,
-  options,
-  getOptionLabel,
-  ...other
-}: IProps & RadioGroupProps) {
+type Props = IProps & RadioGroupProps;
+
+export default function RHFRadioGroup({ name, options, ...other }: Props) {
   const { control } = useFormContext();
 
   return (
@@ -32,12 +31,12 @@ export default function RHFRadioGroup({
       render={({ field, fieldState: { error } }) => (
         <div>
           <RadioGroup {...field} row {...other}>
-            {options.map((option, index) => (
+            {options.map((option) => (
               <FormControlLabel
-                key={option}
-                value={option}
+                key={option.value}
+                value={option.value}
                 control={<Radio />}
-                label={getOptionLabel?.length ? getOptionLabel[index] : option}
+                label={option.label}
               />
             ))}
           </RadioGroup>

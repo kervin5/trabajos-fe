@@ -1,4 +1,3 @@
-import isString from 'lodash/isString';
 import { ReactNode } from 'react';
 // @mui
 import { Box, Typography, Link } from '@mui/material';
@@ -35,7 +34,7 @@ export default function HeaderBreadcrumbs({
       </Box>
 
       <Box sx={{ mt: 2 }}>
-        {isString(moreLink) ? (
+        {typeof moreLink === 'string' ? (
           <Link href={moreLink} target="_blank" variant="body2">
             {moreLink}
           </Link>

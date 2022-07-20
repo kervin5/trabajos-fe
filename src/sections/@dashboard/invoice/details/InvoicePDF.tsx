@@ -36,7 +36,7 @@ export default function InvoicePDF({ invoice }: Props) {
           <Image source="/logo/logo_full.jpg" style={{ height: 32 }} />
           <View style={{ alignItems: 'flex-end', flexDirection: 'column' }}>
             <Text style={styles.h3}>{status}</Text>
-            <Text> {invoiceNumber} </Text>
+            <Text> {`INV-${invoiceNumber}`} </Text>
           </View>
         </View>
 

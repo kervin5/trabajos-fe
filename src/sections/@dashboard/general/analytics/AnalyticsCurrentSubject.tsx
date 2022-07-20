@@ -1,13 +1,14 @@
 import merge from 'lodash/merge';
 // @mui
-import { useTheme, styled } from '@mui/material/styles';
-import { Card, CardHeader } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { Card, CardHeader, CardProps } from '@mui/material';
 // components
 import ReactApexChart, { BaseOptionChart } from '../../../../components/chart';
 
 // ----------------------------------------------------------------------
 
 const CHART_HEIGHT = 392;
+
 const LEGEND_HEIGHT = 72;
 
 const ChartWrapperStyle = styled('div')(({ theme }) => ({
@@ -30,41 +31,45 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [
-  { name: 'Series 1', data: [80, 50, 30, 40, 100, 20] },
-  { name: 'Series 2', data: [20, 30, 40, 80, 20, 80] },
-  { name: 'Series 3', data: [44, 76, 78, 13, 43, 10] },
-];
+interface Props extends CardProps {
+  title?: string;
+  subheader?: string;
+  chartLabels: string[];
+  chartColors: string[];
+  chartData: {
+    name: string;
+    data: number[];
+  }[];
+}
 
-export default function AnalyticsCurrentSubject() {
-  const theme = useTheme();
-
+export default function AnalyticsCurrentSubject({
+  title,
+  subheader,
+  chartData,
+  chartColors,
+  chartLabels,
+  ...other
+}: Props) {
   const chartOptions = merge(BaseOptionChart(), {
     stroke: { width: 2 },
     fill: { opacity: 0.48 },
     legend: { floating: true, horizontalAlign: 'center' },
     xaxis: {
-      categories: ['English', 'History', 'Physics', 'Geography', 'Chinese', 'Math'],
+      categories: chartLabels,
       labels: {
         style: {
-          colors: [
-            theme.palette.text.secondary,
-            theme.palette.text.secondary,
-            theme.palette.text.secondary,
-            theme.palette.text.secondary,
-            theme.palette.text.secondary,
-            theme.palette.text.secondary,
-          ],
+          colors: chartColors,
         },
       },
     },
   });
 
   return (
-    <Card>
-      <CardHeader title="Current Subject" />
+    <Card {...other}>
+      <CardHeader title={title} subheader={subheader} />
+
       <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="radar" series={CHART_DATA} options={chartOptions} height={340} />
+        <ReactApexChart type="radar" series={chartData} options={chartOptions} height={340} />
       </ChartWrapperStyle>
     </Card>
   );

@@ -49,6 +49,7 @@ type Props = {
 
 export default function MailCompose({ isOpenCompose, onCloseCompose }: Props) {
   const [fullScreen, setFullScreen] = useState(false);
+
   const [message, setMessage] = useState('');
 
   const isDesktop = useResponsive('up', 'sm');

@@ -1,12 +1,11 @@
-import { ReactElement } from 'react';
 // @mui
 import { Stack, StackProps, SxProps } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
 interface Props extends StackProps {
-  icon: ReactElement;
-  value: any;
+  icon: React.ReactElement;
+  value: React.ReactNode;
   endIcon?: boolean;
   sx?: SxProps;
 }
@@ -23,7 +22,9 @@ export default function TextIconLabel({ icon, value, endIcon = false, sx, ...oth
       {...other}
     >
       {!endIcon && icon}
+
       {value}
+
       {endIcon && icon}
     </Stack>
   );

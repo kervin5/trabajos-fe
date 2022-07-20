@@ -13,7 +13,7 @@ export type ChatState = {
   };
   activeConversationId: null | string;
   participants: Participant[];
-  recipients: any[];
+  recipients: Participant[];
 };
 
 export type Contact = {
